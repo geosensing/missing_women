@@ -178,3 +178,9 @@ scripts/._.DS_Store
 /data
 /data/delhi_planet_76.833,28.408_77.338,28.885-shp
 /data
+/scripts/video_frames
+/out
+/data
+/mumbai_video_frames
+/mumbai_vids
+streamlit/.secrets.toml

@@ -1,0 +1,5 @@
+streamlit==1.27.0
+pandas==2.0.3
+pillow==10.0.0
+gdown==4.7.1
+PyGithub==1.58.2
