@@ -1,6 +1,6 @@
 streamlit==1.27.0
 pandas==2.0.3
-Pillow==10.0.0
+Pillow==9.5.0
 gdown==4.7.1
 supabase==2.15.0
 
