@@ -184,3 +184,4 @@ scripts/._.DS_Store
 /mumbai_video_frames
 /mumbai_vids
 streamlit/.secrets.toml
+/streamlit/.streamlit
