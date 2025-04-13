@@ -3,20 +3,28 @@ import pandas as pd
 from PIL import Image
 import io
 import tempfile
-import gdown
+import requests  # Using requests instead of gdown.download
 import hashlib
 from datetime import datetime
 import os
 
-# Import the Supabase client
+# Import Supabase client
 from supabase import create_client, Client
 
-# Set page title
+# Import Google Drive API libraries
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
+
+# ---------------------
+# App Configuration
+# ---------------------
 st.set_page_config(page_title="People Counter App")
-
 st.title("People Counter App")
-st.write("Count the number of men and women in images from Google Drive")
+st.write("Code images from a Google Drive folder.")
 
+# ---------------------
+# Supabase Client Setup
+# ---------------------
 @st.cache_resource
 def get_supabase_client() -> Client:
     url = st.secrets["supabase"]["url"]
@@ -25,147 +33,174 @@ def get_supabase_client() -> Client:
 
 supabase = get_supabase_client()
 
-# Function to generate a unique hash for an image
+# ---------------------
+# Google Drive API Client Setup
+# ---------------------
+@st.cache_resource
+def get_drive_service():
+    SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
+    credentials_info = st.secrets["gdrive"]["service_account"]
+    credentials = service_account.Credentials.from_service_account_info(credentials_info, scopes=SCOPES)
+    return build('drive', 'v3', credentials=credentials)
+
+drive_service = get_drive_service()
+
+# ---------------------
+# Helper Functions
+# ---------------------
 def get_image_hash(image):
-    """Generate a hash from image data to uniquely identify it"""
+    """Generate a unique hash for an image."""
     img_byte_arr = io.BytesIO()
     image.save(img_byte_arr, format="PNG")
     return hashlib.md5(img_byte_arr.getvalue()).hexdigest()
 
-# Function to fetch data from Supabase
 def get_data_from_supabase():
-    """Fetch data from Supabase table 'people_counts'."""
+    """Fetch data from the Supabase 'people_counts' table."""
     try:
         response = supabase.table("people_counts").select("*").execute()
         data = response.data
         if data is None:
             return pd.DataFrame(columns=["image", "image_hash", "women", "men", "timestamp"])
-        else:
-            return pd.DataFrame(data)
+        return pd.DataFrame(data)
     except Exception as e:
         st.error(f"Error fetching data from Supabase: {e}")
         return pd.DataFrame(columns=["image", "image_hash", "women", "men", "timestamp"])
 
-# Function to save (insert or update) data in Supabase
-def save_data_to_supabase(num_women, num_men):
-    if 'current_image' not in st.session_state or st.session_state.current_image is None:
-        st.error("No image loaded.")
-        return False
+def save_data_to_supabase(num_women, num_men, image_info):
+    """Insert or update coded counts in Supabase."""
     try:
-        existing_response = supabase.table("people_counts").select("*").eq("image_hash", st.session_state.current_image_hash).execute()
-        existing_records = existing_response.data
+        image_hash = image_info["hash"]
         now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        if existing_records:
+        response = supabase.table("people_counts").select("*").eq("image_hash", image_hash).execute()
+        if response.data:
             supabase.table("people_counts").update({
                 "women": num_women,
                 "men": num_men,
                 "timestamp": now_str
-            }).eq("image_hash", st.session_state.current_image_hash).execute()
+            }).eq("image_hash", image_hash).execute()
         else:
-            new_record = {
-                "image": st.session_state.current_image_name,
-                "image_hash": st.session_state.current_image_hash,
+            record = {
+                "image": image_info["filename"],
+                "image_hash": image_hash,
                 "women": num_women,
                 "men": num_men,
                 "timestamp": now_str
             }
-            supabase.table("people_counts").insert(new_record).execute()
+            supabase.table("people_counts").insert(record).execute()
         return True
     except Exception as e:
         st.error(f"Error saving data to Supabase: {e}")
         return False
 
-# Initialize session state variables
-if "current_image" not in st.session_state:
-    st.session_state.current_image = None
-if "current_image_name" not in st.session_state:
-    st.session_state.current_image_name = None
-if "current_image_hash" not in st.session_state:
-    st.session_state.current_image_hash = None
-
-# Google Drive Link Input
-st.markdown("### Enter Google Drive Image Link")
-drive_link = st.text_input("Enter Google Drive sharing link (must be accessible to anyone with the link)")
-
-if drive_link and st.button("Load Image"):
+def extract_folder_id(link):
+    """Extract the folder ID from a Google Drive folder link."""
     try:
-        # Extract the file ID from the Google Drive link
-        file_id = None
-        if "drive.google.com/file/d/" in drive_link:
-            file_id = drive_link.split("/file/d/")[1].split("/")[0]
-        elif "drive.google.com/open?id=" in drive_link:
-            file_id = drive_link.split("id=")[1]
-        
-        if file_id:
-            # Create a temporary file to store the downloaded image
-            temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".jpg")
-            temp_filename = temp_file.name
-            temp_file.close()
-            
-            # Download the image using gdown
-            download_url = f"https://drive.google.com/uc?id={file_id}"
-            gdown.download(download_url, temp_filename, quiet=False)
-            
-            # Open and display the image
-            image = Image.open(temp_filename)
-            image_hash = get_image_hash(image)
-            
-            # Check if the image has already been coded
-            df = get_data_from_supabase()
-            if not df.empty and image_hash in df["image_hash"].values:
-                existing_record = df[df["image_hash"] == image_hash].iloc[0]
-                st.warning("⚠️ This image has already been coded! Previous data shown below.")
-                st.info(f"Women: {existing_record['women']}, Men: {existing_record['men']}")
-            
-            # Save in session state
-            st.session_state.current_image = image
-            st.session_state.current_image_name = f"drive_file_{file_id}"
-            st.session_state.current_image_hash = image_hash
-            
-            st.success("Image loaded successfully!")
+        # Assumes a link like "https://drive.google.com/drive/folders/{folder_id}?..."
+        folder_id = link.split("folders/")[1].split("?")[0]
+        return folder_id
+    except Exception:
+        return None
+
+def list_image_files(folder_id):
+    """List image files (IDs and names) in a Google Drive folder."""
+    query = f"'{folder_id}' in parents and trashed=false and (mimeType contains 'image/')"
+    results = drive_service.files().list(q=query, fields="files(id, name)").execute()
+    return results.get('files', [])
+
+# ---------------------
+# Session State Initialization
+# ---------------------
+if "gdrive_file_list" not in st.session_state:
+    st.session_state.gdrive_file_list = None
+if "current_index" not in st.session_state:
+    st.session_state.current_index = 0
+
+# ---------------------
+# Folder Link Input and File List Loading
+# ---------------------
+st.markdown("### Enter Google Drive Folder Link")
+folder_link = st.text_input("Folder link (accessible to anyone with the link)")
+
+if folder_link and st.button("Load Folder"):
+    folder_id = extract_folder_id(folder_link)
+    if not folder_id:
+        st.error("Could not extract folder ID. Please check the link format.")
+    else:
+        files = list_image_files(folder_id)
+        if not files:
+            st.error("No image files found in the folder.")
         else:
-            st.error("Could not extract file ID from the provided link.")
+            st.session_state.gdrive_file_list = files
+            st.session_state.current_index = 0
+            st.success(f"Loaded {len(files)} files from the folder.")
+
+# ---------------------
+# Lazy Loading: Find and Display Next Uncoded Image
+# ---------------------
+image_info = None
+df = get_data_from_supabase()
+coded_hashes = set(df["image_hash"].tolist()) if not df.empty else set()
+
+if st.session_state.gdrive_file_list:
+    files = st.session_state.gdrive_file_list
+    idx = st.session_state.current_index
+    while idx < len(files):
+        file_item = files[idx]
+        file_id = file_item["id"]
+        filename = file_item["name"]
+        download_url = f"https://drive.google.com/uc?id={file_id}"
+        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".jpg")
+        temp_filename = temp_file.name
+        temp_file.close()
+        try:
+            response = requests.get(download_url)
+            response.raise_for_status()  # Raise an error for bad status codes
+            with open(temp_filename, "wb") as f:
+                f.write(response.content)
+            img = Image.open(temp_filename)
+        except Exception as e:
+            st.error(f"Error processing {filename}: {e}")
+            idx += 1
+            continue
+        hash_val = get_image_hash(img)
+        if hash_val in coded_hashes:
+            idx += 1  # Skip already coded image
+            continue
+        else:
+            image_info = {"path": temp_filename, "filename": filename, "hash": hash_val}
+            st.session_state.current_index = idx
+            break
+    if idx >= len(files) and image_info is None:
+        st.info("All images in this folder have been coded.")
+
+# ---------------------
+# Coding Interface for the Current Image
+# ---------------------
+if image_info:
+    try:
+        current_img = Image.open(image_info["path"])
+        st.image(current_img, caption=f"Image: {image_info['filename']}", use_column_width=True)
     except Exception as e:
-        st.error(f"Error loading image from Google Drive: {e}")
+        st.error(f"Error displaying image: {e}")
 
-# Main counting interface
-if st.session_state.current_image:
-    st.image(st.session_state.current_image,
-             caption=f"Image: {st.session_state.current_image_name}",
-             use_column_width=True)
-    
-    # Create two columns for counters
     col1, col2 = st.columns(2)
-    
-    default_women = 0
-    default_men = 0
-    df = get_data_from_supabase()
-    if not df.empty and st.session_state.current_image_hash in df["image_hash"].values:
-        existing_record = df[df["image_hash"] == st.session_state.current_image_hash].iloc[0]
-        default_women = existing_record["women"]
-        default_men = existing_record["men"]
-    
     with col1:
-        num_women = st.number_input("Number of Women", min_value=0, value=default_women, step=1)
+        num_women = st.number_input("Number of Women", min_value=0, value=0, step=1, key="women")
     with col2:
-        num_men = st.number_input("Number of Men", min_value=0, value=default_men, step=1)
+        num_men = st.number_input("Number of Men", min_value=0, value=0, step=1, key="men")
     
-    if st.button("Save Counts"):
-        if save_data_to_supabase(num_women, num_men):
-            st.success(f"Saved counts for {st.session_state.current_image_name}")
-        else:
-            st.error("Failed to save data")
+    if st.button("Save Counts for This Image"):
+        if save_data_to_supabase(num_women, num_men, image_info):
+            st.success(f"Saved counts for {image_info['filename']}")
+            st.session_state.current_index += 1
+            st.experimental_rerun()
 
+# ---------------------
+# Display Coded Data and CSV Download
+# ---------------------
 df = get_data_from_supabase()
 if not df.empty:
-    st.write("### Saved Counts")
-    display_df = df[["image", "women", "men", "timestamp"]].copy()
-    st.dataframe(display_df)
-    
-    csv = df.to_csv(index=False)
-    st.download_button(
-        label="Download Data as CSV",
-        data=csv,
-        file_name="people_counts.csv",
-        mime="text/csv"
-    )
+    st.write("### Coded Data")
+    st.dataframe(df[["image", "women", "men", "timestamp"]])
+    csv_data = df.to_csv(index=False)
+    st.download_button("Download CSV", csv_data, "people_counts.csv", "text/csv")
