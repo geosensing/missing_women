@@ -1,0 +1,237 @@
+===== ITINERARY 41 DIRECTIONS =====
+
+Total distance: 4.13 km
+Estimated time: 8.0 minutes
+Number of data collection points: 22
+Cluster: 11
+
+
+--- Point 1 to Point 2 ---
+Distance: 0.26 km
+Time: 0.4 minutes
+
+Continue on Seawoods Station Road for 177 meters
+Continue on Tilak College Road for 88 meters
+
+ARRIVE AT DATA COLLECTION POINT 2
+Location: 73.023747, 19.022039
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 2 to Point 3 ---
+Distance: 0.37 km
+Time: 0.9 minutes
+
+Continue on Unnamed Road for 200 meters
+Continue on Dr. Babasaheb Ambedkar Marg for 173 meters
+
+ARRIVE AT DATA COLLECTION POINT 3
+Location: 73.023909, 19.019104
+Street: Dr. Babasaheb Ambedkar Marg
+Collect required data at this location before continuing.
+
+--- Point 3 to Point 4 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 4
+Location: 73.023955, 19.018992
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 4 to Point 5 ---
+Distance: 0.10 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 102 meters
+
+ARRIVE AT DATA COLLECTION POINT 5
+Location: 73.024778, 19.019603
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 5 to Point 6 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 6
+Location: 73.024336, 19.019941
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 6 to Point 7 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 7
+Location: 73.024509, 19.019611
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 7 to Point 8 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 8
+Location: 73.024206, 19.020040
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 8 to Point 9 ---
+Distance: 0.24 km
+Time: 0.7 minutes
+
+Continue on Unnamed Road for 131 meters
+Continue on Sector 27 Road for 112 meters
+
+ARRIVE AT DATA COLLECTION POINT 9
+Location: 73.023514, 19.021214
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 9 to Point 10 ---
+Distance: 0.72 km
+Time: 1.6 minutes
+
+Continue on Sector 27 Road for 252 meters
+Continue on Adi Shankaracharya Marg for 110 meters
+Continue on Unnamed Road for 354 meters
+
+ARRIVE AT DATA COLLECTION POINT 10
+Location: 73.023414, 19.020860
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 10 to Point 11 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 11
+Location: 73.023183, 19.021163
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 11 to Point 12 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 12
+Location: 73.023430, 19.020918
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 12 to Point 13 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 13
+Location: 73.023482, 19.021103
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 13 to Point 14 ---
+Distance: 0.35 km
+Time: 0.9 minutes
+
+Continue on Unnamed Road for 354 meters
+
+ARRIVE AT DATA COLLECTION POINT 14
+Location: 73.024116, 19.023727
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 14 to Point 15 ---
+Distance: 0.23 km
+Time: 0.2 minutes
+
+Continue on Adi Shankaracharya Marg for 128 meters
+Continue on Seawoods Rail-Over Bridge for 10 meters
+Continue on Adi Shankaracharya Marg for 96 meters
+
+ARRIVE AT DATA COLLECTION POINT 15
+Location: 73.024083, 19.024386
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 15 to Point 16 ---
+Distance: 0.04 km
+Time: 0.0 minutes
+
+Continue on Adi Shankaracharya Marg for 39 meters
+
+ARRIVE AT DATA COLLECTION POINT 16
+Location: 73.024315, 19.023775
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 16 to Point 17 ---
+Distance: 0.38 km
+Time: 0.4 minutes
+
+Continue on Adi Shankaracharya Marg for 376 meters
+
+ARRIVE AT DATA COLLECTION POINT 17
+Location: 73.027020, 19.022162
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 17 to Point 18 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 18
+Location: 73.027216, 19.021890
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 18 to Point 19 ---
+Distance: 0.07 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 73 meters
+
+ARRIVE AT DATA COLLECTION POINT 19
+Location: 73.027820, 19.022211
+Street: Amra Marg
+Collect required data at this location before continuing.
+
+--- Point 19 to Point 20 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 20
+Location: 73.027879, 19.022733
+Street: Amra Marg
+Collect required data at this location before continuing.
+
+--- Point 20 to Point 21 ---
+Distance: 1.07 km
+Time: 1.9 minutes
+
+Continue on Amra Marg for 489 meters
+Continue on Morning Walkers Association Marg for 577 meters
+
+ARRIVE AT DATA COLLECTION POINT 21
+Location: 73.022705, 19.026999
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 21 to Point 22 ---
+Distance: 0.29 km
+Time: 0.7 minutes
+
+Continue on Kamladevi Birajdar Marg for 285 meters
+
+ARRIVE AT DATA COLLECTION POINT 22
+Location: 73.023022, 19.029261
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
