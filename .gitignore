@@ -185,3 +185,8 @@ scripts/._.DS_Store
 /mumbai_vids
 streamlit/.secrets.toml
 /streamlit/.streamlit
+/mumbai_frames_3x
+/mumbai_frames_flash_3x
+/scripts/output
+/exif
+/frames

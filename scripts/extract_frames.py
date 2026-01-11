@@ -17,6 +17,48 @@ import numpy as np
 import time
 from functools import partial
 
+def convert_log_to_csv(log_file_path, csv_file_path):
+    """Convert metadata log file to CSV format.
+    
+    Args:
+        log_file_path (str or Path): Path to the metadata log file.
+        csv_file_path (str or Path): Path for output CSV file.
+    
+    Returns:
+        int: Number of frames processed.
+    """
+    log_file_path = Path(log_file_path)
+    csv_file_path = Path(csv_file_path)
+    
+    if not log_file_path.exists():
+        print(f"Log file not found: {log_file_path}")
+        return 0
+    
+    data = []
+    with open(log_file_path, 'r') as f:
+        for line in f:
+            parts = line.strip().split('|')
+            if len(parts) >= 10:  # Ensure we have all fields
+                data.append({
+                    'video_id': parts[0],
+                    'source_folder': parts[1],
+                    'video_name': parts[2],
+                    'original_video_filename': parts[3],
+                    'frame_filename': parts[4],
+                    'frame_number': int(parts[5]),
+                    'frame_timestamp_sec': float(parts[6]),
+                    'frame_timestamp_hhmmss': parts[7],
+                    'video_fps': float(parts[8]),
+                    'video_duration_sec': float(parts[9])
+                })
+    
+    df = pd.DataFrame(data)
+    csv_file_path.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(csv_file_path, index=False)
+    
+    print(f"Converted {len(data)} log entries to CSV: {csv_file_path}")
+    return len(data)
+
 # Configure logging
 logger = logging.getLogger(__name__)
 
@@ -36,47 +78,50 @@ def setup_logging(verbose: bool = False) -> None:
         ]
     )
 
-def extract_frames_optimized(video_path, output_folder, frame_interval, master_csv_path):
+def extract_frames_optimized(video_path, output_folder, frame_interval, log_file_path):
     """Extract frames from a video file at specified intervals.
     
     Args:
         video_path (str or Path): Path to the input video file.
         output_folder (str or Path): Directory where extracted frames will be saved.
         frame_interval (int): Extract every Nth frame from the video.
-        master_csv_path (str or Path): Path to the CSV file for storing frame metadata.
+        log_file_path (str or Path): Path to the log file for storing frame metadata.
     
     Returns:
         tuple: A tuple containing:
-            - pd.DataFrame: DataFrame with extracted frame information.
+            - int: Number of frames extracted.
             - bool: True if video was processed, False if skipped (already processed).
     
     Notes:
         - Frames are named with pattern: {folder}_{video_name}_frame{number}_t{timestamp}.jpg
-        - CSV contains relative paths for portability.
-        - Skips videos that already exist in the master CSV.
+        - Metadata logged to file for post-processing into CSV.
+        - Skips videos that already exist in the log file.
     """
     # Convert paths to Path objects
     video_path = Path(video_path)
     output_folder = Path(output_folder)
-    master_csv_path = Path(master_csv_path) if master_csv_path else None
+    log_file_path = Path(log_file_path) if log_file_path else None
     
     # Create output directory if it doesn't exist
     output_folder.mkdir(parents=True, exist_ok=True)
     
     # Get video file information
     video_name = video_path.stem
+    source_folder = video_path.parent.name
     
     # Generate globally unique video identifier using path hash
     path_hash = hashlib.md5(str(video_path).encode()).hexdigest()[:8]
+    current_video_id = f"{source_folder}_{video_name}_{path_hash}"
     
-    # Check if this video has already been processed in the master CSV
-    if master_csv_path and master_csv_path.exists():
+    # Check if this video has already been processed in the log file
+    if log_file_path and log_file_path.exists():
         try:
-            existing_df = pd.read_csv(master_csv_path)
-            if 'video_name' in existing_df.columns and video_name in existing_df['video_name'].values:
-                return pd.DataFrame(), False
+            with open(log_file_path, 'r') as f:
+                log_content = f.read()
+                if current_video_id in log_content:
+                    return 0, False
         except Exception as e:
-            logger.warning(f"Error reading master CSV: {str(e)}. Will proceed with processing.")
+            logger.warning(f"Error reading log file: {str(e)}. Will proceed with processing.")
     
     # Open the video file
     video = cv2.VideoCapture(str(video_path))
@@ -92,8 +137,18 @@ def extract_frames_optimized(video_path, output_folder, frame_interval, master_c
     # Calculate which frames to extract
     frames_to_extract = list(range(0, frame_count, frame_interval))
     
+    # Setup metadata logging with unique logger name to avoid conflicts
+    logger_name = f'frame_metadata_{id(video_path)}'
+    metadata_logger = logging.getLogger(logger_name)
+    metadata_logger.handlers.clear()  # Clear any existing handlers
+    metadata_handler = logging.FileHandler(log_file_path, mode='a')
+    metadata_handler.setFormatter(logging.Formatter('%(message)s'))
+    metadata_logger.addHandler(metadata_handler)
+    metadata_logger.setLevel(logging.INFO)
+    metadata_logger.propagate = False
+    
     # Process video frames more efficiently
-    frame_data = []
+    frames_extracted = 0
     
     # Set JPEG compression parameters for faster writing
     encode_params = [int(cv2.IMWRITE_JPEG_QUALITY), 95]
@@ -124,9 +179,6 @@ def extract_frames_optimized(video_path, output_folder, frame_interval, master_c
         # Format frame number with leading zeros
         frame_num = str(frame_idx).zfill(len(str(frame_count)))
         
-        # Extract folder name from video path for unique naming
-        source_folder = video_path.parent.name
-        
         # Create filename with folder prefix for global uniqueness
         filename = f"{source_folder}_{video_name}_frame{frame_num}_t{time_str_filename}.jpg"
         filepath = output_folder / filename
@@ -134,105 +186,22 @@ def extract_frames_optimized(video_path, output_folder, frame_interval, master_c
         # Save the frame with optimized parameters
         cv2.imwrite(str(filepath), frame, encode_params)
         
-        # Calculate relative paths from CSV location
-        csv_dir = master_csv_path.parent if master_csv_path else Path.cwd()
+        # We'll just use the filename for logging (no relative paths needed)
         
-        # Handle cases where paths cannot be relative (e.g., external drives)
-        try:
-            relative_frame_path = filepath.relative_to(csv_dir)
-        except ValueError:
-            # If can't make relative, use path relative to current directory
-            relative_frame_path = filepath.relative_to(Path.cwd()) if filepath.is_relative_to(Path.cwd()) else filepath
-            
-        try:
-            relative_source_path = video_path.relative_to(csv_dir)
-        except ValueError:
-            # For external drives, just use the filename or a simplified path
-            relative_source_path = Path(source_folder) / video_path.name
-        
-        # Store frame info with consistent column names
-        frame_info = {
-            # Core Identity (consistent across EXIF and frame CSVs)
-            'video_id': f"{source_folder}_{video_name}_{path_hash}",
-            'source_folder': source_folder,
-            'video_name': video_name,
-            'original_video_filename': video_path.name,
-            'unique_video_filename': f"{source_folder}_{video_path.name}_{path_hash}",
-            
-            # Video Properties (consistent with EXIF CSV)
-            'video_fps': fps,
-            'video_duration_sec': duration,
-            
-            # Frame-specific Properties
-            'frame_filename': filename,
-            'frame_file_path': str(relative_frame_path),
-            'frame_number': frame_idx,
-            'frame_timestamp_sec': frame_time_seconds,
-            'frame_timestamp_hhmmss': time_str_display
-        }
-        
-        # Add frame info to our list
-        frame_data.append(frame_info)
+        # Log frame metadata in pipe-delimited format
+        log_entry = f"{current_video_id}|{source_folder}|{video_name}|{video_path.name}|{filename}|{frame_idx}|{frame_time_seconds}|{time_str_display}|{fps}|{duration}"
+        metadata_logger.info(log_entry)
+        frames_extracted += 1
     
     video.release()
     
-    # Create DataFrame from frame data
-    new_frame_df = pd.DataFrame(frame_data)
+    # Close metadata logger handler to ensure all data is written
+    metadata_handler.close()
+    metadata_logger.removeHandler(metadata_handler)
     
-    # Update master CSV with thread/process safe approach
-    if not new_frame_df.empty and master_csv_path:
-        # Use a lock file to prevent race conditions
-        lock_file = master_csv_path.with_suffix('.csv.lock')
-        max_retries = 5
-        retry_count = 0
-        
-        while retry_count < max_retries:
-            try:
-                # Try to create a lock file
-                if not lock_file.exists():
-                    lock_file.write_text(str(os.getpid()))
-                    
-                    try:
-                        if master_csv_path.exists():
-                            existing_df = pd.read_csv(master_csv_path)
-                            # Fix FutureWarning: properly handle empty DataFrames
-                            if new_frame_df.empty:
-                                # Don't update if new data is empty
-                                pass  
-                            elif existing_df.empty:
-                                # Replace empty existing with new data
-                                new_frame_df.to_csv(master_csv_path, index=False)
-                            else:
-                                # Both have data, concatenate safely
-                                updated_df = pd.concat([existing_df, new_frame_df], ignore_index=True)
-                                updated_df.to_csv(master_csv_path, index=False)
-                        else:
-                            new_frame_df.to_csv(master_csv_path, index=False)
-                        
-                        # Success - remove lock and break
-                        lock_file.unlink()
-                        break
-                    except Exception as e:
-                        # If an error occurred, remove the lock and retry
-                        if lock_file.exists():
-                            lock_file.unlink()
-                        raise e
-                else:
-                    # Lock exists, wait and retry
-                    time.sleep(0.5)
-                    retry_count += 1
-            except Exception as e:
-                logger.error(f"CSV update error: {str(e)}. Retry {retry_count+1}/{max_retries}")
-                retry_count += 1
-                time.sleep(1)
-                
-        # If we couldn't update the master CSV after all retries
-        if retry_count >= max_retries:
-            logger.warning(f"Could not update master CSV after {max_retries} attempts")
-    
-    return new_frame_df, True
+    return frames_extracted, True
 
-def process_video_folder_parallel(input_folder, output_folder, frame_interval, master_csv_path, 
+def process_video_folder_parallel(input_folder, output_folder, frame_interval, log_file_path, 
                                   video_extensions=['.mp4', '.avi', '.mov', '.mkv'], 
                                   max_workers=None):
     """Process all videos in a folder using parallel processing.
@@ -241,7 +210,7 @@ def process_video_folder_parallel(input_folder, output_folder, frame_interval, m
         input_folder (str or Path): Root folder containing videos.
         output_folder (str or Path): Directory to save extracted frames.
         frame_interval (int): Extract every Nth frame from videos.
-        master_csv_path (str or Path): Path to the master CSV file for metadata.
+        log_file_path (str or Path): Path to the log file for metadata.
         video_extensions (list): List of video file extensions to process.
             Defaults to ['.mp4', '.avi', '.mov', '.mkv'].
         max_workers (int, optional): Maximum number of parallel workers.
@@ -260,22 +229,15 @@ def process_video_folder_parallel(input_folder, output_folder, frame_interval, m
     # Convert to Path objects
     input_folder = Path(input_folder)
     output_folder = Path(output_folder)
-    master_csv_path = Path(master_csv_path)
+    log_file_path = Path(log_file_path)
     
     # Ensure output folder exists
     output_folder.mkdir(parents=True, exist_ok=True)
     
-    # Ensure the directory for the master CSV exists
-    master_csv_path.parent.mkdir(parents=True, exist_ok=True)
+    # Ensure the directory for the log file exists
+    log_file_path.parent.mkdir(parents=True, exist_ok=True)
     
-    # Create master CSV with proper headers if it doesn't exist
-    if not master_csv_path.exists():
-        columns = [
-            'video_id', 'source_folder', 'video_name', 'original_video_filename', 'unique_video_filename',
-            'video_fps', 'video_duration_sec',
-            'frame_filename', 'frame_file_path', 'frame_number', 'frame_timestamp_sec', 'frame_timestamp_hhmmss'
-        ]
-        pd.DataFrame(columns=columns).to_csv(master_csv_path, index=False)
+    # Initialize log file if it doesn't exist (will be created automatically during logging)
     
     # Find all video files in the directory and subdirectories
     all_files = []
@@ -321,7 +283,7 @@ def process_video_folder_parallel(input_folder, output_folder, frame_interval, m
     process_func = partial(
         _process_single_video, 
         frame_interval=frame_interval, 
-        master_csv_path=master_csv_path
+        log_file_path=log_file_path
     )
     
     # Use ThreadPoolExecutor for I/O bound operations
@@ -338,7 +300,7 @@ def process_video_folder_parallel(input_folder, output_folder, frame_interval, m
                           desc="Processing Videos"):
             video_path, idx = future_to_file[future]
             try:
-                was_processed = future.result()
+                frames_extracted, was_processed = future.result()
                 if was_processed:
                     processed_count += 1
                 else:
@@ -354,55 +316,50 @@ def process_video_folder_parallel(input_folder, output_folder, frame_interval, m
     print(f"Videos skipped: {skipped_count} (already processed)")
     print(f"Total videos found: {processed_count + skipped_count}")
     
-    # Check CSV for frame statistics
-    if master_csv_path.exists():
+    # Check log file for frame statistics
+    if log_file_path.exists():
         try:
-            df = pd.read_csv(master_csv_path)
-            if len(df) > 0:
-                print(f"\nFrame Statistics:")
-                print(f"  Total frames extracted: {len(df)}")
-                print(f"  Average frames per video: {len(df)/df['video_name'].nunique():.1f}")
-                
-                # Count frames by source folder
-                if 'source_folder' in df.columns:
-                    folder_counts = df['source_folder'].value_counts().sort_index()
-                    print(f"\nFrames by folder:")
-                    for folder, count in folder_counts.items():
-                        print(f"  {folder}: {count} frames")
-                
-                # Show CSV file info
-                csv_size = master_csv_path.stat().st_size / (1024 * 1024)  # Convert to MB
-                print(f"\nCSV file: {master_csv_path}")
-                print(f"CSV size: {csv_size:.2f} MB")
+            with open(log_file_path, 'r') as f:
+                log_lines = f.readlines()
+            
+            print(f"\nFrame Statistics:")
+            print(f"  Total frames extracted: {len(log_lines)}")
+            if processed_count > 0:
+                print(f"  Average frames per video: {len(log_lines)/processed_count:.1f}")
+            
+            # Show log file info
+            log_size = log_file_path.stat().st_size / (1024 * 1024)  # Convert to MB
+            print(f"\nLog file: {log_file_path}")
+            print(f"Log size: {log_size:.2f} MB")
         except Exception as e:
-            logger.warning(f"Could not read CSV statistics: {e}")
+            logger.warning(f"Could not read log statistics: {e}")
     
     print("=" * 60)
     return processed_count, skipped_count
 
-def _process_single_video(video_path, output_dir, frame_interval, master_csv_path):
+def _process_single_video(video_path, output_dir, frame_interval, log_file_path):
     """Helper function for parallel video processing.
     
     Args:
         video_path (Path): Path to the video file to process.
         output_dir (Path): Directory to save extracted frames.
         frame_interval (int): Extract every Nth frame.
-        master_csv_path (Path): Path to the master CSV file.
+        log_file_path (Path): Path to the log file.
     
     Returns:
-        bool: True if video was processed, False if failed or skipped.
+        tuple: (frames_extracted, was_processed)
     """
     try:
-        _, was_processed = extract_frames_optimized(
+        frames_extracted, was_processed = extract_frames_optimized(
             video_path, 
             output_dir, 
             frame_interval,
-            master_csv_path
+            log_file_path
         )
-        return was_processed
+        return (frames_extracted, was_processed)
     except Exception as e:
         logger.error(f"Error processing {video_path}: {str(e)}")
-        return False
+        return (0, False)
 
 def main():
     """Main function for command-line interface.
@@ -422,7 +379,7 @@ Examples:
     parser.add_argument('--input', '-i', required=True, help='Input folder containing videos')
     parser.add_argument('--output', '-o', required=True, help='Output folder for extracted frames')
     parser.add_argument('--interval', '-n', type=int, default=30, help='Extract every Nth frame')
-    parser.add_argument('--csv', '-c', required=True, help='Path for master CSV file')
+    parser.add_argument('--log', '-l', required=True, help='Path for metadata log file')
     parser.add_argument('--workers', '-w', type=int, default=None, 
                         help='Number of parallel workers (default: CPU count)')
     parser.add_argument('--extensions', '-e', default='.mp4,.avi,.mov,.mkv',
@@ -450,7 +407,7 @@ Examples:
             args.input, 
             args.output, 
             args.interval, 
-            args.csv, 
+            args.log, 
             video_extensions=video_extensions,
             max_workers=args.workers
         )

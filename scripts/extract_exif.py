@@ -110,12 +110,12 @@ def extract_video_exif(video_path: Path, output_folder: Path, timeout: int = 180
         
         # Update file info with consistent column names
         file_info['exif_filename'] = exif_filename
-        # Use flat structure - relative to output folder parent
+        # Use relative path from current working directory
         try:
-            file_info['exif_file_path'] = str(exif_file_path.relative_to(output_folder.parent))
+            file_info['exif_file_path'] = str(exif_file_path.relative_to(Path.cwd()))
         except ValueError:
-            # For external drives, use relative to current directory
-            file_info['exif_file_path'] = str(exif_file_path.relative_to(Path.cwd()) if exif_file_path.is_relative_to(Path.cwd()) else exif_file_path)
+            # Fallback to relative to output folder
+            file_info['exif_file_path'] = str(Path(output_folder.name) / exif_filename)
         
         # Parse metadata
         metadata = _parse_exif_output(result.stdout)
@@ -359,10 +359,12 @@ def save_results(metadata_df: pd.DataFrame, exif_output_folder: Path, metadata_c
     
     # Add relative paths to metadata
     if not metadata_df.empty:
-        # Add relative path to EXIF files (flat structure)
+        # Add relative path to EXIF files (handle sibling directories)
         csv_dir = metadata_csv_path.parent
+        common_parent = csv_dir.parent  # samsung_usb_output
+        exif_relative_to_common = exif_output_folder.relative_to(common_parent)  # exif_files
         metadata_df['exif_relative_path'] = metadata_df.apply(
-            lambda row: str(exif_output_folder.relative_to(csv_dir) / row['exif_filename']) 
+            lambda row: str(Path('..') / exif_relative_to_common / row['exif_filename']) 
             if row['exif_filename'] else None, axis=1
         )
         
