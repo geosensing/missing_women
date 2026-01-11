@@ -195,8 +195,15 @@ def extract_frames_optimized(video_path, output_folder, frame_interval, master_c
                     try:
                         if master_csv_path.exists():
                             existing_df = pd.read_csv(master_csv_path)
-                            # Fix FutureWarning: filter out empty DataFrames before concat
-                            if not new_frame_df.empty:
+                            # Fix FutureWarning: properly handle empty DataFrames
+                            if new_frame_df.empty:
+                                # Don't update if new data is empty
+                                pass  
+                            elif existing_df.empty:
+                                # Replace empty existing with new data
+                                new_frame_df.to_csv(master_csv_path, index=False)
+                            else:
+                                # Both have data, concatenate safely
                                 updated_df = pd.concat([existing_df, new_frame_df], ignore_index=True)
                                 updated_df.to_csv(master_csv_path, index=False)
                         else:
