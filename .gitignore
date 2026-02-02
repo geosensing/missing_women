@@ -190,3 +190,7 @@ streamlit/.secrets.toml
 /scripts/output
 /exif
 /frames
+/annotation_frames
+/annotation_frames_new
+/frames_new
+/gcp
