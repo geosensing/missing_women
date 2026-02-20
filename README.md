@@ -22,6 +22,17 @@ Women are significantly underrepresented in public spaces, comprising only 13-16
 
 Proportion of women is consistently lower among two-wheeler riders than pedestrians.
 
+### By Road Type
+
+| City | Primary | Secondary | Tertiary | Residential |
+|------|---------|-----------|----------|-------------|
+| Mumbai (prop women) | 0.164 | 0.127 | 0.164 | 0.162 |
+| Mumbai (sex ratio) | 196 | 146 | 197 | 193 |
+| Navi Mumbai (prop women) | 0.090 | 0.110 | 0.145 | 0.179 |
+| Navi Mumbai (sex ratio) | 99 | 123 | 169 | 219 |
+
+In Navi Mumbai, there is a clear gradient: proportion of women increases from primary roads (9%) to residential roads (18%). Mumbai shows less variation across road types.
+
 ### Infrastructure
 
 **Footpath:**
@@ -139,7 +150,7 @@ data/                   Data files (CSVs)
 exif/                   EXIF metadata files
 frames/                 Extracted video frames
 labelstudio/            Label Studio JSON exports
-output/                 HTML visualizations (maps, heatmaps)
+output/maps/            HTML visualizations (maps, heatmaps)
 scripts/
   analysis/             Jupyter notebooks for analysis
   extract_exif.py       Extract EXIF from videos
@@ -152,12 +163,12 @@ scripts/
 
 | File | Description |
 |------|-------------|
-| `output/mumbai_annotations_map.html` | Interactive map of Mumbai annotations |
-| `output/navi_mumbai_annotations_map.html` | Interactive map of Navi Mumbai annotations |
-| `output/mumbai_sex_ratio_heatmap.html` | Mumbai sex ratio heatmap |
-| `output/navi_mumbai_sex_ratio_heatmap.html` | Navi Mumbai sex ratio heatmap |
-| `output/mumbai_heatmap.html` | GPS point density heatmap |
-| `output/mumbai_route_map.html` | Route visualization |
+| `output/maps/mumbai_annotations_map.html` | Interactive map of Mumbai annotations |
+| `output/maps/navi_mumbai_annotations_map.html` | Interactive map of Navi Mumbai annotations |
+| `output/maps/mumbai_sex_ratio_heatmap.html` | Mumbai sex ratio heatmap |
+| `output/maps/navi_mumbai_sex_ratio_heatmap.html` | Navi Mumbai sex ratio heatmap |
+| `output/maps/mumbai_heatmap.html` | GPS point density heatmap |
+| `output/maps/mumbai_route_map.html` | Route visualization |
 | `data/mumbai_annotations_with_exif.csv` | Merged annotation and GPS data |
 
 ## License
