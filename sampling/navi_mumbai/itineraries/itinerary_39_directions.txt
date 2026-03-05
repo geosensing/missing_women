@@ -1,0 +1,4068 @@
+===== ITINERARY 39 DIRECTIONS =====
+
+Total distance: 19.96 km
+Estimated time: 44.5 minutes
+Number of data collection points: 385
+Cluster: 11
+
+
+--- Point 1 to Point 2 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 2
+Location: 73.022682, 19.030289
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 2 to Point 3 ---
+Distance: 0.03 km
+Time: 0.1 minutes
+
+Continue on Kamladevi Birajdar Marg for 28 meters
+
+ARRIVE AT DATA COLLECTION POINT 3
+Location: 73.023038, 19.029131
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 3 to Point 4 ---
+Distance: 0.06 km
+Time: 0.1 minutes
+
+Continue on Ring Road 2 for 58 meters
+
+ARRIVE AT DATA COLLECTION POINT 4
+Location: 73.022441, 19.029202
+Street: Ring Road 2
+Collect required data at this location before continuing.
+
+--- Point 4 to Point 5 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 5
+Location: 73.022421, 19.029382
+Street: Radial Road 1
+Collect required data at this location before continuing.
+
+--- Point 5 to Point 6 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Ring Road 2 for 46 meters
+
+ARRIVE AT DATA COLLECTION POINT 6
+Location: 73.022126, 19.028554
+Street: Ring Road 2
+Collect required data at this location before continuing.
+
+--- Point 6 to Point 7 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Radial Road 3 for 54 meters
+
+ARRIVE AT DATA COLLECTION POINT 7
+Location: 73.021711, 19.029238
+Street: Radial Road 3
+Collect required data at this location before continuing.
+
+--- Point 7 to Point 8 ---
+Distance: 0.10 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 74 meters
+Continue on Radial Road 1 for 29 meters
+
+ARRIVE AT DATA COLLECTION POINT 8
+Location: 73.022579, 19.030490
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 8 to Point 9 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 9
+Location: 73.022044, 19.030083
+Street: Radial Road 1
+Collect required data at this location before continuing.
+
+--- Point 9 to Point 10 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 10
+Location: 73.022607, 19.030438
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 10 to Point 11 ---
+Distance: 0.10 km
+Time: 0.3 minutes
+
+Continue on Radial Road 1 for 104 meters
+
+ARRIVE AT DATA COLLECTION POINT 11
+Location: 73.021590, 19.030691
+Street: Ring Road 4
+Collect required data at this location before continuing.
+
+--- Point 11 to Point 12 ---
+Distance: 0.20 km
+Time: 0.5 minutes
+
+Continue on Radial Road 1 for 56 meters
+Continue on Unnamed Road for 143 meters
+
+ARRIVE AT DATA COLLECTION POINT 12
+Location: 73.021194, 19.032188
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 12 to Point 13 ---
+Distance: 0.14 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 143 meters
+
+ARRIVE AT DATA COLLECTION POINT 13
+Location: 73.021263, 19.031535
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 13 to Point 14 ---
+Distance: 0.06 km
+Time: 0.2 minutes
+
+Continue on Ring Road 5 for 28 meters
+Continue on Unnamed Road for 36 meters
+
+ARRIVE AT DATA COLLECTION POINT 14
+Location: 73.021760, 19.032003
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 14 to Point 15 ---
+Distance: 0.15 km
+Time: 0.3 minutes
+
+Continue on Kamladevi Birajdar Marg for 149 meters
+
+ARRIVE AT DATA COLLECTION POINT 15
+Location: 73.022045, 19.032396
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 15 to Point 16 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 16
+Location: 73.022179, 19.032726
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 16 to Point 17 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Shri Chakradhar Swami Marg for 8 meters
+
+ARRIVE AT DATA COLLECTION POINT 17
+Location: 73.021783, 19.033168
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 17 to Point 18 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 18
+Location: 73.022422, 19.032796
+Street: Shri Chakradhar Swami Marg
+Collect required data at this location before continuing.
+
+--- Point 18 to Point 19 ---
+Distance: 0.09 km
+Time: 0.2 minutes
+
+Continue on Shri Chakradhar Swami Marg for 87 meters
+
+ARRIVE AT DATA COLLECTION POINT 19
+Location: 73.022689, 19.033440
+Street: Lane Number 2
+Collect required data at this location before continuing.
+
+--- Point 19 to Point 20 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 20
+Location: 73.022580, 19.033539
+Street: Lane Number 2
+Collect required data at this location before continuing.
+
+--- Point 20 to Point 21 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 21
+Location: 73.022894, 19.033263
+Street: Shri Chakradhar Swami Marg
+Collect required data at this location before continuing.
+
+--- Point 21 to Point 22 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Shri Chakradhar Swami Marg for 41 meters
+
+ARRIVE AT DATA COLLECTION POINT 22
+Location: 73.022673, 19.033958
+Street: Lane Number 3
+Collect required data at this location before continuing.
+
+--- Point 22 to Point 23 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Shri Chakradhar Swami Marg for 37 meters
+
+ARRIVE AT DATA COLLECTION POINT 23
+Location: 73.023337, 19.033806
+Street: Shri Chakradhar Swami Marg
+Collect required data at this location before continuing.
+
+--- Point 23 to Point 24 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Shri Chakradhar Swami Marg for 43 meters
+
+ARRIVE AT DATA COLLECTION POINT 24
+Location: 73.023289, 19.034393
+Street: Lane Number 5
+Collect required data at this location before continuing.
+
+--- Point 24 to Point 25 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 25
+Location: 73.023750, 19.034112
+Street: Shri Chakradhar Swami Marg
+Collect required data at this location before continuing.
+
+--- Point 25 to Point 26 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Shri Chakradhar Swami Marg for 42 meters
+
+ARRIVE AT DATA COLLECTION POINT 26
+Location: 73.023997, 19.034460
+Street: Shri Chakradhar Swami Marg
+Collect required data at this location before continuing.
+
+--- Point 26 to Point 27 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Shri Chakradhar Swami Marg for 39 meters
+
+ARRIVE AT DATA COLLECTION POINT 27
+Location: 73.024092, 19.034450
+Street: Shri Chakradhar Swami Marg
+Collect required data at this location before continuing.
+
+--- Point 27 to Point 28 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 28
+Location: 73.023869, 19.034873
+Street: Lane Number 7
+Collect required data at this location before continuing.
+
+--- Point 28 to Point 29 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Shri Chakradhar Swami Marg for 43 meters
+
+ARRIVE AT DATA COLLECTION POINT 29
+Location: 73.024079, 19.035218
+Street: ['Lane Number 8', 'Parmanu Lane']
+Collect required data at this location before continuing.
+
+--- Point 29 to Point 30 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 30
+Location: 73.024369, 19.034830
+Street: Shri Chakradhar Swami Marg
+Collect required data at this location before continuing.
+
+--- Point 30 to Point 31 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 31
+Location: 73.024576, 19.035035
+Street: Shri Chakradhar Swami Marg
+Collect required data at this location before continuing.
+
+--- Point 31 to Point 32 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Shri Chakradhar Swami Marg for 45 meters
+
+ARRIVE AT DATA COLLECTION POINT 32
+Location: 73.024687, 19.035233
+Street: Savitri Phule Marg
+Collect required data at this location before continuing.
+
+--- Point 32 to Point 33 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 33
+Location: 73.024327, 19.035553
+Street: Savitri Phule Marg
+Collect required data at this location before continuing.
+
+--- Point 33 to Point 34 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 34
+Location: 73.024231, 19.035638
+Street: Savitri Phule Marg
+Collect required data at this location before continuing.
+
+--- Point 34 to Point 35 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Savitri Phule Marg for 8 meters
+
+ARRIVE AT DATA COLLECTION POINT 35
+Location: 73.025116, 19.034853
+Street: Savitri Phule Marg
+Collect required data at this location before continuing.
+
+--- Point 35 to Point 36 ---
+Distance: 0.10 km
+Time: 0.2 minutes
+
+Continue on Savitri Phule Marg for 102 meters
+
+ARRIVE AT DATA COLLECTION POINT 36
+Location: 73.025222, 19.034759
+Street: Savitri Phule Marg
+Collect required data at this location before continuing.
+
+--- Point 36 to Point 37 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 37
+Location: 73.025205, 19.034208
+Street: Heera Ramkrishna Karnad Marg
+Collect required data at this location before continuing.
+
+--- Point 37 to Point 38 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 38
+Location: 73.025492, 19.034519
+Street: Savitri Phule Marg
+Collect required data at this location before continuing.
+
+--- Point 38 to Point 39 ---
+Distance: 0.12 km
+Time: 0.3 minutes
+
+Continue on Savitri Phule Marg for 123 meters
+
+ARRIVE AT DATA COLLECTION POINT 39
+Location: 73.026079, 19.034339
+Street: Savitri Phule Marg
+Collect required data at this location before continuing.
+
+--- Point 39 to Point 40 ---
+Distance: 0.33 km
+Time: 1.0 minutes
+
+Continue on Unnamed Road for 325 meters
+
+ARRIVE AT DATA COLLECTION POINT 40
+Location: 73.028972, 19.035660
+Street: D.Y. Patil Service Road
+Collect required data at this location before continuing.
+
+--- Point 40 to Point 41 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 41
+Location: 73.029617, 19.036631
+Street: MIDC Service Road
+Collect required data at this location before continuing.
+
+--- Point 41 to Point 42 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 42
+Location: 73.029443, 19.034543
+Street: Uran Phata Flyover
+Collect required data at this location before continuing.
+
+--- Point 42 to Point 43 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 43
+Location: 73.029651, 19.034629
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 43 to Point 44 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 44
+Location: 73.028797, 19.036937
+Street: D.Y. Patil Service Road
+Collect required data at this location before continuing.
+
+--- Point 44 to Point 45 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 45
+Location: 73.029297, 19.035535
+Street: Uran Phata Flyover
+Collect required data at this location before continuing.
+
+--- Point 45 to Point 46 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 46
+Location: 73.029444, 19.036040
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 46 to Point 47 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 47
+Location: 73.029060, 19.035021
+Street: D.Y. Patil Service Road
+Collect required data at this location before continuing.
+
+--- Point 47 to Point 48 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 48
+Location: 73.029327, 19.036845
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 48 to Point 49 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 49
+Location: 73.029395, 19.035596
+Street: Uran Phata Flyover
+Collect required data at this location before continuing.
+
+--- Point 49 to Point 50 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 50
+Location: 73.028689, 19.035562
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 50 to Point 51 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 51
+Location: 73.029216, 19.035306
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 51 to Point 52 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 52
+Location: 73.028794, 19.036959
+Street: D.Y. Patil Service Road
+Collect required data at this location before continuing.
+
+--- Point 52 to Point 53 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 53
+Location: 73.029475, 19.035050
+Street: Uran Phata Flyover
+Collect required data at this location before continuing.
+
+--- Point 53 to Point 54 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 54
+Location: 73.029040, 19.035167
+Street: D.Y. Patil Service Road
+Collect required data at this location before continuing.
+
+--- Point 54 to Point 55 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 55
+Location: 73.029637, 19.034726
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 55 to Point 56 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 56
+Location: 73.028990, 19.036849
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 56 to Point 57 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 57
+Location: 73.028987, 19.036872
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 57 to Point 58 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 58
+Location: 73.029318, 19.036903
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 58 to Point 59 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 59
+Location: 73.029587, 19.036847
+Street: MIDC Service Road
+Collect required data at this location before continuing.
+
+--- Point 59 to Point 60 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 60
+Location: 73.029516, 19.034773
+Street: Uran Phata Flyover
+Collect required data at this location before continuing.
+
+--- Point 60 to Point 61 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 61
+Location: 73.029314, 19.036149
+Street: Uran Phata Flyover
+Collect required data at this location before continuing.
+
+--- Point 61 to Point 62 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 62
+Location: 73.029263, 19.034984
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 62 to Point 63 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 63
+Location: 73.029111, 19.036810
+Street: Uran Phata Flyover
+Collect required data at this location before continuing.
+
+--- Point 63 to Point 64 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 64
+Location: 73.028809, 19.036853
+Street: D.Y. Patil Service Road
+Collect required data at this location before continuing.
+
+--- Point 64 to Point 65 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 65
+Location: 73.029277, 19.036403
+Street: Uran Phata Flyover
+Collect required data at this location before continuing.
+
+--- Point 65 to Point 66 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 66
+Location: 73.029710, 19.035954
+Street: MIDC Service Road
+Collect required data at this location before continuing.
+
+--- Point 66 to Point 67 ---
+Distance: 0.10 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 97 meters
+
+ARRIVE AT DATA COLLECTION POINT 67
+Location: 73.027672, 19.035527
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 67 to Point 68 ---
+Distance: 0.23 km
+Time: 0.7 minutes
+
+Continue on Unnamed Road for 228 meters
+
+ARRIVE AT DATA COLLECTION POINT 68
+Location: 73.027034, 19.034039
+Street: Savitri Phule Marg
+Collect required data at this location before continuing.
+
+--- Point 68 to Point 69 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 69
+Location: 73.026669, 19.034958
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 69 to Point 70 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 70
+Location: 73.026189, 19.034455
+Street: Savitri Phule Marg
+Collect required data at this location before continuing.
+
+--- Point 70 to Point 71 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 71
+Location: 73.026813, 19.034207
+Street: Savitri Phule Marg
+Collect required data at this location before continuing.
+
+--- Point 71 to Point 72 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 72
+Location: 73.026851, 19.034179
+Street: Savitri Phule Marg
+Collect required data at this location before continuing.
+
+--- Point 72 to Point 73 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 73
+Location: 73.026273, 19.034542
+Street: Savitri Phule Marg
+Collect required data at this location before continuing.
+
+--- Point 73 to Point 74 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 74
+Location: 73.026526, 19.034808
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 74 to Point 75 ---
+Distance: 0.30 km
+Time: 0.7 minutes
+
+Continue on Savitri Phule Marg for 123 meters
+Continue on Heera Ramkrishna Karnad Marg for 173 meters
+
+ARRIVE AT DATA COLLECTION POINT 75
+Location: 73.024953, 19.033949
+Street: Heera Ramkrishna Karnad Marg
+Collect required data at this location before continuing.
+
+--- Point 75 to Point 76 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 76
+Location: 73.024526, 19.032347
+Street: Heera Ramkrishna Karnad Marg
+Collect required data at this location before continuing.
+
+--- Point 76 to Point 77 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 77
+Location: 73.024589, 19.033537
+Street: Heera Ramkrishna Karnad Marg
+Collect required data at this location before continuing.
+
+--- Point 77 to Point 78 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 78
+Location: 73.024570, 19.033238
+Street: Heera Ramkrishna Karnad Marg
+Collect required data at this location before continuing.
+
+--- Point 78 to Point 79 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 79
+Location: 73.024567, 19.033120
+Street: Heera Ramkrishna Karnad Marg
+Collect required data at this location before continuing.
+
+--- Point 79 to Point 80 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 80
+Location: 73.024501, 19.032024
+Street: Heera Ramkrishna Karnad Marg
+Collect required data at this location before continuing.
+
+--- Point 80 to Point 81 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Gurudwara Marg for 39 meters
+
+ARRIVE AT DATA COLLECTION POINT 81
+Location: 73.024122, 19.032162
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 81 to Point 82 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 82
+Location: 73.024197, 19.033283
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 82 to Point 83 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 83
+Location: 73.024143, 19.032485
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 83 to Point 84 ---
+Distance: 0.03 km
+Time: 0.1 minutes
+
+Continue on Gurudwara Marg for 32 meters
+
+ARRIVE AT DATA COLLECTION POINT 84
+Location: 73.023681, 19.033090
+Street: Shree Dattatray Govingrao Walse Patil Marg
+Collect required data at this location before continuing.
+
+--- Point 84 to Point 85 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 85
+Location: 73.023817, 19.033225
+Street: Shree Dattatray Govingrao Walse Patil Marg
+Collect required data at this location before continuing.
+
+--- Point 85 to Point 86 ---
+Distance: 0.21 km
+Time: 0.5 minutes
+
+Continue on Gurudwara Marg for 73 meters
+Continue on Lane Number 4 for 140 meters
+
+ARRIVE AT DATA COLLECTION POINT 86
+Location: 73.022477, 19.034609
+Street: Lane Number 4
+Collect required data at this location before continuing.
+
+--- Point 86 to Point 87 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Parmanu Lane for 42 meters
+
+ARRIVE AT DATA COLLECTION POINT 87
+Location: 73.022736, 19.034902
+Street: Lane Number 5
+Collect required data at this location before continuing.
+
+--- Point 87 to Point 88 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Parmanu Lane for 42 meters
+
+ARRIVE AT DATA COLLECTION POINT 88
+Location: 73.022535, 19.035350
+Street: Sant Dnyaneshwar Mauli Marg
+Collect required data at this location before continuing.
+
+--- Point 88 to Point 89 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 89
+Location: 73.023179, 19.035018
+Street: Lane Number 6
+Collect required data at this location before continuing.
+
+--- Point 89 to Point 90 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 90
+Location: 73.023193, 19.035005
+Street: Lane Number 6
+Collect required data at this location before continuing.
+
+--- Point 90 to Point 91 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 91
+Location: 73.023215, 19.034985
+Street: Lane Number 6
+Collect required data at this location before continuing.
+
+--- Point 91 to Point 92 ---
+Distance: 0.16 km
+Time: 0.4 minutes
+
+Continue on Parmanu Lane for 162 meters
+
+ARRIVE AT DATA COLLECTION POINT 92
+Location: 73.022344, 19.033753
+Street: Lane Number 2
+Collect required data at this location before continuing.
+
+--- Point 92 to Point 93 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 93
+Location: 73.021845, 19.033692
+Street: ['Lane Number 1', 'Parmanu Lane']
+Collect required data at this location before continuing.
+
+--- Point 93 to Point 94 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 94
+Location: 73.021988, 19.034183
+Street: Parmanu Lane
+Collect required data at this location before continuing.
+
+--- Point 94 to Point 95 ---
+Distance: 0.38 km
+Time: 0.9 minutes
+
+Continue on Lane Number 2 for 132 meters
+Continue on Shri Chakradhar Swami Marg for 78 meters
+Continue on Lane Number 4 for 8 meters
+Continue on Shri Chakradhar Swami Marg for 168 meters
+
+ARRIVE AT DATA COLLECTION POINT 95
+Location: 73.022926, 19.032341
+Street: Shree Dattatray Govingrao Walse Patil Marg
+Collect required data at this location before continuing.
+
+--- Point 95 to Point 96 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 96
+Location: 73.022668, 19.032085
+Street: Shree Dattatray Govingrao Walse Patil Marg
+Collect required data at this location before continuing.
+
+--- Point 96 to Point 97 ---
+Distance: 0.17 km
+Time: 0.4 minutes
+
+Continue on Kamladevi Birajdar Marg for 171 meters
+
+ARRIVE AT DATA COLLECTION POINT 97
+Location: 73.022759, 19.031554
+Street: Shree Dattatray Govingrao Walse Patil Marg
+Collect required data at this location before continuing.
+
+--- Point 97 to Point 98 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 98
+Location: 73.022601, 19.031814
+Street: Shree Dattatray Govingrao Walse Patil Marg
+Collect required data at this location before continuing.
+
+--- Point 98 to Point 99 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Kamladevi Birajdar Marg for 8 meters
+
+ARRIVE AT DATA COLLECTION POINT 99
+Location: 73.022816, 19.031470
+Street: Shree Dattatray Govingrao Walse Patil Marg
+Collect required data at this location before continuing.
+
+--- Point 99 to Point 100 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 100
+Location: 73.022259, 19.031036
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 100 to Point 101 ---
+Distance: 0.11 km
+Time: 0.3 minutes
+
+Continue on Ring Road 5 for 62 meters
+Continue on Radial Road 1 for 50 meters
+
+ARRIVE AT DATA COLLECTION POINT 101
+Location: 73.021787, 19.030562
+Street: Radial Road 1
+Collect required data at this location before continuing.
+
+--- Point 101 to Point 102 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Ring Road 4 for 70 meters
+
+ARRIVE AT DATA COLLECTION POINT 102
+Location: 73.021334, 19.030181
+Street: Radial Road 2
+Collect required data at this location before continuing.
+
+--- Point 102 to Point 103 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 103
+Location: 73.021073, 19.030318
+Street: Ring Road 4
+Collect required data at this location before continuing.
+
+--- Point 103 to Point 104 ---
+Distance: 0.13 km
+Time: 0.3 minutes
+
+Continue on Ring Road 4 for 76 meters
+Continue on Radial Road 3 for 55 meters
+
+ARRIVE AT DATA COLLECTION POINT 104
+Location: 73.020430, 19.030423
+Street: Ring Road 5
+Collect required data at this location before continuing.
+
+--- Point 104 to Point 105 ---
+Distance: 0.13 km
+Time: 0.3 minutes
+
+Continue on Radial Road 3 for 55 meters
+Continue on Ring Road 4 for 77 meters
+
+ARRIVE AT DATA COLLECTION POINT 105
+Location: 73.020472, 19.029232
+Street: Radial Road 4
+Collect required data at this location before continuing.
+
+--- Point 105 to Point 106 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 106
+Location: 73.020825, 19.029132
+Street: Radial Road 4
+Collect required data at this location before continuing.
+
+--- Point 106 to Point 107 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on Ring Road 4 for 77 meters
+
+ARRIVE AT DATA COLLECTION POINT 107
+Location: 73.020307, 19.028592
+Street: Radial Road 5
+Collect required data at this location before continuing.
+
+--- Point 107 to Point 108 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Radial Road 5 for 53 meters
+
+ARRIVE AT DATA COLLECTION POINT 108
+Location: 73.019863, 19.028602
+Street: Radial Road 5
+Collect required data at this location before continuing.
+
+--- Point 108 to Point 109 ---
+Distance: 0.09 km
+Time: 0.2 minutes
+
+Continue on Ring Road 5 for 94 meters
+
+ARRIVE AT DATA COLLECTION POINT 109
+Location: 73.019739, 19.027885
+Street: Ring Road 5
+Collect required data at this location before continuing.
+
+--- Point 109 to Point 110 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Radial Road 6 for 54 meters
+
+ARRIVE AT DATA COLLECTION POINT 110
+Location: 73.020621, 19.027969
+Street: Radial Road 6
+Collect required data at this location before continuing.
+
+--- Point 110 to Point 111 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 111
+Location: 73.020355, 19.027625
+Street: Ring Road 4
+Collect required data at this location before continuing.
+
+--- Point 111 to Point 112 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Ring Road 4 for 71 meters
+
+ARRIVE AT DATA COLLECTION POINT 112
+Location: 73.020855, 19.027464
+Street: Radial Road 7
+Collect required data at this location before continuing.
+
+--- Point 112 to Point 113 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Radial Road 7 for 53 meters
+
+ARRIVE AT DATA COLLECTION POINT 113
+Location: 73.020299, 19.027175
+Street: Radial Road 7
+Collect required data at this location before continuing.
+
+--- Point 113 to Point 114 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 114
+Location: 73.020175, 19.026939
+Street: Ring Road 5
+Collect required data at this location before continuing.
+
+--- Point 114 to Point 115 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 115
+Location: 73.020215, 19.026886
+Street: Ring Road 5
+Collect required data at this location before continuing.
+
+--- Point 115 to Point 116 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 116
+Location: 73.020285, 19.027168
+Street: Radial Road 7
+Collect required data at this location before continuing.
+
+--- Point 116 to Point 117 ---
+Distance: 0.09 km
+Time: 0.2 minutes
+
+Continue on Ring Road 5 for 86 meters
+
+ARRIVE AT DATA COLLECTION POINT 117
+Location: 73.020401, 19.026683
+Street: Ring Road 5
+Collect required data at this location before continuing.
+
+--- Point 117 to Point 118 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 118
+Location: 73.020439, 19.026642
+Street: Ring Road 5
+Collect required data at this location before continuing.
+
+--- Point 118 to Point 119 ---
+Distance: 0.06 km
+Time: 0.1 minutes
+
+Continue on Ring Road 5 for 10 meters
+Continue on Radial Road 8 for 45 meters
+
+ARRIVE AT DATA COLLECTION POINT 119
+Location: 73.021121, 19.026645
+Street: Ring Road 4
+Collect required data at this location before continuing.
+
+--- Point 119 to Point 120 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Ring Road 4 for 70 meters
+
+ARRIVE AT DATA COLLECTION POINT 120
+Location: 73.021509, 19.026315
+Street: Radial Road 9
+Collect required data at this location before continuing.
+
+--- Point 120 to Point 121 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 121
+Location: 73.021321, 19.026521
+Street: Ring Road 4
+Collect required data at this location before continuing.
+
+--- Point 121 to Point 122 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 122
+Location: 73.021459, 19.026237
+Street: Radial Road 9
+Collect required data at this location before continuing.
+
+--- Point 122 to Point 123 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 123
+Location: 73.021455, 19.026231
+Street: Radial Road 9
+Collect required data at this location before continuing.
+
+--- Point 123 to Point 124 ---
+Distance: 0.06 km
+Time: 0.1 minutes
+
+Continue on Radial Road 9 for 57 meters
+
+ARRIVE AT DATA COLLECTION POINT 124
+Location: 73.021184, 19.025992
+Street: Ring Road 5
+Collect required data at this location before continuing.
+
+--- Point 124 to Point 125 ---
+Distance: 0.06 km
+Time: 0.2 minutes
+
+Continue on Ring Road 5 for 35 meters
+Continue on Unnamed Road for 29 meters
+
+ARRIVE AT DATA COLLECTION POINT 125
+Location: 73.020482, 19.025728
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 125 to Point 126 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 29 meters
+Continue on Ring Road 5 for 48 meters
+
+ARRIVE AT DATA COLLECTION POINT 126
+Location: 73.020164, 19.026113
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 126 to Point 127 ---
+Distance: 0.29 km
+Time: 0.7 minutes
+
+Continue on Radial Road 8 for 7 meters
+Continue on Ring Road 5 for 144 meters
+Continue on Kamladevi Birajdar Marg for 138 meters
+
+ARRIVE AT DATA COLLECTION POINT 127
+Location: 73.021286, 19.024872
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 127 to Point 128 ---
+Distance: 0.05 km
+Time: 0.0 minutes
+
+Continue on Seawoods Circle for 50 meters
+
+ARRIVE AT DATA COLLECTION POINT 128
+Location: 73.020807, 19.024550
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 128 to Point 129 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Seawoods Circle for 21 meters
+Continue on Adi Shankaracharya Marg for 32 meters
+
+ARRIVE AT DATA COLLECTION POINT 129
+Location: 73.020777, 19.024974
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 129 to Point 130 ---
+Distance: 0.57 km
+Time: 0.6 minutes
+
+Continue on Adi Shankaracharya Marg for 568 meters
+
+ARRIVE AT DATA COLLECTION POINT 130
+Location: 73.018394, 19.029599
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 130 to Point 131 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Darave Road for 44 meters
+Continue on Unnamed Road for 24 meters
+
+ARRIVE AT DATA COLLECTION POINT 131
+Location: 73.017861, 19.029066
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 131 to Point 132 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 132
+Location: 73.017099, 19.029599
+Street: Mata Amritanandamayi Marg
+Collect required data at this location before continuing.
+
+--- Point 132 to Point 133 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 70 meters
+
+ARRIVE AT DATA COLLECTION POINT 133
+Location: 73.017804, 19.028632
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 133 to Point 134 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 134
+Location: 73.017830, 19.028360
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 134 to Point 135 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 135
+Location: 73.018361, 19.028556
+Street: Darave Road
+Collect required data at this location before continuing.
+
+--- Point 135 to Point 136 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 136
+Location: 73.018361, 19.028652
+Street: Darave Road
+Collect required data at this location before continuing.
+
+--- Point 136 to Point 137 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 137
+Location: 73.017803, 19.028922
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 137 to Point 138 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 138
+Location: 73.017873, 19.028492
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 138 to Point 139 ---
+Distance: 0.13 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 127 meters
+
+ARRIVE AT DATA COLLECTION POINT 139
+Location: 73.018337, 19.028116
+Street: Darave Road
+Collect required data at this location before continuing.
+
+--- Point 139 to Point 140 ---
+Distance: 0.02 km
+Time: 0.1 minutes
+
+Continue on Darave Road for 24 meters
+
+ARRIVE AT DATA COLLECTION POINT 140
+Location: 73.018627, 19.027544
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 140 to Point 141 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 141
+Location: 73.018494, 19.027536
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 141 to Point 142 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Darave Road for 70 meters
+
+ARRIVE AT DATA COLLECTION POINT 142
+Location: 73.018067, 19.027182
+Street: Darave Road
+Collect required data at this location before continuing.
+
+--- Point 142 to Point 143 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Darave Road for 39 meters
+
+ARRIVE AT DATA COLLECTION POINT 143
+Location: 73.017563, 19.026754
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 143 to Point 144 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 144
+Location: 73.018402, 19.026167
+Street: Darave Road
+Collect required data at this location before continuing.
+
+--- Point 144 to Point 145 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 145
+Location: 73.018142, 19.026623
+Street: Darave Road
+Collect required data at this location before continuing.
+
+--- Point 145 to Point 146 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 146
+Location: 73.018195, 19.026753
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 146 to Point 147 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 147
+Location: 73.018316, 19.026271
+Street: Darave Road
+Collect required data at this location before continuing.
+
+--- Point 147 to Point 148 ---
+Distance: 0.32 km
+Time: 0.8 minutes
+
+Continue on Darave Road for 156 meters
+Continue on Unnamed Road for 160 meters
+
+ARRIVE AT DATA COLLECTION POINT 148
+Location: 73.019683, 19.026347
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 148 to Point 149 ---
+Distance: 0.16 km
+Time: 0.4 minutes
+
+Continue on Unnamed Road for 160 meters
+
+ARRIVE AT DATA COLLECTION POINT 149
+Location: 73.018679, 19.025843
+Street: Darave Road
+Collect required data at this location before continuing.
+
+--- Point 149 to Point 150 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 150
+Location: 73.019059, 19.025407
+Street: Darave Road
+Collect required data at this location before continuing.
+
+--- Point 150 to Point 151 ---
+Distance: 0.06 km
+Time: 0.1 minutes
+
+Continue on Darave Road for 59 meters
+
+ARRIVE AT DATA COLLECTION POINT 151
+Location: 73.019526, 19.024977
+Street: Darave Road
+Collect required data at this location before continuing.
+
+--- Point 151 to Point 152 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 152
+Location: 73.019228, 19.025069
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 152 to Point 153 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Darave Road for 73 meters
+
+ARRIVE AT DATA COLLECTION POINT 153
+Location: 73.019681, 19.024563
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 153 to Point 154 ---
+Distance: 0.11 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 115 meters
+
+ARRIVE AT DATA COLLECTION POINT 154
+Location: 73.019282, 19.024126
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 154 to Point 155 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 155
+Location: 73.018981, 19.024061
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 155 to Point 156 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 156
+Location: 73.018923, 19.024113
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 156 to Point 157 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 65 meters
+
+ARRIVE AT DATA COLLECTION POINT 157
+Location: 73.019652, 19.023467
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 157 to Point 158 ---
+Distance: 0.06 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 50 meters
+Continue on Dr. Babasaheb Ambedkar Marg for 11 meters
+
+ARRIVE AT DATA COLLECTION POINT 158
+Location: 73.020057, 19.023192
+Street: Dr. Babasaheb Ambedkar Marg
+Collect required data at this location before continuing.
+
+--- Point 158 to Point 159 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 159
+Location: 73.020124, 19.023047
+Street: Dr. Babasaheb Ambedkar Marg
+Collect required data at this location before continuing.
+
+--- Point 159 to Point 160 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on Dr. Babasaheb Ambedkar Marg for 79 meters
+
+ARRIVE AT DATA COLLECTION POINT 160
+Location: 73.020758, 19.022937
+Street: Sector 25 Road
+Collect required data at this location before continuing.
+
+--- Point 160 to Point 161 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 161
+Location: 73.020290, 19.022899
+Street: Dr. Babasaheb Ambedkar Marg
+Collect required data at this location before continuing.
+
+--- Point 161 to Point 162 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 162
+Location: 73.020546, 19.022755
+Street: Dr. Babasaheb Ambedkar Marg
+Collect required data at this location before continuing.
+
+--- Point 162 to Point 163 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Sector 25 Road for 70 meters
+
+ARRIVE AT DATA COLLECTION POINT 163
+Location: 73.021046, 19.023221
+Street: Sector 25 Road
+Collect required data at this location before continuing.
+
+--- Point 163 to Point 164 ---
+Distance: 0.09 km
+Time: 0.2 minutes
+
+Continue on Sector 25 Road for 81 meters
+Continue on Unnamed Road for 11 meters
+
+ARRIVE AT DATA COLLECTION POINT 164
+Location: 73.022068, 19.023611
+Street: Sector 25 Road
+Collect required data at this location before continuing.
+
+--- Point 164 to Point 165 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Sector 25 Road for 75 meters
+
+ARRIVE AT DATA COLLECTION POINT 165
+Location: 73.021148, 19.023082
+Street: Sector 25 Road
+Collect required data at this location before continuing.
+
+--- Point 165 to Point 166 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Sector 25 Road for 9 meters
+
+ARRIVE AT DATA COLLECTION POINT 166
+Location: 73.021316, 19.022812
+Street: Sector 25 Road
+Collect required data at this location before continuing.
+
+--- Point 166 to Point 167 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 167
+Location: 73.021258, 19.022865
+Street: Sector 25 Road
+Collect required data at this location before continuing.
+
+--- Point 167 to Point 168 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 168
+Location: 73.020918, 19.022977
+Street: Sector 25 Road
+Collect required data at this location before continuing.
+
+--- Point 168 to Point 169 ---
+Distance: 0.06 km
+Time: 0.1 minutes
+
+Continue on Sector 25 Road for 61 meters
+
+ARRIVE AT DATA COLLECTION POINT 169
+Location: 73.020625, 19.022690
+Street: Sector 25 Road
+Collect required data at this location before continuing.
+
+--- Point 169 to Point 170 ---
+Distance: 0.18 km
+Time: 0.4 minutes
+
+Continue on Dr. Babasaheb Ambedkar Marg for 182 meters
+
+ARRIVE AT DATA COLLECTION POINT 170
+Location: 73.022040, 19.021875
+Street: Seawoods Station Road
+Collect required data at this location before continuing.
+
+--- Point 170 to Point 171 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 171
+Location: 73.021412, 19.021410
+Street: Dr. Babasaheb Ambedkar Marg
+Collect required data at this location before continuing.
+
+--- Point 171 to Point 172 ---
+Distance: 0.03 km
+Time: 0.1 minutes
+
+Continue on Dr. Babasaheb Ambedkar Marg for 33 meters
+
+ARRIVE AT DATA COLLECTION POINT 172
+Location: 73.022142, 19.021549
+Street: Seawoods Station Road
+Collect required data at this location before continuing.
+
+--- Point 172 to Point 173 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 173
+Location: 73.022082, 19.020788
+Street: Dr. Babasaheb Ambedkar Marg
+Collect required data at this location before continuing.
+
+--- Point 173 to Point 174 ---
+Distance: 0.16 km
+Time: 0.4 minutes
+
+Continue on Dr. Babasaheb Ambedkar Marg for 160 meters
+
+ARRIVE AT DATA COLLECTION POINT 174
+Location: 73.022938, 19.020355
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 174 to Point 175 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 175
+Location: 73.022331, 19.020562
+Street: Dr. Babasaheb Ambedkar Marg
+Collect required data at this location before continuing.
+
+--- Point 175 to Point 176 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 176
+Location: 73.022945, 19.019951
+Street: Dr. Babasaheb Ambedkar Marg
+Collect required data at this location before continuing.
+
+--- Point 176 to Point 177 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Dr. Babasaheb Ambedkar Marg for 66 meters
+
+ARRIVE AT DATA COLLECTION POINT 177
+Location: 73.023088, 19.019822
+Street: Dr. Babasaheb Ambedkar Marg
+Collect required data at this location before continuing.
+
+--- Point 177 to Point 178 ---
+Distance: 0.10 km
+Time: 0.2 minutes
+
+Continue on Sector 27 Road for 99 meters
+
+ARRIVE AT DATA COLLECTION POINT 178
+Location: 73.023593, 19.020203
+Street: Sector 27 Road
+Collect required data at this location before continuing.
+
+--- Point 178 to Point 179 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 179
+Location: 73.023589, 19.020188
+Street: Sector 27 Road
+Collect required data at this location before continuing.
+
+--- Point 179 to Point 180 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 180
+Location: 73.023594, 19.020209
+Street: Sector 27 Road
+Collect required data at this location before continuing.
+
+--- Point 180 to Point 181 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 181
+Location: 73.023601, 19.020240
+Street: Sector 27 Road
+Collect required data at this location before continuing.
+
+--- Point 181 to Point 182 ---
+Distance: 0.11 km
+Time: 0.3 minutes
+
+Continue on Sector 27 Road for 112 meters
+
+ARRIVE AT DATA COLLECTION POINT 182
+Location: 73.023513, 19.021210
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 182 to Point 183 ---
+Distance: 0.16 km
+Time: 0.4 minutes
+
+Continue on Sector 27 Road for 156 meters
+
+ARRIVE AT DATA COLLECTION POINT 183
+Location: 73.024844, 19.022691
+Street: Sector 27 Road
+Collect required data at this location before continuing.
+
+--- Point 183 to Point 184 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 73 meters
+
+ARRIVE AT DATA COLLECTION POINT 184
+Location: 73.024653, 19.022926
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 184 to Point 185 ---
+Distance: 0.06 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 64 meters
+
+ARRIVE AT DATA COLLECTION POINT 185
+Location: 73.024012, 19.022976
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 185 to Point 186 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 186
+Location: 73.023924, 19.022665
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 186 to Point 187 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 187
+Location: 73.023730, 19.023080
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 187 to Point 188 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 188
+Location: 73.023635, 19.022748
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 188 to Point 189 ---
+Distance: 0.10 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 102 meters
+
+ARRIVE AT DATA COLLECTION POINT 189
+Location: 73.025190, 19.022313
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 189 to Point 190 ---
+Distance: 0.15 km
+Time: 0.4 minutes
+
+Continue on Unnamed Road for 53 meters
+Continue on Sector 27 Road for 96 meters
+
+ARRIVE AT DATA COLLECTION POINT 190
+Location: 73.025231, 19.023353
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 190 to Point 191 ---
+Distance: 0.22 km
+Time: 0.2 minutes
+
+Continue on Adi Shankaracharya Marg for 225 meters
+
+ARRIVE AT DATA COLLECTION POINT 191
+Location: 73.023224, 19.023968
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 191 to Point 192 ---
+Distance: 0.02 km
+Time: 0.0 minutes
+
+Continue on Seawoods Rail-Over Bridge for 16 meters
+
+ARRIVE AT DATA COLLECTION POINT 192
+Location: 73.023149, 19.023556
+Street: Seawoods Station Road
+Collect required data at this location before continuing.
+
+--- Point 192 to Point 193 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 193
+Location: 73.022832, 19.023230
+Street: Seawoods Rail-Over Bridge
+Collect required data at this location before continuing.
+
+--- Point 193 to Point 194 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 194
+Location: 73.022960, 19.023258
+Street: Seawoods Rail-Over Bridge
+Collect required data at this location before continuing.
+
+--- Point 194 to Point 195 ---
+Distance: 0.18 km
+Time: 0.2 minutes
+
+Continue on Seawoods Station Road for 177 meters
+
+ARRIVE AT DATA COLLECTION POINT 195
+Location: 73.022944, 19.022876
+Street: Seawoods Station Road
+Collect required data at this location before continuing.
+
+--- Point 195 to Point 196 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 196
+Location: 73.022563, 19.022203
+Street: Seawoods Rail-Over Bridge
+Collect required data at this location before continuing.
+
+--- Point 196 to Point 197 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 197
+Location: 73.022653, 19.022370
+Street: Seawoods Rail-Over Bridge
+Collect required data at this location before continuing.
+
+--- Point 197 to Point 198 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 198
+Location: 73.022542, 19.022168
+Street: Seawoods Rail-Over Bridge
+Collect required data at this location before continuing.
+
+--- Point 198 to Point 199 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 199
+Location: 73.022956, 19.022911
+Street: Seawoods Station Road
+Collect required data at this location before continuing.
+
+--- Point 199 to Point 200 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 200
+Location: 73.022727, 19.022897
+Street: Seawoods Rail-Over Bridge
+Collect required data at this location before continuing.
+
+--- Point 200 to Point 201 ---
+Distance: 0.09 km
+Time: 0.2 minutes
+
+Continue on Tilak College Road for 88 meters
+
+ARRIVE AT DATA COLLECTION POINT 201
+Location: 73.023109, 19.022010
+Street: Tilak College Road
+Collect required data at this location before continuing.
+
+--- Point 201 to Point 202 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 202
+Location: 73.023488, 19.022233
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 202 to Point 203 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 203
+Location: 73.023568, 19.022512
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 203 to Point 204 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 204
+Location: 73.023638, 19.021654
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 204 to Point 205 ---
+Distance: 0.43 km
+Time: 0.7 minutes
+
+Continue on Unnamed Road for 228 meters
+Continue on Adi Shankaracharya Marg for 96 meters
+Continue on Seawoods Rail-Over Bridge for 10 meters
+Continue on Adi Shankaracharya Marg for 96 meters
+
+ARRIVE AT DATA COLLECTION POINT 205
+Location: 73.023988, 19.023987
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 205 to Point 206 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 206
+Location: 73.024000, 19.024859
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 206 to Point 207 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 207
+Location: 73.024339, 19.024955
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 207 to Point 208 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 208
+Location: 73.024009, 19.024811
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 208 to Point 209 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 209
+Location: 73.024079, 19.024311
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 209 to Point 210 ---
+Distance: 0.04 km
+Time: 0.0 minutes
+
+Continue on Adi Shankaracharya Marg for 39 meters
+
+ARRIVE AT DATA COLLECTION POINT 210
+Location: 73.024438, 19.024253
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 210 to Point 211 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 211
+Location: 73.024490, 19.023729
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 211 to Point 212 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 212
+Location: 73.024434, 19.024238
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 212 to Point 213 ---
+Distance: 0.33 km
+Time: 0.8 minutes
+
+Continue on Unnamed Road for 325 meters
+
+ARRIVE AT DATA COLLECTION POINT 213
+Location: 73.024712, 19.026637
+Street: Morning Walkers Association Marg
+Collect required data at this location before continuing.
+
+--- Point 213 to Point 214 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 214
+Location: 73.024277, 19.026646
+Street: Morning Walkers Association Marg
+Collect required data at this location before continuing.
+
+--- Point 214 to Point 215 ---
+Distance: 0.15 km
+Time: 0.4 minutes
+
+Continue on Morning Walkers Association Marg for 148 meters
+
+ARRIVE AT DATA COLLECTION POINT 215
+Location: 73.022787, 19.027200
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 215 to Point 216 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Kamladevi Birajdar Marg for 74 meters
+
+ARRIVE AT DATA COLLECTION POINT 216
+Location: 73.022871, 19.027444
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 216 to Point 217 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 217
+Location: 73.022946, 19.027721
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 217 to Point 218 ---
+Distance: 0.06 km
+Time: 0.1 minutes
+
+Continue on Ring Road 2 for 56 meters
+
+ARRIVE AT DATA COLLECTION POINT 218
+Location: 73.022632, 19.027685
+Street: Ring Road 2
+Collect required data at this location before continuing.
+
+--- Point 218 to Point 219 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Radial Road 9 for 55 meters
+
+ARRIVE AT DATA COLLECTION POINT 219
+Location: 73.022010, 19.027567
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 219 to Point 220 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 220
+Location: 73.022123, 19.027437
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 220 to Point 221 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 221
+Location: 73.022054, 19.027517
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 221 to Point 222 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Radial Road 9 for 55 meters
+
+ARRIVE AT DATA COLLECTION POINT 222
+Location: 73.022533, 19.027744
+Street: Ring Road 2
+Collect required data at this location before continuing.
+
+--- Point 222 to Point 223 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 223
+Location: 73.022379, 19.027702
+Street: Radial Road 9
+Collect required data at this location before continuing.
+
+--- Point 223 to Point 224 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 224
+Location: 73.022531, 19.027745
+Street: Ring Road 2
+Collect required data at this location before continuing.
+
+--- Point 224 to Point 225 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Ring Road 2 for 48 meters
+
+ARRIVE AT DATA COLLECTION POINT 225
+Location: 73.022171, 19.028209
+Street: Ring Road 2
+Collect required data at this location before continuing.
+
+--- Point 225 to Point 226 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Radial Road 7 for 52 meters
+
+ARRIVE AT DATA COLLECTION POINT 226
+Location: 73.021676, 19.027891
+Street: Radial Road 7
+Collect required data at this location before continuing.
+
+--- Point 226 to Point 227 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 227
+Location: 73.021828, 19.027970
+Street: Radial Road 7
+Collect required data at this location before continuing.
+
+--- Point 227 to Point 228 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 228
+Location: 73.021652, 19.027878
+Street: Radial Road 7
+Collect required data at this location before continuing.
+
+--- Point 228 to Point 229 ---
+Distance: 0.03 km
+Time: 0.1 minutes
+
+Continue on Radial Road 7 for 32 meters
+
+ARRIVE AT DATA COLLECTION POINT 229
+Location: 73.021015, 19.027547
+Street: Radial Road 7
+Collect required data at this location before continuing.
+
+--- Point 229 to Point 230 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Ring Road 3 for 48 meters
+
+ARRIVE AT DATA COLLECTION POINT 230
+Location: 73.021807, 19.027328
+Street: Ring Road 3
+Collect required data at this location before continuing.
+
+--- Point 230 to Point 231 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 231
+Location: 73.021666, 19.027372
+Street: Radial Road 8
+Collect required data at this location before continuing.
+
+--- Point 231 to Point 232 ---
+Distance: 0.14 km
+Time: 0.3 minutes
+
+Continue on Ring Road 3 for 137 meters
+
+ARRIVE AT DATA COLLECTION POINT 232
+Location: 73.021173, 19.028572
+Street: Radial Road 5
+Collect required data at this location before continuing.
+
+--- Point 232 to Point 233 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 233
+Location: 73.021330, 19.028665
+Street: Ring Road 3
+Collect required data at this location before continuing.
+
+--- Point 233 to Point 234 ---
+Distance: 0.09 km
+Time: 0.2 minutes
+
+Continue on Ring Road 3 for 89 meters
+
+ARRIVE AT DATA COLLECTION POINT 234
+Location: 73.021200, 19.029549
+Street: Radial Road 3
+Collect required data at this location before continuing.
+
+--- Point 234 to Point 235 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Ring Road 3 for 47 meters
+
+ARRIVE AT DATA COLLECTION POINT 235
+Location: 73.021680, 19.029820
+Street: Radial Road 2
+Collect required data at this location before continuing.
+
+--- Point 235 to Point 236 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Ring Road 3 for 42 meters
+Continue on Radial Road 1 for 29 meters
+
+ARRIVE AT DATA COLLECTION POINT 236
+Location: 73.022265, 19.029672
+Street: Radial Road 1
+Collect required data at this location before continuing.
+
+--- Point 236 to Point 237 ---
+Distance: 0.14 km
+Time: 0.3 minutes
+
+Continue on Radial Road 1 for 54 meters
+Continue on Ring Road 2 for 58 meters
+Continue on Kamladevi Birajdar Marg for 28 meters
+
+ARRIVE AT DATA COLLECTION POINT 237
+Location: 73.022756, 19.030141
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 237 to Point 238 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on Basveshwar Maharaj Marg for 77 meters
+
+ARRIVE AT DATA COLLECTION POINT 238
+Location: 73.023649, 19.029826
+Street: Basveshwar Maharaj Marg
+Collect required data at this location before continuing.
+
+--- Point 238 to Point 239 ---
+Distance: 0.09 km
+Time: 0.2 minutes
+
+Continue on Shree Dattatray Govingrao Walse Patil Marg for 85 meters
+
+ARRIVE AT DATA COLLECTION POINT 239
+Location: 73.023307, 19.030629
+Street: Shree Dattatray Govingrao Walse Patil Marg
+Collect required data at this location before continuing.
+
+--- Point 239 to Point 240 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 240
+Location: 73.023345, 19.030559
+Street: Shree Dattatray Govingrao Walse Patil Marg
+Collect required data at this location before continuing.
+
+--- Point 240 to Point 241 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 241
+Location: 73.022963, 19.031250
+Street: Shree Dattatray Govingrao Walse Patil Marg
+Collect required data at this location before continuing.
+
+--- Point 241 to Point 242 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 242
+Location: 73.023466, 19.030592
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 242 to Point 243 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 76 meters
+
+ARRIVE AT DATA COLLECTION POINT 243
+Location: 73.024048, 19.031064
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 243 to Point 244 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 244
+Location: 73.024000, 19.030336
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 244 to Point 245 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 245
+Location: 73.024418, 19.030950
+Street: Heera Ramkrishna Karnad Marg
+Collect required data at this location before continuing.
+
+--- Point 245 to Point 246 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 246
+Location: 73.024421, 19.030995
+Street: Heera Ramkrishna Karnad Marg
+Collect required data at this location before continuing.
+
+--- Point 246 to Point 247 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 247
+Location: 73.025288, 19.031096
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 247 to Point 248 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 248
+Location: 73.024096, 19.031782
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 248 to Point 249 ---
+Distance: 0.14 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 100 meters
+Continue on Basveshwar Maharaj Marg for 40 meters
+
+ARRIVE AT DATA COLLECTION POINT 249
+Location: 73.024738, 19.029842
+Street: Basveshwar Maharaj Marg
+Collect required data at this location before continuing.
+
+--- Point 249 to Point 250 ---
+Distance: 0.09 km
+Time: 0.2 minutes
+
+Continue on Basveshwar Maharaj Marg for 86 meters
+
+ARRIVE AT DATA COLLECTION POINT 250
+Location: 73.026075, 19.029827
+Street: Basveshwar Maharaj Marg
+Collect required data at this location before continuing.
+
+--- Point 250 to Point 251 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 251
+Location: 73.025750, 19.031079
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 251 to Point 252 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 252
+Location: 73.025187, 19.030154
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 252 to Point 253 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 253
+Location: 73.026059, 19.029827
+Street: Basveshwar Maharaj Marg
+Collect required data at this location before continuing.
+
+--- Point 253 to Point 254 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 254
+Location: 73.025679, 19.031084
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 254 to Point 255 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 255
+Location: 73.026377, 19.031030
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 255 to Point 256 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 256
+Location: 73.025172, 19.029902
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 256 to Point 257 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 257
+Location: 73.025180, 19.030043
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 257 to Point 258 ---
+Distance: 0.09 km
+Time: 0.2 minutes
+
+Continue on Basveshwar Maharaj Marg for 86 meters
+
+ARRIVE AT DATA COLLECTION POINT 258
+Location: 73.024357, 19.030014
+Street: Heera Ramkrishna Karnad Marg
+Collect required data at this location before continuing.
+
+--- Point 258 to Point 259 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 259
+Location: 73.024364, 19.030129
+Street: Heera Ramkrishna Karnad Marg
+Collect required data at this location before continuing.
+
+--- Point 259 to Point 260 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 260
+Location: 73.024356, 19.030001
+Street: Heera Ramkrishna Karnad Marg
+Collect required data at this location before continuing.
+
+--- Point 260 to Point 261 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 261
+Location: 73.024368, 19.030192
+Street: Heera Ramkrishna Karnad Marg
+Collect required data at this location before continuing.
+
+--- Point 261 to Point 262 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Basveshwar Maharaj Marg for 40 meters
+
+ARRIVE AT DATA COLLECTION POINT 262
+Location: 73.023974, 19.029955
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 262 to Point 263 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 263
+Location: 73.023971, 19.029900
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 263 to Point 264 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 264
+Location: 73.023924, 19.029358
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 264 to Point 265 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 265
+Location: 73.024067, 19.029851
+Street: Basveshwar Maharaj Marg
+Collect required data at this location before continuing.
+
+--- Point 265 to Point 266 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 266
+Location: 73.023930, 19.029421
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 266 to Point 267 ---
+Distance: 0.15 km
+Time: 0.4 minutes
+
+Continue on Basveshwar Maharaj Marg for 33 meters
+Continue on Unnamed Road for 118 meters
+
+ARRIVE AT DATA COLLECTION POINT 267
+Location: 73.023849, 19.028496
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 267 to Point 268 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 268
+Location: 73.023061, 19.028886
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 268 to Point 269 ---
+Distance: 0.12 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 118 meters
+
+ARRIVE AT DATA COLLECTION POINT 269
+Location: 73.023510, 19.030174
+Street: Shree Dattatray Govingrao Walse Patil Marg
+Collect required data at this location before continuing.
+
+--- Point 269 to Point 270 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on Basveshwar Maharaj Marg for 77 meters
+
+ARRIVE AT DATA COLLECTION POINT 270
+Location: 73.023284, 19.029761
+Street: Basveshwar Maharaj Marg
+Collect required data at this location before continuing.
+
+--- Point 270 to Point 271 ---
+Distance: 0.39 km
+Time: 0.9 minutes
+
+Continue on Kamladevi Birajdar Marg for 391 meters
+
+ARRIVE AT DATA COLLECTION POINT 271
+Location: 73.022018, 19.032368
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 271 to Point 272 ---
+Distance: 0.20 km
+Time: 0.5 minutes
+
+Continue on Kamladevi Birajdar Marg for 167 meters
+Continue on Chhatrapati Sambhaji Chowk for 33 meters
+
+ARRIVE AT DATA COLLECTION POINT 272
+Location: 73.021229, 19.033919
+Street: Sant Dnyaneshwar Mauli Marg
+Collect required data at this location before continuing.
+
+--- Point 272 to Point 273 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 273
+Location: 73.021253, 19.034072
+Street: Sant Dnyaneshwar Mauli Marg
+Collect required data at this location before continuing.
+
+--- Point 273 to Point 274 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+Continue on Chhatrapati Sambhaji Chowk for 3 meters
+
+ARRIVE AT DATA COLLECTION POINT 274
+Location: 73.021241, 19.033641
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 274 to Point 275 ---
+Distance: 0.19 km
+Time: 0.4 minutes
+
+Continue on Chhatrapati Sambhaji Chowk for 30 meters
+Continue on Sant Dnyaneshwar Mauli Marg for 105 meters
+Continue on Datta Mandir Road for 55 meters
+
+ARRIVE AT DATA COLLECTION POINT 275
+Location: 73.021462, 19.034763
+Street: Datta Mandir Road
+Collect required data at this location before continuing.
+
+--- Point 275 to Point 276 ---
+Distance: 0.06 km
+Time: 0.2 minutes
+
+Continue on Datta Mandir Road for 65 meters
+
+ARRIVE AT DATA COLLECTION POINT 276
+Location: 73.021958, 19.034647
+Street: Sant Dnyaneshwar Mauli Marg
+Collect required data at this location before continuing.
+
+--- Point 276 to Point 277 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Datta Mandir Road for 10 meters
+
+ARRIVE AT DATA COLLECTION POINT 277
+Location: 73.021840, 19.034657
+Street: Sant Dnyaneshwar Mauli Marg
+Collect required data at this location before continuing.
+
+--- Point 277 to Point 278 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 278
+Location: 73.021566, 19.034663
+Street: Datta Mandir Road
+Collect required data at this location before continuing.
+
+--- Point 278 to Point 279 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 279
+Location: 73.021736, 19.034502
+Street: Datta Mandir Road
+Collect required data at this location before continuing.
+
+--- Point 279 to Point 280 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 280
+Location: 73.021453, 19.034271
+Street: Sant Dnyaneshwar Mauli Marg
+Collect required data at this location before continuing.
+
+--- Point 280 to Point 281 ---
+Distance: 0.27 km
+Time: 0.6 minutes
+
+Continue on Sant Dnyaneshwar Mauli Marg for 272 meters
+
+ARRIVE AT DATA COLLECTION POINT 281
+Location: 73.023380, 19.036193
+Street: Sant Dnyaneshwar Mauli Marg
+Collect required data at this location before continuing.
+
+--- Point 281 to Point 282 ---
+Distance: 0.35 km
+Time: 0.8 minutes
+
+Continue on Sant Dnyaneshwar Mauli Marg for 355 meters
+
+ARRIVE AT DATA COLLECTION POINT 282
+Location: 73.024989, 19.037797
+Street: Sant Dnyaneshwar Mauli Marg
+Collect required data at this location before continuing.
+
+--- Point 282 to Point 283 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 283
+Location: 73.024824, 19.037633
+Street: Sant Dnyaneshwar Mauli Marg
+Collect required data at this location before continuing.
+
+--- Point 283 to Point 284 ---
+Distance: 0.46 km
+Time: 1.1 minutes
+
+Continue on Unnamed Road for 11 meters
+Continue on Sant Dnyaneshwar Mauli Marg for 449 meters
+
+ARRIVE AT DATA COLLECTION POINT 284
+Location: 73.023003, 19.035689
+Street: Sant Dnyaneshwar Mauli Marg
+Collect required data at this location before continuing.
+
+--- Point 284 to Point 285 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 285
+Location: 73.022852, 19.035539
+Street: Sant Dnyaneshwar Mauli Marg
+Collect required data at this location before continuing.
+
+--- Point 285 to Point 286 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Bhagwan Mahaveer Marg for 10 meters
+
+ARRIVE AT DATA COLLECTION POINT 286
+Location: 73.022700, 19.035514
+Street: Sant Dnyaneshwar Mauli Marg
+Collect required data at this location before continuing.
+
+--- Point 286 to Point 287 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 287
+Location: 73.023167, 19.035980
+Street: Sant Dnyaneshwar Mauli Marg
+Collect required data at this location before continuing.
+
+--- Point 287 to Point 288 ---
+Distance: 0.16 km
+Time: 0.4 minutes
+
+Continue on Bhagwan Mahaveer Marg for 158 meters
+
+ARRIVE AT DATA COLLECTION POINT 288
+Location: 73.021866, 19.036715
+Street: Bhagwan Mahaveer Marg
+Collect required data at this location before continuing.
+
+--- Point 288 to Point 289 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 289
+Location: 73.021679, 19.036886
+Street: Bhagwan Mahaveer Marg
+Collect required data at this location before continuing.
+
+--- Point 289 to Point 290 ---
+Distance: 0.13 km
+Time: 0.3 minutes
+
+Continue on Bhagwan Mahaveer Marg for 47 meters
+Continue on Datta Mandir Road for 87 meters
+
+ARRIVE AT DATA COLLECTION POINT 290
+Location: 73.021557, 19.035914
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 290 to Point 291 ---
+Distance: 0.03 km
+Time: 0.1 minutes
+
+Continue on Datta Mandir Road for 28 meters
+
+ARRIVE AT DATA COLLECTION POINT 291
+Location: 73.021395, 19.035598
+Street: Datta Mandir Road
+Collect required data at this location before continuing.
+
+--- Point 291 to Point 292 ---
+Distance: 0.02 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 22 meters
+
+ARRIVE AT DATA COLLECTION POINT 292
+Location: 73.021209, 19.035888
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 292 to Point 293 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 293
+Location: 73.020998, 19.035726
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 293 to Point 294 ---
+Distance: 0.26 km
+Time: 0.6 minutes
+
+Continue on Unnamed Road for 262 meters
+
+ARRIVE AT DATA COLLECTION POINT 294
+Location: 73.020694, 19.036433
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 294 to Point 295 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 295
+Location: 73.020686, 19.036433
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 295 to Point 296 ---
+Distance: 0.09 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 87 meters
+
+ARRIVE AT DATA COLLECTION POINT 296
+Location: 73.020583, 19.036437
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 296 to Point 297 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 38 meters
+
+ARRIVE AT DATA COLLECTION POINT 297
+Location: 73.020713, 19.036086
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 297 to Point 298 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 298
+Location: 73.020335, 19.036101
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 298 to Point 299 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 37 meters
+
+ARRIVE AT DATA COLLECTION POINT 299
+Location: 73.020261, 19.035846
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 299 to Point 300 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 48 meters
+
+ARRIVE AT DATA COLLECTION POINT 300
+Location: 73.019998, 19.035783
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 300 to Point 301 ---
+Distance: 0.09 km
+Time: 0.1 minutes
+
+Continue on Adi Shankaracharya Marg for 92 meters
+
+ARRIVE AT DATA COLLECTION POINT 301
+Location: 73.019823, 19.034964
+Street: Jama Masjid Road
+Collect required data at this location before continuing.
+
+--- Point 301 to Point 302 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Jama Masjid Road for 11 meters
+
+ARRIVE AT DATA COLLECTION POINT 302
+Location: 73.019000, 19.034759
+Street: Shri Chandra Shekhar Saraswati Marg
+Collect required data at this location before continuing.
+
+--- Point 302 to Point 303 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 303
+Location: 73.019632, 19.034863
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 303 to Point 304 ---
+Distance: 0.06 km
+Time: 0.2 minutes
+
+Continue on Jama Masjid Road for 64 meters
+
+ARRIVE AT DATA COLLECTION POINT 304
+Location: 73.020511, 19.034925
+Street: Jama Masjid Road
+Collect required data at this location before continuing.
+
+--- Point 304 to Point 305 ---
+Distance: 0.14 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 140 meters
+
+ARRIVE AT DATA COLLECTION POINT 305
+Location: 73.020294, 19.034114
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 305 to Point 306 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 306
+Location: 73.020441, 19.033867
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 306 to Point 307 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 307
+Location: 73.020525, 19.034019
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 307 to Point 308 ---
+Distance: 0.31 km
+Time: 0.6 minutes
+
+Continue on Unnamed Road for 140 meters
+Continue on Jama Masjid Road for 54 meters
+Continue on Adi Shankaracharya Marg for 115 meters
+
+ARRIVE AT DATA COLLECTION POINT 308
+Location: 73.019674, 19.034086
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 308 to Point 309 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+Continue on Master Naresh Chowk for 3 meters
+
+ARRIVE AT DATA COLLECTION POINT 309
+Location: 73.019684, 19.033908
+Street: Master Naresh Chowk
+Collect required data at this location before continuing.
+
+--- Point 309 to Point 310 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Master Naresh Chowk for 11 meters
+
+ARRIVE AT DATA COLLECTION POINT 310
+Location: 73.019583, 19.033202
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 310 to Point 311 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on Master Naresh Chowk for 16 meters
+Continue on Shri Chandra Shekhar Saraswati Marg for 64 meters
+
+ARRIVE AT DATA COLLECTION POINT 311
+Location: 73.018950, 19.034007
+Street: Shri Chandra Shekhar Saraswati Marg
+Collect required data at this location before continuing.
+
+--- Point 311 to Point 312 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 312
+Location: 73.018988, 19.034585
+Street: Shri Chandra Shekhar Saraswati Marg
+Collect required data at this location before continuing.
+
+--- Point 312 to Point 313 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 313
+Location: 73.018954, 19.034059
+Street: Shri Chandra Shekhar Saraswati Marg
+Collect required data at this location before continuing.
+
+--- Point 313 to Point 314 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Shri Chandra Shekhar Saraswati Marg for 63 meters
+Continue on Master Naresh Chowk for 5 meters
+
+ARRIVE AT DATA COLLECTION POINT 314
+Location: 73.019569, 19.033952
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 314 to Point 315 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 315
+Location: 73.019573, 19.034013
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 315 to Point 316 ---
+Distance: 0.02 km
+Time: 0.0 minutes
+
+Continue on Master Naresh Chowk for 24 meters
+
+ARRIVE AT DATA COLLECTION POINT 316
+Location: 73.019658, 19.033827
+Street: Master Naresh Chowk
+Collect required data at this location before continuing.
+
+--- Point 316 to Point 317 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 317
+Location: 73.019587, 19.033224
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 317 to Point 318 ---
+Distance: 0.14 km
+Time: 0.1 minutes
+
+Continue on Adi Shankaracharya Marg for 143 meters
+
+ARRIVE AT DATA COLLECTION POINT 318
+Location: 73.019991, 19.032330
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 318 to Point 319 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Unnamed Road for 11 meters
+
+ARRIVE AT DATA COLLECTION POINT 319
+Location: 73.019245, 19.032592
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 319 to Point 320 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 320
+Location: 73.018872, 19.031873
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 320 to Point 321 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 321
+Location: 73.018577, 19.031574
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 321 to Point 322 ---
+Distance: 0.20 km
+Time: 0.5 minutes
+
+Continue on Unnamed Road for 204 meters
+
+ARRIVE AT DATA COLLECTION POINT 322
+Location: 73.020431, 19.032083
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 322 to Point 323 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 323
+Location: 73.020422, 19.031900
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 323 to Point 324 ---
+Distance: 0.47 km
+Time: 0.7 minutes
+
+Continue on Unnamed Road for 193 meters
+Continue on Adi Shankaracharya Marg for 276 meters
+
+ARRIVE AT DATA COLLECTION POINT 324
+Location: 73.018388, 19.030679
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 324 to Point 325 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 325
+Location: 73.017084, 19.030210
+Street: Mata Amritanandamayi Marg
+Collect required data at this location before continuing.
+
+--- Point 325 to Point 326 ---
+Distance: 0.09 km
+Time: 0.1 minutes
+
+Continue on Adi Shankaracharya Marg for 90 meters
+
+ARRIVE AT DATA COLLECTION POINT 326
+Location: 73.018320, 19.029828
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 326 to Point 327 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Darave Road for 11 meters
+
+ARRIVE AT DATA COLLECTION POINT 327
+Location: 73.018380, 19.029621
+Street: Adi Shankaracharya Marg
+Collect required data at this location before continuing.
+
+--- Point 327 to Point 328 ---
+Distance: 0.20 km
+Time: 0.5 minutes
+
+Continue on Darave Road for 44 meters
+Continue on Unnamed Road for 159 meters
+
+ARRIVE AT DATA COLLECTION POINT 328
+Location: 73.017410, 19.027588
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 328 to Point 329 ---
+Distance: 0.24 km
+Time: 0.6 minutes
+
+Continue on Unnamed Road for 240 meters
+
+ARRIVE AT DATA COLLECTION POINT 329
+Location: 73.016892, 19.025911
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 329 to Point 330 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 330
+Location: 73.017357, 19.026536
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 330 to Point 331 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 331
+Location: 73.017290, 19.026464
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 331 to Point 332 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 332
+Location: 73.017092, 19.026656
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 332 to Point 333 ---
+Distance: 0.10 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 96 meters
+
+ARRIVE AT DATA COLLECTION POINT 333
+Location: 73.016902, 19.025037
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 333 to Point 334 ---
+Distance: 0.12 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 123 meters
+
+ARRIVE AT DATA COLLECTION POINT 334
+Location: 73.016027, 19.024556
+Street: Darave Phatak Road
+Collect required data at this location before continuing.
+
+--- Point 334 to Point 335 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 335
+Location: 73.016065, 19.024448
+Street: Darave Phatak Road
+Collect required data at this location before continuing.
+
+--- Point 335 to Point 336 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 336
+Location: 73.017299, 19.024191
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 336 to Point 337 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 337
+Location: 73.016036, 19.024531
+Street: Darave Phatak Road
+Collect required data at this location before continuing.
+
+--- Point 337 to Point 338 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 338
+Location: 73.017308, 19.024345
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 338 to Point 339 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 39 meters
+
+ARRIVE AT DATA COLLECTION POINT 339
+Location: 73.017351, 19.024115
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 339 to Point 340 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 69 meters
+
+ARRIVE AT DATA COLLECTION POINT 340
+Location: 73.018057, 19.023791
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 340 to Point 341 ---
+Distance: 0.12 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 119 meters
+
+ARRIVE AT DATA COLLECTION POINT 341
+Location: 73.018138, 19.024808
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 341 to Point 342 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 342
+Location: 73.017968, 19.024514
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 342 to Point 343 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 343
+Location: 73.018316, 19.025098
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 343 to Point 344 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 37 meters
+
+ARRIVE AT DATA COLLECTION POINT 344
+Location: 73.017823, 19.024849
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 344 to Point 345 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 345
+Location: 73.017871, 19.025001
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 345 to Point 346 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 346
+Location: 73.017883, 19.024909
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 346 to Point 347 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 347
+Location: 73.018066, 19.025074
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 347 to Point 348 ---
+Distance: 0.13 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 127 meters
+
+ARRIVE AT DATA COLLECTION POINT 348
+Location: 73.018751, 19.024541
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 348 to Point 349 ---
+Distance: 0.11 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 109 meters
+
+ARRIVE AT DATA COLLECTION POINT 349
+Location: 73.018944, 19.024094
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 349 to Point 350 ---
+Distance: 0.26 km
+Time: 0.6 minutes
+
+Continue on Unnamed Road for 116 meters
+Continue on Kamladevi Birajdar Marg for 141 meters
+
+ARRIVE AT DATA COLLECTION POINT 350
+Location: 73.020540, 19.023891
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 350 to Point 351 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 351
+Location: 73.020490, 19.023828
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 351 to Point 352 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 352
+Location: 73.020281, 19.024350
+Street: Darave Road
+Collect required data at this location before continuing.
+
+--- Point 352 to Point 353 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 353
+Location: 73.020734, 19.024135
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 353 to Point 354 ---
+Distance: 0.07 km
+Time: 0.1 minutes
+
+Continue on Kamladevi Birajdar Marg for 30 meters
+Continue on Seawoods Circle for 40 meters
+
+ARRIVE AT DATA COLLECTION POINT 354
+Location: 73.021122, 19.024769
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 354 to Point 355 ---
+Distance: 0.13 km
+Time: 0.3 minutes
+
+Continue on Kamladevi Birajdar Marg for 128 meters
+
+ARRIVE AT DATA COLLECTION POINT 355
+Location: 73.021785, 19.025716
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 355 to Point 356 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Kamladevi Birajdar Marg for 9 meters
+
+ARRIVE AT DATA COLLECTION POINT 356
+Location: 73.021978, 19.025912
+Street: Kamladevi Birajdar Marg
+Collect required data at this location before continuing.
+
+--- Point 356 to Point 357 ---
+Distance: 0.38 km
+Time: 0.9 minutes
+
+Continue on Kamladevi Birajdar Marg for 160 meters
+Continue on Morning Walkers Association Marg for 83 meters
+Continue on Unnamed Road for 139 meters
+
+ARRIVE AT DATA COLLECTION POINT 357
+Location: 73.023802, 19.027962
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 357 to Point 358 ---
+Distance: 0.20 km
+Time: 0.5 minutes
+
+Continue on Unnamed Road for 139 meters
+Continue on Morning Walkers Association Marg for 65 meters
+
+ARRIVE AT DATA COLLECTION POINT 358
+Location: 73.024182, 19.025851
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 358 to Point 359 ---
+Distance: 0.41 km
+Time: 1.0 minutes
+
+Continue on Morning Walkers Association Marg for 407 meters
+
+ARRIVE AT DATA COLLECTION POINT 359
+Location: 73.026294, 19.026601
+Street: Morning Walkers Association Marg
+Collect required data at this location before continuing.
+
+--- Point 359 to Point 360 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 360
+Location: 73.026275, 19.026602
+Street: Morning Walkers Association Marg
+Collect required data at this location before continuing.
+
+--- Point 360 to Point 361 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 361
+Location: 73.026289, 19.026601
+Street: Morning Walkers Association Marg
+Collect required data at this location before continuing.
+
+--- Point 361 to Point 362 ---
+Distance: 0.08 km
+Time: 0.1 minutes
+
+Continue on Morning Walkers Association Marg for 22 meters
+Continue on Amra Marg for 58 meters
+
+ARRIVE AT DATA COLLECTION POINT 362
+Location: 73.028292, 19.028108
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 362 to Point 363 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 363
+Location: 73.028228, 19.027847
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 363 to Point 364 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 364
+Location: 73.028325, 19.028240
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 364 to Point 365 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 365
+Location: 73.028127, 19.027434
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 365 to Point 366 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 366
+Location: 73.028132, 19.027455
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 366 to Point 367 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 367
+Location: 73.028314, 19.028194
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 367 to Point 368 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 368
+Location: 73.027991, 19.026877
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 368 to Point 369 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 369
+Location: 73.028157, 19.027554
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 369 to Point 370 ---
+Distance: 0.31 km
+Time: 0.3 minutes
+
+Continue on Amra Marg for 307 meters
+
+ARRIVE AT DATA COLLECTION POINT 370
+Location: 73.028853, 19.029507
+Street: Amra Marg
+Collect required data at this location before continuing.
+
+--- Point 370 to Point 371 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 371
+Location: 73.028749, 19.028599
+Street: Amra Marg
+Collect required data at this location before continuing.
+
+--- Point 371 to Point 372 ---
+Distance: 0.16 km
+Time: 0.2 minutes
+
+Continue on Amra Marg for 156 meters
+
+ARRIVE AT DATA COLLECTION POINT 372
+Location: 73.028848, 19.031391
+Street: Amra Marg
+Collect required data at this location before continuing.
+
+--- Point 372 to Point 373 ---
+Distance: 0.17 km
+Time: 0.4 minutes
+
+Continue on Unnamed Road for 171 meters
+
+ARRIVE AT DATA COLLECTION POINT 373
+Location: 73.028630, 19.029645
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 373 to Point 374 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 374
+Location: 73.028770, 19.030392
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 374 to Point 375 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 375
+Location: 73.028566, 19.029347
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 375 to Point 376 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 376
+Location: 73.027929, 19.029806
+Street: Basveshwar Maharaj Marg
+Collect required data at this location before continuing.
+
+--- Point 376 to Point 377 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 377
+Location: 73.028249, 19.029802
+Street: Basveshwar Maharaj Marg
+Collect required data at this location before continuing.
+
+--- Point 377 to Point 378 ---
+Distance: 0.14 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 144 meters
+
+ARRIVE AT DATA COLLECTION POINT 378
+Location: 73.028163, 19.030940
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 378 to Point 379 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 379
+Location: 73.028693, 19.030956
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 379 to Point 380 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 40 meters
+
+ARRIVE AT DATA COLLECTION POINT 380
+Location: 73.029971, 19.030937
+Street: Uran Phata Flyover
+Collect required data at this location before continuing.
+
+--- Point 380 to Point 381 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 381
+Location: 73.030024, 19.031304
+Street: Uran Phata Flyover
+Collect required data at this location before continuing.
+
+--- Point 381 to Point 382 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 382
+Location: 73.029095, 19.030890
+Street: Amra Marg
+Collect required data at this location before continuing.
+
+--- Point 382 to Point 383 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 383
+Location: 73.030024, 19.031305
+Street: Uran Phata Flyover
+Collect required data at this location before continuing.
+
+--- Point 383 to Point 384 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 384
+Location: 73.028787, 19.031784
+Street: Amra Marg
+Collect required data at this location before continuing.
+
+--- Point 384 to Point 385 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 385
+Location: 73.030143, 19.030538
+Street: Uran Phata Flyover
+Collect required data at this location before continuing.

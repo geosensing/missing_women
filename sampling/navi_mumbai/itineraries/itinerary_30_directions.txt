@@ -1,0 +1,167 @@
+===== ITINERARY 30 DIRECTIONS =====
+
+Total distance: 4.76 km
+Estimated time: 7.7 minutes
+Number of data collection points: 16
+Cluster: 19
+
+
+--- Point 1 to Point 2 ---
+Distance: 0.24 km
+Time: 0.6 minutes
+
+Continue on Unnamed Road for 241 meters
+
+ARRIVE AT DATA COLLECTION POINT 2
+Location: 73.011517, 19.100264
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 2 to Point 3 ---
+Distance: 0.12 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 117 meters
+
+ARRIVE AT DATA COLLECTION POINT 3
+Location: 73.011008, 19.099803
+Street: Koparkhairne Station Road
+Collect required data at this location before continuing.
+
+--- Point 3 to Point 4 ---
+Distance: 0.13 km
+Time: 0.3 minutes
+
+Continue on Koparkhairne Station Road for 132 meters
+
+ARRIVE AT DATA COLLECTION POINT 4
+Location: 73.011106, 19.098894
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 4 to Point 5 ---
+Distance: 1.85 km
+Time: 3.4 minutes
+
+Continue on Bonkode Road for 523 meters
+Continue on Unnamed Road for 385 meters
+Continue on Palm Beach Marg for 19 meters
+Continue on Pavane Flyover for 920 meters
+
+ARRIVE AT DATA COLLECTION POINT 5
+Location: 73.016648, 19.095167
+Street: Thane Belapur Road
+Collect required data at this location before continuing.
+
+--- Point 5 to Point 6 ---
+Distance: 1.15 km
+Time: 1.5 minutes
+
+Continue on Thane Belapur Road for 1147 meters
+
+ARRIVE AT DATA COLLECTION POINT 6
+Location: 73.012314, 19.102710
+Street: Thane Belapur Road
+Collect required data at this location before continuing.
+
+--- Point 6 to Point 7 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 7
+Location: 73.012008, 19.103576
+Street: Thane Belapur Road
+Collect required data at this location before continuing.
+
+--- Point 7 to Point 8 ---
+Distance: 0.59 km
+Time: 0.8 minutes
+
+Continue on Unnamed Road for 590 meters
+
+ARRIVE AT DATA COLLECTION POINT 8
+Location: 73.012456, 19.103301
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 8 to Point 9 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 9
+Location: 73.012200, 19.103373
+Street: Thane Belapur Road
+Collect required data at this location before continuing.
+
+--- Point 9 to Point 10 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 10
+Location: 73.012457, 19.103296
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 10 to Point 11 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 11
+Location: 73.012536, 19.103040
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 11 to Point 12 ---
+Distance: 0.69 km
+Time: 0.9 minutes
+
+Continue on Thane Belapur Road for 692 meters
+
+ARRIVE AT DATA COLLECTION POINT 12
+Location: 73.014349, 19.099550
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 12 to Point 13 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 13
+Location: 73.014526, 19.099028
+Street: Khairne Flyover
+Collect required data at this location before continuing.
+
+--- Point 13 to Point 14 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 14
+Location: 73.014413, 19.099064
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 14 to Point 15 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 15
+Location: 73.014489, 19.098615
+Street: Thane Belapur Road
+Collect required data at this location before continuing.
+
+--- Point 15 to Point 16 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 16
+Location: 73.014385, 19.098377
+Street: Khairne Flyover
+Collect required data at this location before continuing.

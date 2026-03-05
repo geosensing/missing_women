@@ -1,0 +1,33 @@
+===== ITINERARY 7 DIRECTIONS =====
+
+Total distance: 1.84 km
+Estimated time: 2.4 minutes
+Number of data collection points: 3
+Cluster: 15
+
+
+--- Point 1 to Point 2 ---
+Distance: 1.61 km
+Time: 2.1 minutes
+
+Continue on Unnamed Road for 535 meters
+Continue on Thane Belapur Road for 258 meters
+Continue on Shil Phata Mahape Road for 24 meters
+Continue on Thane Belapur Road for 255 meters
+Continue on Unnamed Road for 533 meters
+
+ARRIVE AT DATA COLLECTION POINT 2
+Location: 73.006591, 19.118906
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 2 to Point 3 ---
+Distance: 0.23 km
+Time: 0.3 minutes
+
+Continue on Thane Belapur Road for 235 meters
+
+ARRIVE AT DATA COLLECTION POINT 3
+Location: 73.005782, 19.121235
+Street: nan
+Collect required data at this location before continuing.

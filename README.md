@@ -33,6 +33,41 @@ Proportion of women is consistently lower among two-wheeler riders than pedestri
 
 In Navi Mumbai, there is a clear gradient: proportion of women increases from primary roads (9%) to residential roads (18%). Mumbai shows less variation across road types.
 
+### Temporal Patterns
+
+**Data coverage**: ~7 AM - 7 PM IST. Thursday overrepresented (40%).
+
+**Weekday vs Weekend:**
+
+| City | Weekday | Weekend | Significant? |
+|------|---------|---------|--------------|
+| Mumbai | 0.163 (n=2100) | 0.145 (n=458) | Yes (p=0.048) |
+| Navi Mumbai | 0.138 (n=835) | 0.168 (n=129) | No |
+
+Mumbai shows significantly higher proportion of women on weekdays. Navi Mumbai shows the opposite pattern but the difference is not statistically significant.
+
+**Data Collection by Time Period (equal 4-hour windows):**
+
+| Time Period (IST) | Mumbai | Navi Mumbai |
+|-------------------|--------|-------------|
+| Morning (7-11) | 0.21 | 0.39 |
+| Midday (11-15) | 0.41 | 0.47 |
+| Evening (15-19) | 0.37 | 0.13 |
+
+Columns sum to 1.0 within each city. Navi Mumbai data is concentrated in morning/midday hours with sparse evening coverage.
+
+See `scripts/analysis/temporal_analysis.ipynb` for detailed temporal analysis including distribution plots and POI × time interactions.
+
+### By Points of Interest (POI)
+
+| POI | Yes | No | Significant? |
+|-----|-----|-----|--------------|
+| Bus Station | 0.168 (n=137) | 0.156 (n=3385) | Yes (p=0.04) |
+| Railway Station | 0.141 (n=7) | 0.156 (n=3515) | No |
+| Street Vendor | 0.208 (n=238) | 0.150 (n=3283) | Yes (p<0.001) |
+
+Street vendors are associated with significantly higher proportion of women. Bus stations show a small positive effect.
+
 ### Infrastructure
 
 **Footpath:**

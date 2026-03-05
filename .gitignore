@@ -194,3 +194,4 @@ streamlit/.secrets.toml
 /annotation_frames_new
 /frames_new
 /gcp
+/sampling/bangalore/network

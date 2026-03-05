@@ -1,0 +1,1087 @@
+===== ITINERARY 15 DIRECTIONS =====
+
+Total distance: 13.92 km
+Estimated time: 28.8 minutes
+Number of data collection points: 102
+Cluster: 13
+
+
+--- Point 1 to Point 2 ---
+Distance: 0.30 km
+Time: 0.7 minutes
+
+Continue on Unnamed Road for 295 meters
+
+ARRIVE AT DATA COLLECTION POINT 2
+Location: 72.996916, 19.188369
+Street: Road To Shivaji Nagar
+Collect required data at this location before continuing.
+
+--- Point 2 to Point 3 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 3
+Location: 72.996872, 19.189169
+Street: Road To Shivaji Nagar
+Collect required data at this location before continuing.
+
+--- Point 3 to Point 4 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 4
+Location: 72.996916, 19.188340
+Street: Road To Shivaji Nagar
+Collect required data at this location before continuing.
+
+--- Point 4 to Point 5 ---
+Distance: 0.23 km
+Time: 0.5 minutes
+
+Continue on Unnamed Road for 226 meters
+
+ARRIVE AT DATA COLLECTION POINT 5
+Location: 72.994466, 19.187589
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 5 to Point 6 ---
+Distance: 0.15 km
+Time: 0.4 minutes
+
+Continue on Unnamed Road for 147 meters
+
+ARRIVE AT DATA COLLECTION POINT 6
+Location: 72.995536, 19.186411
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 6 to Point 7 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 7
+Location: 72.995480, 19.186151
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 7 to Point 8 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 8
+Location: 72.995374, 19.186057
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 8 to Point 9 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 9
+Location: 72.994631, 19.186199
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 9 to Point 10 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 10
+Location: 72.995421, 19.186069
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 10 to Point 11 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 11
+Location: 72.995555, 19.186500
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 11 to Point 12 ---
+Distance: 0.06 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 57 meters
+
+ARRIVE AT DATA COLLECTION POINT 12
+Location: 72.995001, 19.187115
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 12 to Point 13 ---
+Distance: 0.21 km
+Time: 0.5 minutes
+
+Continue on Unnamed Road for 212 meters
+
+ARRIVE AT DATA COLLECTION POINT 13
+Location: 72.995128, 19.185941
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 13 to Point 14 ---
+Distance: 0.28 km
+Time: 0.7 minutes
+
+Continue on Unnamed Road for 280 meters
+
+ARRIVE AT DATA COLLECTION POINT 14
+Location: 72.994033, 19.183921
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 14 to Point 15 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Unnamed Road for 11 meters
+
+ARRIVE AT DATA COLLECTION POINT 15
+Location: 72.993976, 19.183347
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 15 to Point 16 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 16
+Location: 72.993789, 19.183560
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 16 to Point 17 ---
+Distance: 0.16 km
+Time: 0.2 minutes
+
+Continue on Thane Belapur Road for 164 meters
+
+ARRIVE AT DATA COLLECTION POINT 17
+Location: 72.995037, 19.182548
+Street: Thane Belapur Road
+Collect required data at this location before continuing.
+
+--- Point 17 to Point 18 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Road To Shivaji Nagar for 72 meters
+
+ARRIVE AT DATA COLLECTION POINT 18
+Location: 72.996105, 19.182160
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 18 to Point 19 ---
+Distance: 0.52 km
+Time: 1.2 minutes
+
+Continue on Road To Shivaji Nagar for 524 meters
+
+ARRIVE AT DATA COLLECTION POINT 19
+Location: 72.996974, 19.187816
+Street: Road To Shivaji Nagar
+Collect required data at this location before continuing.
+
+--- Point 19 to Point 20 ---
+Distance: 0.06 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 60 meters
+
+ARRIVE AT DATA COLLECTION POINT 20
+Location: 72.997723, 19.187363
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 20 to Point 21 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 21
+Location: 72.997775, 19.187598
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 21 to Point 22 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 22
+Location: 72.997670, 19.187275
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 22 to Point 23 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 41 meters
+
+ARRIVE AT DATA COLLECTION POINT 23
+Location: 72.998471, 19.187324
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 23 to Point 24 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 41 meters
+
+ARRIVE AT DATA COLLECTION POINT 24
+Location: 72.997743, 19.187425
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 24 to Point 25 ---
+Distance: 0.13 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 126 meters
+
+ARRIVE AT DATA COLLECTION POINT 25
+Location: 72.997997, 19.188193
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 25 to Point 26 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 26
+Location: 72.997840, 19.187954
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 26 to Point 27 ---
+Distance: 0.26 km
+Time: 0.6 minutes
+
+Continue on Unnamed Road for 262 meters
+
+ARRIVE AT DATA COLLECTION POINT 27
+Location: 72.998568, 19.186515
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 27 to Point 28 ---
+Distance: 0.22 km
+Time: 0.5 minutes
+
+Continue on Unnamed Road for 219 meters
+
+ARRIVE AT DATA COLLECTION POINT 28
+Location: 72.998407, 19.187679
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 28 to Point 29 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 29
+Location: 72.998361, 19.188051
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 29 to Point 30 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 30
+Location: 72.998235, 19.188269
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 30 to Point 31 ---
+Distance: 0.10 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 99 meters
+
+ARRIVE AT DATA COLLECTION POINT 31
+Location: 72.997910, 19.189156
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 31 to Point 32 ---
+Distance: 0.12 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 122 meters
+
+ARRIVE AT DATA COLLECTION POINT 32
+Location: 72.997597, 19.189532
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 32 to Point 33 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 33
+Location: 72.997366, 19.189502
+Street: Road To Shivaji Nagar
+Collect required data at this location before continuing.
+
+--- Point 33 to Point 34 ---
+Distance: 0.13 km
+Time: 0.3 minutes
+
+Continue on Road To Shivaji Nagar for 126 meters
+
+ARRIVE AT DATA COLLECTION POINT 34
+Location: 72.997813, 19.190480
+Street: Road To Shivaji Nagar
+Collect required data at this location before continuing.
+
+--- Point 34 to Point 35 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Road To Shivaji Nagar for 42 meters
+
+ARRIVE AT DATA COLLECTION POINT 35
+Location: 72.997968, 19.190331
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 35 to Point 36 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 36
+Location: 72.997756, 19.190266
+Street: Road To Shivaji Nagar
+Collect required data at this location before continuing.
+
+--- Point 36 to Point 37 ---
+Distance: 0.03 km
+Time: 0.1 minutes
+
+Continue on Road To Shivaji Nagar for 25 meters
+
+ARRIVE AT DATA COLLECTION POINT 37
+Location: 72.997662, 19.189872
+Street: Road To Shivaji Nagar
+Collect required data at this location before continuing.
+
+--- Point 37 to Point 38 ---
+Distance: 0.06 km
+Time: 0.1 minutes
+
+Continue on Road To Shivaji Nagar for 59 meters
+
+ARRIVE AT DATA COLLECTION POINT 38
+Location: 72.997645, 19.189805
+Street: Road To Shivaji Nagar
+Collect required data at this location before continuing.
+
+--- Point 38 to Point 39 ---
+Distance: 0.31 km
+Time: 0.7 minutes
+
+Continue on Road To Shivaji Nagar for 314 meters
+
+ARRIVE AT DATA COLLECTION POINT 39
+Location: 72.997225, 19.187265
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 39 to Point 40 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Road To Shivaji Nagar for 74 meters
+
+ARRIVE AT DATA COLLECTION POINT 40
+Location: 72.997084, 19.186759
+Street: Road To Shivaji Nagar
+Collect required data at this location before continuing.
+
+--- Point 40 to Point 41 ---
+Distance: 0.23 km
+Time: 0.5 minutes
+
+Continue on Road To Shivaji Nagar for 231 meters
+
+ARRIVE AT DATA COLLECTION POINT 41
+Location: 72.996462, 19.184568
+Street: Road To Shivaji Nagar
+Collect required data at this location before continuing.
+
+--- Point 41 to Point 42 ---
+Distance: 0.14 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 139 meters
+
+ARRIVE AT DATA COLLECTION POINT 42
+Location: 72.997748, 19.184376
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 42 to Point 43 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 43
+Location: 72.997734, 19.184378
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 43 to Point 44 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 44
+Location: 72.997507, 19.184415
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 44 to Point 45 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 45
+Location: 72.997622, 19.184397
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 45 to Point 46 ---
+Distance: 0.14 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 139 meters
+
+ARRIVE AT DATA COLLECTION POINT 46
+Location: 72.996635, 19.185066
+Street: Road To Shivaji Nagar
+Collect required data at this location before continuing.
+
+--- Point 46 to Point 47 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Road To Shivaji Nagar for 45 meters
+
+ARRIVE AT DATA COLLECTION POINT 47
+Location: 72.996385, 19.184339
+Street: Road To Shivaji Nagar
+Collect required data at this location before continuing.
+
+--- Point 47 to Point 48 ---
+Distance: 0.13 km
+Time: 0.2 minutes
+
+Continue on Road To Shivaji Nagar for 45 meters
+Continue on Unnamed Road for 81 meters
+
+ARRIVE AT DATA COLLECTION POINT 48
+Location: 72.995932, 19.183969
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 48 to Point 49 ---
+Distance: 1.53 km
+Time: 1.9 minutes
+
+Continue on Unnamed Road for 81 meters
+Continue on Road To Shivaji Nagar for 202 meters
+Continue on Thane Belapur Road for 167 meters
+Continue on North Central Road for 860 meters
+Continue on Unnamed Road for 219 meters
+
+ARRIVE AT DATA COLLECTION POINT 49
+Location: 73.003509, 19.177722
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 49 to Point 50 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 50
+Location: 73.004152, 19.177838
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 50 to Point 51 ---
+Distance: 0.22 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 219 meters
+
+ARRIVE AT DATA COLLECTION POINT 51
+Location: 73.002735, 19.177574
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 51 to Point 52 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Unnamed Road for 8 meters
+
+ARRIVE AT DATA COLLECTION POINT 52
+Location: 73.001946, 19.178949
+Street: North Central Road
+Collect required data at this location before continuing.
+
+--- Point 52 to Point 53 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 53
+Location: 73.002035, 19.178447
+Street: North Central Road
+Collect required data at this location before continuing.
+
+--- Point 53 to Point 54 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 54
+Location: 73.002135, 19.177869
+Street: North Central Road
+Collect required data at this location before continuing.
+
+--- Point 54 to Point 55 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 55
+Location: 73.001586, 19.179496
+Street: North Central Road
+Collect required data at this location before continuing.
+
+--- Point 55 to Point 56 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Unnamed Road for 8 meters
+
+ARRIVE AT DATA COLLECTION POINT 56
+Location: 73.002270, 19.177551
+Street: North Central Road
+Collect required data at this location before continuing.
+
+--- Point 56 to Point 57 ---
+Distance: 0.15 km
+Time: 0.2 minutes
+
+Continue on North Central Road for 95 meters
+Continue on Unnamed Road for 54 meters
+
+ARRIVE AT DATA COLLECTION POINT 57
+Location: 73.000726, 19.176447
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 57 to Point 58 ---
+Distance: 0.20 km
+Time: 0.5 minutes
+
+Continue on Unnamed Road for 204 meters
+
+ARRIVE AT DATA COLLECTION POINT 58
+Location: 73.002740, 19.174466
+Street: North Central Road
+Collect required data at this location before continuing.
+
+--- Point 58 to Point 59 ---
+Distance: 0.89 km
+Time: 1.9 minutes
+
+Continue on Unnamed Road for 648 meters
+Continue on Thane Belapur Road for 243 meters
+
+ARRIVE AT DATA COLLECTION POINT 59
+Location: 72.997162, 19.177935
+Street: Thane Belapur Road
+Collect required data at this location before continuing.
+
+--- Point 59 to Point 60 ---
+Distance: 0.17 km
+Time: 0.3 minutes
+
+Continue on Thane Belapur Road for 134 meters
+Continue on Unnamed Road for 40 meters
+
+ARRIVE AT DATA COLLECTION POINT 60
+Location: 72.996067, 19.179359
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 60 to Point 61 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 61
+Location: 72.996023, 19.179202
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 61 to Point 62 ---
+Distance: 0.10 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 105 meters
+
+ARRIVE AT DATA COLLECTION POINT 62
+Location: 72.995639, 19.179568
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 62 to Point 63 ---
+Distance: 0.16 km
+Time: 0.4 minutes
+
+Continue on Unnamed Road for 159 meters
+
+ARRIVE AT DATA COLLECTION POINT 63
+Location: 72.995536, 19.178648
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 63 to Point 64 ---
+Distance: 0.25 km
+Time: 0.6 minutes
+
+Continue on Unnamed Road for 249 meters
+
+ARRIVE AT DATA COLLECTION POINT 64
+Location: 72.991144, 19.180579
+Street: Patni Road
+Collect required data at this location before continuing.
+
+--- Point 64 to Point 65 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 65
+Location: 72.992449, 19.181218
+Street: Patni Road
+Collect required data at this location before continuing.
+
+--- Point 65 to Point 66 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 66
+Location: 72.991142, 19.180254
+Street: Patni Road
+Collect required data at this location before continuing.
+
+--- Point 66 to Point 67 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 67
+Location: 72.991137, 19.179564
+Street: Patni Road
+Collect required data at this location before continuing.
+
+--- Point 67 to Point 68 ---
+Distance: 0.17 km
+Time: 0.4 minutes
+
+Continue on Unnamed Road for 166 meters
+
+ARRIVE AT DATA COLLECTION POINT 68
+Location: 72.995335, 19.179918
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 68 to Point 69 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 47 meters
+
+ARRIVE AT DATA COLLECTION POINT 69
+Location: 72.995138, 19.179660
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 69 to Point 70 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 70
+Location: 72.995357, 19.179685
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 70 to Point 71 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 70 meters
+
+ARRIVE AT DATA COLLECTION POINT 71
+Location: 72.996015, 19.179691
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 71 to Point 72 ---
+Distance: 0.10 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 31 meters
+Continue on Thane Belapur Road for 65 meters
+
+ARRIVE AT DATA COLLECTION POINT 72
+Location: 72.996230, 19.180620
+Street: Thane Belapur Road
+Collect required data at this location before continuing.
+
+--- Point 72 to Point 73 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 74 meters
+
+ARRIVE AT DATA COLLECTION POINT 73
+Location: 72.995654, 19.180421
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 73 to Point 74 ---
+Distance: 1.22 km
+Time: 1.3 minutes
+
+Continue on Unnamed Road for 74 meters
+Continue on Thane Belapur Road for 71 meters
+Continue on North Central Road for 1064 meters
+Continue on Unnamed Road for 7 meters
+
+ARRIVE AT DATA COLLECTION POINT 74
+Location: 73.002027, 19.175963
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 74 to Point 75 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 75
+Location: 73.002508, 19.175795
+Street: North Central Road
+Collect required data at this location before continuing.
+
+--- Point 75 to Point 76 ---
+Distance: 1.09 km
+Time: 2.6 minutes
+
+Continue on Unnamed Road for 1089 meters
+
+ARRIVE AT DATA COLLECTION POINT 76
+Location: 73.005013, 19.184041
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 76 to Point 77 ---
+Distance: 0.16 km
+Time: 0.4 minutes
+
+Continue on Unnamed Road for 156 meters
+
+ARRIVE AT DATA COLLECTION POINT 77
+Location: 73.004985, 19.184542
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 77 to Point 78 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 78
+Location: 73.005484, 19.184046
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 78 to Point 79 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 79
+Location: 73.005012, 19.185936
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 79 to Point 80 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 80
+Location: 73.004992, 19.184371
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 80 to Point 81 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 81
+Location: 73.005617, 19.184508
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 81 to Point 82 ---
+Distance: 0.16 km
+Time: 0.4 minutes
+
+Continue on Unnamed Road for 156 meters
+
+ARRIVE AT DATA COLLECTION POINT 82
+Location: 73.005023, 19.183528
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 82 to Point 83 ---
+Distance: 0.67 km
+Time: 1.6 minutes
+
+Continue on Unnamed Road for 669 meters
+
+ARRIVE AT DATA COLLECTION POINT 83
+Location: 73.006464, 19.187986
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 83 to Point 84 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 84
+Location: 73.006491, 19.187923
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 84 to Point 85 ---
+Distance: 0.21 km
+Time: 0.5 minutes
+
+Continue on Unnamed Road for 215 meters
+
+ARRIVE AT DATA COLLECTION POINT 85
+Location: 73.005622, 19.188538
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 85 to Point 86 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 78 meters
+
+ARRIVE AT DATA COLLECTION POINT 86
+Location: 73.005191, 19.186984
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 86 to Point 87 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 87
+Location: 73.005463, 19.187561
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 87 to Point 88 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 88
+Location: 73.005502, 19.187616
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 88 to Point 89 ---
+Distance: 0.53 km
+Time: 1.3 minutes
+
+Continue on Unnamed Road for 532 meters
+
+ARRIVE AT DATA COLLECTION POINT 89
+Location: 73.004678, 19.181897
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 89 to Point 90 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 90
+Location: 73.004531, 19.183023
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 90 to Point 91 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 91
+Location: 73.004627, 19.182087
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 91 to Point 92 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 92
+Location: 73.005090, 19.183459
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 92 to Point 93 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 93
+Location: 73.004481, 19.182617
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 93 to Point 94 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 94
+Location: 73.005022, 19.183497
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 94 to Point 95 ---
+Distance: 0.67 km
+Time: 1.6 minutes
+
+Continue on Unnamed Road for 668 meters
+
+ARRIVE AT DATA COLLECTION POINT 95
+Location: 73.004917, 19.178382
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 95 to Point 96 ---
+Distance: 0.39 km
+Time: 1.0 minutes
+
+Continue on Unnamed Road for 394 meters
+
+ARRIVE AT DATA COLLECTION POINT 96
+Location: 73.004859, 19.175117
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 96 to Point 97 ---
+Distance: 0.23 km
+Time: 0.6 minutes
+
+Continue on Unnamed Road for 228 meters
+
+ARRIVE AT DATA COLLECTION POINT 97
+Location: 73.006446, 19.173052
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 97 to Point 98 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Unnamed Road for 14 meters
+
+ARRIVE AT DATA COLLECTION POINT 98
+Location: 73.006789, 19.172732
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 98 to Point 99 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 99
+Location: 73.006680, 19.172983
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 99 to Point 100 ---
+Distance: 0.08 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 75 meters
+
+ARRIVE AT DATA COLLECTION POINT 100
+Location: 73.006641, 19.172205
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 100 to Point 101 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 101
+Location: 73.006544, 19.171957
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 101 to Point 102 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 102
+Location: 73.006583, 19.172439
+Street: nan
+Collect required data at this location before continuing.

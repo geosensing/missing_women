@@ -1,0 +1,50 @@
+===== ITINERARY 13 DIRECTIONS =====
+
+Total distance: 3.02 km
+Estimated time: 5.1 minutes
+Number of data collection points: 5
+Cluster: 12
+
+
+--- Point 1 to Point 2 ---
+Distance: 2.95 km
+Time: 5.0 minutes
+
+Continue on Unnamed Road for 1145 meters
+Continue on Palm Beach Marg for 1806 meters
+
+ARRIVE AT DATA COLLECTION POINT 2
+Location: 73.008339, 19.045614
+Street: Palm Beach Marg
+Collect required data at this location before continuing.
+
+--- Point 2 to Point 3 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 3
+Location: 73.008200, 19.045979
+Street: Palm Beach Marg
+Collect required data at this location before continuing.
+
+--- Point 3 to Point 4 ---
+Distance: 0.06 km
+Time: 0.1 minutes
+
+Continue on Palm Beach Marg for 65 meters
+
+ARRIVE AT DATA COLLECTION POINT 4
+Location: 73.008269, 19.044262
+Street: Palm Beach Marg
+Collect required data at this location before continuing.
+
+--- Point 4 to Point 5 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 5
+Location: 73.008272, 19.044325
+Street: Palm Beach Marg
+Collect required data at this location before continuing.
