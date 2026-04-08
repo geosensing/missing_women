@@ -172,30 +172,42 @@ cython_debug/
 .pypirc
 .DS_Store
 data/._.DS_Store
-/vids
 scripts/._.DS_Store
-/data
-/data
-/data/delhi_planet_76.833,28.408_77.338,28.885-shp
-/data
-/scripts/video_frames
-/out
-/data
+
+# Large data directories (gitignored)
+/data/frames
+/data/frames_new
+/data/annotation_frames
+/data/annotation_frames_new
+
+# Video files and frames
+/vids
 /mumbai_video_frames
 /mumbai_vids
-streamlit/.secrets.toml
-/streamlit/.streamlit
 /mumbai_frames_3x
 /mumbai_frames_flash_3x
-/scripts/output
-/exif
 /frames
 /annotation_frames
 /annotation_frames_new
 /frames_new
+/exif
+
+# Scripts output
+/scripts/video_frames
+/scripts/output
+/out
+
+# GCP and other large data
 /gcp
 /sampling/bangalore/network
-/output/frames_new
-/output/frames
-/output/annotation_frames_new
-/output/annotation_frames
+/data/delhi_planet_76.833,28.408_77.338,28.885-shp
+
+# Streamlit secrets
+streamlit/.secrets.toml
+/streamlit/.streamlit
+
+# LaTeX output
+/streetscope_science/tex
+/data/annotation_task
+/data/mumbai/exif_metadata
+/data/navi_mumbai/exif_metadata

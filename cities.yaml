@@ -1,0 +1,14 @@
+mumbai:
+  video_dir: /Volumes/Samsung USB/missing_women/mumbai_vids
+  osm_file: maharashtra-latest.osm.pbf
+  timezone: Asia/Kolkata
+
+navi_mumbai:
+  video_dir: /Volumes/Samsung USB/missing_women/navi_mumbai_vids
+  osm_file: maharashtra-latest.osm.pbf
+  timezone: Asia/Kolkata
+
+bangalore:
+  video_dir: /Volumes/Samsung USB/missing_women/bangalore_vids
+  osm_file: karnataka-latest.osm.pbf
+  timezone: Asia/Kolkata
