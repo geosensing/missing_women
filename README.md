@@ -15,10 +15,12 @@ Women are significantly underrepresented in public spaces, comprising only 15-16
 
 ### By Mode
 
-|  | Mumbai | Navi Mumbai |
-|--|--------|-------------|
-| Pedestrian prop. female | 19.3% | 18.2% |
-| Pedestrian sex ratio | 239 | 222 |
+| Mode | Mumbai | Navi Mumbai |
+|------|--------|-------------|
+| Pedestrians | 19.3% | 18.2% |
+| Two-wheelers | 8.4% | 5.7% |
+
+Women are far less represented among two-wheeler riders than pedestrians.
 
 ### By Road Type
 
