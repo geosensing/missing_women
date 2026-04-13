@@ -8,21 +8,27 @@
  & Mumbai & Navi Mumbai \\
 \midrule
 Images annotated & 2,251 & 1,239 \\
+Video sessions (clusters) & 118 & 54 \\
 Total people classified & 16,908 & 6,855 \\
 \addlinespace
-Prop.\ female (person-weighted) & 0.164 & 0.147 \\
-Prop.\ female (image-level mean) & 0.156 & 0.155 \\
+Prop.\ female (person-weighted) & 0.164 [0.150, 0.177] & 0.147 [0.133, 0.161] \\
+Prop.\ female (image-level mean) & 0.156 [0.141, 0.171] & 0.155 [0.136, 0.173] \\
 \addlinespace
 Sex ratio (F/1000 M) & 196 & 172 \\
 \addlinespace
 Pedestrian prop.\ female & 0.193 & 0.182 \\
 Pedestrian sex ratio (F/1000 M) & 239 & 222 \\
+\addlinespace
+\multicolumn{3}{l}{\textit{Clustering diagnostics}} \\
+ICC (prop.\ female by video) & 0.058 & 0.052 \\
+Design effect & 2.05 & 2.15 \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}[flushleft]
-\item Person-weighted estimates weight each individual equally; image-level means weight each frame equally regardless of crowd size.
-\item Sex ratio is women per 1,000 men.
-\item Gender inferred from visible appearance.
+\item 95\% confidence intervals in brackets use cluster-robust standard errors (clustered by video session).
+\item Person-weighted estimates weight each individual equally; image-level means weight each frame equally.
+\item Sex ratio is women per 1,000 men. Gender inferred from visible appearance.
+\item Design effect = $1 + (\bar{n}_k - 1) \times \text{ICC}$, where $\bar{n}_k$ is average cluster size.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}

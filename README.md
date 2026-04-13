@@ -6,12 +6,12 @@ Analyzing gender representation in Mumbai and Navi Mumbai using GoPro wearable c
 
 ### Summary
 
-| City | Images | People | Prop. Female | Sex Ratio |
-|------|--------|--------|--------------|-----------|
-| Mumbai | 2,251 | 16,908 | 16.4% | 196 |
-| Navi Mumbai | 1,239 | 6,855 | 14.7% | 172 |
+| City | Images | Pedestrians | Prop. Female | Sex Ratio |
+|------|--------|-------------|--------------|-----------|
+| Mumbai | 2,251 | 12,382 | 19.3% | 239 |
+| Navi Mumbai | 1,239 | 4,951 | 18.2% | 222 |
 
-Women are significantly underrepresented in public spaces, comprising only 15-16% of visible people. The pedestrian sex ratio (females per 1000 males) is far below census baselines (Mumbai: 838, Navi Mumbai: 910).
+Women are significantly underrepresented in public spaces, comprising only 18-19% of pedestrians. The pedestrian sex ratio (females per 1000 males) is far below census baselines (Mumbai: 838, Navi Mumbai: 910).
 
 ### By Mode
 

@@ -3,18 +3,18 @@
 \caption{Points of interest and infrastructure summaries.}
 \label{tab:poi_infra}
 \begin{threeparttable}
-\begin{tabular}{llrr}
+\begin{tabular}{llcc}
 \toprule
-Characteristic & Present & Prop.\ female & Images \\
+Characteristic & Present & Prop.\ female [95\% CI] & Images (clusters) \\
 \midrule
-Bus station & Yes & 0.170 & 137 \\
-Bus station & No & 0.158 & 3,348 \\
+Bus station & Yes & 0.170 [0.142, 0.197] & 137 (74) \\
+Bus station & No & 0.158 [0.148, 0.169] & 3,348 (172) \\
 \addlinespace
-Railway station & Yes & 0.149 & 8 \\
-Railway station & No & 0.159 & 3,477 \\
+Railway station & Yes & 0.149 [0.117, 0.182] & 8 (3) \\
+Railway station & No & 0.159 [0.148, 0.169] & 3,477 (172) \\
 \addlinespace
-Street vendor & Yes & 0.202 & 257 \\
-Street vendor & No & 0.153 & 3,227 \\
+Street vendor & Yes & 0.202 [0.173, 0.230] & 257 (100) \\
+Street vendor & No & 0.153 [0.144, 0.163] & 3,227 (172) \\
 \addlinespace
 \midrule
 \multicolumn{4}{l}{\textit{Infrastructure coverage (all cities pooled)}} \\
@@ -28,7 +28,9 @@ Litter & Yes & -- & 443 (13\%) \\
 Litter & No & -- & 3,047 (87\%) \\
 \addlinespace
 \bottomrule
+\end{tabular}
 \begin{tablenotes}[flushleft]
+\item 95\% CIs use cluster-robust standard errors (clustered by video session).
 \item Infrastructure fields are sparse; not all images have all fields coded.
 \end{tablenotes}
 \end{threeparttable}

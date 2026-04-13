@@ -211,3 +211,4 @@ streamlit/.secrets.toml
 /data/annotation_task
 /data/mumbai/exif_metadata
 /data/navi_mumbai/exif_metadata
+data/mumbai/validation_batch_input.jsonl

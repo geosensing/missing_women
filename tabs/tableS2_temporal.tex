@@ -3,14 +3,14 @@
 \caption{Temporal patterns and data-collection coverage.}
 \label{tab:temporal}
 \begin{threeparttable}
-\begin{tabular}{llrr}
+\begin{tabular}{llcc}
 \toprule
-City & Period & Prop.\ female & Images \\
+City & Period & Prop.\ female [95\% CI] & Images (clusters) \\
 \midrule
-Mumbai & Weekday & 0.167 & 1,845 \\
-Mumbai & Weekend & 0.148 & 406 \\
-Navi Mumbai & Weekday & 0.146 & 1,108 \\
-Navi Mumbai & Weekend & 0.157 & 131 \\
+Mumbai & Weekday & 0.167 [0.152, 0.182] & 1,845 (90) \\
+Mumbai & Weekend & 0.148 [0.121, 0.174] & 406 (28) \\
+Navi Mumbai & Weekday & 0.146 [0.131, 0.160] & 1,108 (47) \\
+Navi Mumbai & Weekend & 0.157 [0.108, 0.206] & 131 (7) \\
 \midrule
 \multicolumn{4}{l}{\textit{Share of images by time window}} \\
 \midrule
@@ -21,7 +21,9 @@ Navi Mumbai & Morning (7-11) & 48.1\% & 596 \\
 Navi Mumbai & Midday (11-15) & 41.0\% & 508 \\
 Navi Mumbai & Evening (15-19) & 10.9\% & 135 \\
 \bottomrule
+\end{tabular}
 \begin{tablenotes}[flushleft]
+\item 95\% CIs use cluster-robust standard errors (clustered by video session).
 \item Coverage spans daytime hours only.
 \end{tablenotes}
 \end{threeparttable}

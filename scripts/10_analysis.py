@@ -35,6 +35,8 @@ from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
 import pandas as pd
 
+import clustered_inference as ci
+
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "data"
 FIGS = ROOT / "figs"
@@ -102,7 +104,7 @@ def write_tex(path: Path, lines: list[str]) -> None:
 # =============================================================================
 
 def make_table1_city_summary(df: pd.DataFrame, cities: list[str]) -> None:
-    """City-level summary table with images, people, prop_women, sex ratio."""
+    """City-level summary table with images, people, prop_women, sex ratio, and cluster-robust CIs."""
     lines = [
         r"\begin{table}[t]",
         r"\centering",
@@ -120,34 +122,58 @@ def make_table1_city_summary(df: pd.DataFrame, cities: list[str]) -> None:
         sub = df[df["city"] == city]
         valid = sub[sub["total_people"] > 0]
 
+        weighted_ci = ci.compute_cluster_robust_ci(
+            valid, "prop_women", "base_video_id", weight_col="total_people"
+        )
+        unweighted_ci = ci.compute_cluster_robust_ci(
+            valid, "prop_women", "base_video_id"
+        )
+        icc_info = ci.compute_icc(valid, "prop_women", "base_video_id")
+
         row_data[city] = {
             "n_images": len(sub),
+            "n_clusters": icc_info["n_clusters"],
             "n_people": sub["total_people"].sum(),
-            "weighted_prop": sub["total_women"].sum() / sub["total_people"].sum() if sub["total_people"].sum() > 0 else 0,
-            "unweighted_prop": valid["prop_women"].mean() if len(valid) > 0 else 0,
+            "weighted": weighted_ci["mean"],
+            "weighted_ci_lower": weighted_ci["ci_lower"],
+            "weighted_ci_upper": weighted_ci["ci_upper"],
+            "unweighted": unweighted_ci["mean"],
+            "unweighted_ci_lower": unweighted_ci["ci_lower"],
+            "unweighted_ci_upper": unweighted_ci["ci_upper"],
             "sex_ratio": (sub["total_women"].sum() / sub["total_men"].sum() * 1000) if sub["total_men"].sum() > 0 else 0,
             "ped_prop": sub["women_count"].sum() / (sub["women_count"].sum() + sub["men_count"].sum()) if (sub["women_count"].sum() + sub["men_count"].sum()) > 0 else 0,
             "ped_sex_ratio": (sub["women_count"].sum() / sub["men_count"].sum() * 1000) if sub["men_count"].sum() > 0 else 0,
+            "icc": icc_info["icc"],
+            "design_effect": icc_info["design_effect"],
         }
 
+    def fmt_ci(d: dict, key: str) -> str:
+        return f"{d[key]:.3f} [{d[key + '_ci_lower']:.3f}, {d[key + '_ci_upper']:.3f}]"
+
     lines.append("Images annotated & " + " & ".join(f"{row_data[c]['n_images']:,}" for c in cities) + r" \\")
+    lines.append("Video sessions (clusters) & " + " & ".join(f"{row_data[c]['n_clusters']:,}" for c in cities) + r" \\")
     lines.append("Total people classified & " + " & ".join(f"{row_data[c]['n_people']:,}" for c in cities) + r" \\")
     lines.append(r"\addlinespace")
-    lines.append("Prop.\\ female (person-weighted) & " + " & ".join(f"{row_data[c]['weighted_prop']:.3f}" for c in cities) + r" \\")
-    lines.append("Prop.\\ female (image-level mean) & " + " & ".join(f"{row_data[c]['unweighted_prop']:.3f}" for c in cities) + r" \\")
+    lines.append("Prop.\\ female (person-weighted) & " + " & ".join(fmt_ci(row_data[c], "weighted") for c in cities) + r" \\")
+    lines.append("Prop.\\ female (image-level mean) & " + " & ".join(fmt_ci(row_data[c], "unweighted") for c in cities) + r" \\")
     lines.append(r"\addlinespace")
     lines.append("Sex ratio (F/1000 M) & " + " & ".join(f"{row_data[c]['sex_ratio']:.0f}" for c in cities) + r" \\")
     lines.append(r"\addlinespace")
     lines.append("Pedestrian prop.\\ female & " + " & ".join(f"{row_data[c]['ped_prop']:.3f}" for c in cities) + r" \\")
     lines.append("Pedestrian sex ratio (F/1000 M) & " + " & ".join(f"{row_data[c]['ped_sex_ratio']:.0f}" for c in cities) + r" \\")
+    lines.append(r"\addlinespace")
+    lines.append(r"\multicolumn{" + str(len(cities) + 1) + r"}{l}{\textit{Clustering diagnostics}} \\")
+    lines.append("ICC (prop.\\ female by video) & " + " & ".join(f"{row_data[c]['icc']:.3f}" for c in cities) + r" \\")
+    lines.append("Design effect & " + " & ".join(f"{row_data[c]['design_effect']:.2f}" for c in cities) + r" \\")
 
     lines += [
         r"\bottomrule",
         r"\end{tabular}",
         r"\begin{tablenotes}[flushleft]",
-        r"\item Person-weighted estimates weight each individual equally; image-level means weight each frame equally regardless of crowd size.",
-        r"\item Sex ratio is women per 1,000 men.",
-        r"\item Gender inferred from visible appearance.",
+        r"\item 95\% confidence intervals in brackets use cluster-robust standard errors (clustered by video session).",
+        r"\item Person-weighted estimates weight each individual equally; image-level means weight each frame equally.",
+        r"\item Sex ratio is women per 1,000 men. Gender inferred from visible appearance.",
+        r"\item Design effect = $1 + (\bar{n}_k - 1) \times \text{ICC}$, where $\bar{n}_k$ is average cluster size.",
         r"\end{tablenotes}",
         r"\end{threeparttable}",
         r"\end{table}",
@@ -158,7 +184,7 @@ def make_table1_city_summary(df: pd.DataFrame, cities: list[str]) -> None:
 
 
 def make_tableS1_road_type(df: pd.DataFrame, cities: list[str]) -> None:
-    """Prop women by itinerary_road_type per city."""
+    """Prop women by itinerary_road_type per city with cluster-robust CIs."""
     road_types = ["primary", "secondary", "tertiary", "residential"]
 
     lines = [
@@ -167,9 +193,9 @@ def make_tableS1_road_type(df: pd.DataFrame, cities: list[str]) -> None:
         r"\caption{Women's share of visible people by road type.}",
         r"\label{tab:road_type}",
         r"\begin{threeparttable}",
-        r"\begin{tabular}{llcc}",
+        r"\begin{tabular}{llccc}",
         r"\toprule",
-        r"City & Road type & Prop.\ female & Sex ratio (F/1000\,M) \\",
+        r"City & Road type & Prop.\ female [95\% CI] & Sex ratio & N (clusters) \\",
         r"\midrule",
     ]
 
@@ -179,17 +205,20 @@ def make_tableS1_road_type(df: pd.DataFrame, cities: list[str]) -> None:
         first = True
         for rt in road_types:
             rt_sub = sub[sub["itinerary_road_type"] == rt]
-            if len(rt_sub) == 0:
+            valid = rt_sub[rt_sub["total_people"] > 0]
+            if len(valid) == 0:
                 continue
             total_women = rt_sub["total_women"].sum()
             total_men = rt_sub["total_men"].sum()
-            total_people = rt_sub["total_people"].sum()
-            if total_people > 0:
-                prop = total_women / total_people
-                sr = (total_women / total_men * 1000) if total_men > 0 else 0
-                city_col = city_label if first else ""
-                lines.append(f"{city_col} & {rt.title()} & {prop:.3f} & {sr:.0f} \\\\")
-                first = False
+
+            result = ci.compute_cluster_robust_ci(
+                valid, "prop_women", "base_video_id", weight_col="total_people"
+            )
+            sr = (total_women / total_men * 1000) if total_men > 0 else 0
+            city_col = city_label if first else ""
+            prop_ci = f"{result['mean']:.3f} [{result['ci_lower']:.3f}, {result['ci_upper']:.3f}]"
+            lines.append(f"{city_col} & {rt.title()} & {prop_ci} & {sr:.0f} & {result['n_obs']} ({result['n_clusters']}) \\\\")
+            first = False
         lines.append(r"\addlinespace")
 
     lines += [
@@ -197,6 +226,7 @@ def make_tableS1_road_type(df: pd.DataFrame, cities: list[str]) -> None:
         r"\end{tabular}",
         r"\begin{tablenotes}[flushleft]",
         r"\item Road type assigned from itinerary classification.",
+        r"\item 95\% CIs use cluster-robust standard errors (clustered by video session).",
         r"\item Person-weighted estimates.",
         r"\end{tablenotes}",
         r"\end{threeparttable}",
@@ -208,16 +238,16 @@ def make_tableS1_road_type(df: pd.DataFrame, cities: list[str]) -> None:
 
 
 def make_tableS2_temporal(df: pd.DataFrame, cities: list[str]) -> None:
-    """Weekday/weekend, time-of-day coverage."""
+    """Weekday/weekend, time-of-day coverage with cluster-robust CIs."""
     lines = [
         r"\begin{table}[t]",
         r"\centering",
         r"\caption{Temporal patterns and data-collection coverage.}",
         r"\label{tab:temporal}",
         r"\begin{threeparttable}",
-        r"\begin{tabular}{llrr}",
+        r"\begin{tabular}{llcc}",
         r"\toprule",
-        r"City & Period & Prop.\ female & Images \\",
+        r"City & Period & Prop.\ female [95\% CI] & Images (clusters) \\",
         r"\midrule",
     ]
 
@@ -227,12 +257,14 @@ def make_tableS2_temporal(df: pd.DataFrame, cities: list[str]) -> None:
 
         for is_we, label in [(False, "Weekday"), (True, "Weekend")]:
             we_sub = sub[sub["is_weekend"] == is_we]
-            if len(we_sub) == 0:
+            valid = we_sub[we_sub["total_people"] > 0]
+            if len(valid) == 0:
                 continue
-            total_women = we_sub["total_women"].sum()
-            total_people = we_sub["total_people"].sum()
-            prop = total_women / total_people if total_people > 0 else 0
-            lines.append(f"{city_label} & {label} & {prop:.3f} & {len(we_sub):,} \\\\")
+            result = ci.compute_cluster_robust_ci(
+                valid, "prop_women", "base_video_id", weight_col="total_people"
+            )
+            prop_ci = f"{result['mean']:.3f} [{result['ci_lower']:.3f}, {result['ci_upper']:.3f}]"
+            lines.append(f"{city_label} & {label} & {prop_ci} & {len(we_sub):,} ({result['n_clusters']}) \\\\")
 
     lines.append(r"\midrule")
     lines.append(r"\multicolumn{4}{l}{\textit{Share of images by time window}} \\")
@@ -256,7 +288,9 @@ def make_tableS2_temporal(df: pd.DataFrame, cities: list[str]) -> None:
 
     lines += [
         r"\bottomrule",
+        r"\end{tabular}",
         r"\begin{tablenotes}[flushleft]",
+        r"\item 95\% CIs use cluster-robust standard errors (clustered by video session).",
         r"\item Coverage spans daytime hours only.",
         r"\end{tablenotes}",
         r"\end{threeparttable}",
@@ -268,16 +302,16 @@ def make_tableS2_temporal(df: pd.DataFrame, cities: list[str]) -> None:
 
 
 def make_tableS3_poi_infrastructure(df: pd.DataFrame) -> None:
-    """POI effects, infrastructure counts."""
+    """POI effects, infrastructure counts with cluster-robust CIs."""
     lines = [
         r"\begin{table}[t]",
         r"\centering",
         r"\caption{Points of interest and infrastructure summaries.}",
         r"\label{tab:poi_infra}",
         r"\begin{threeparttable}",
-        r"\begin{tabular}{llrr}",
+        r"\begin{tabular}{llcc}",
         r"\toprule",
-        r"Characteristic & Present & Prop.\ female & Images \\",
+        r"Characteristic & Present & Prop.\ female [95\% CI] & Images (clusters) \\",
         r"\midrule",
     ]
 
@@ -294,10 +328,11 @@ def make_tableS3_poi_infrastructure(df: pd.DataFrame) -> None:
             sub = valid[valid[field] == val]
             if len(sub) == 0:
                 continue
-            total_women = sub["total_women"].sum()
-            total_people = sub["total_people"].sum()
-            prop = total_women / total_people if total_people > 0 else 0
-            lines.append(f"{label} & {val_label} & {prop:.3f} & {len(sub):,} \\\\")
+            result = ci.compute_cluster_robust_ci(
+                sub, "prop_women", "base_video_id", weight_col="total_people"
+            )
+            prop_ci = f"{result['mean']:.3f} [{result['ci_lower']:.3f}, {result['ci_upper']:.3f}]"
+            lines.append(f"{label} & {val_label} & {prop_ci} & {len(sub):,} ({result['n_clusters']}) \\\\")
         lines.append(r"\addlinespace")
 
     lines.append(r"\midrule")
@@ -321,7 +356,9 @@ def make_tableS3_poi_infrastructure(df: pd.DataFrame) -> None:
 
     lines += [
         r"\bottomrule",
+        r"\end{tabular}",
         r"\begin{tablenotes}[flushleft]",
+        r"\item 95\% CIs use cluster-robust standard errors (clustered by video session).",
         r"\item Infrastructure fields are sparse; not all images have all fields coded.",
         r"\end{tablenotes}",
         r"\end{threeparttable}",
@@ -337,7 +374,7 @@ def make_tableS3_poi_infrastructure(df: pd.DataFrame) -> None:
 # =============================================================================
 
 def make_fig2_distribution(df: pd.DataFrame, cities: list[str]) -> None:
-    """Side-by-side histograms of prop_women."""
+    """Side-by-side histograms of prop_women with cluster-robust CIs."""
     valid = df[df["total_people"] > 0]
 
     fig, axes = plt.subplots(1, len(cities), figsize=(5.5, 2.2), sharey=True)
@@ -348,14 +385,20 @@ def make_fig2_distribution(df: pd.DataFrame, cities: list[str]) -> None:
 
     for ax, city in zip(axes, cities):
         color = COLORS.get(city, "#666666")
-        vals = valid[valid["city"] == city]["prop_women"].dropna()
+        city_data = valid[valid["city"] == city]
+        vals = city_data["prop_women"].dropna()
+
+        result = ci.compute_cluster_robust_ci(
+            city_data, "prop_women", "base_video_id", weight_col="total_people"
+        )
 
         ax.hist(vals, bins=bins, color=color, alpha=0.85, edgecolor="white", linewidth=0.3)
         ax.axvline(x=0.5, color=PARITY_C, linestyle="--", linewidth=0.7, label="Parity")
         ax.axvline(
-            x=vals.mean(), color=color, linestyle="-", linewidth=1.2,
-            label=f"Mean = {vals.mean():.2f}",
+            x=result["mean"], color=color, linestyle="-", linewidth=1.2,
+            label=f"Mean = {result['mean']:.2f}",
         )
+        ax.axvspan(result["ci_lower"], result["ci_upper"], alpha=0.15, color=color)
         ax.set_xlabel("Proportion female")
         ax.set_title(CITY_LABELS.get(city, city), fontsize=9, fontweight="bold")
         ax.legend(fontsize=6.5, frameon=False, loc="upper right")

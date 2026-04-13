@@ -3,24 +3,25 @@
 \caption{Women's share of visible people by road type.}
 \label{tab:road_type}
 \begin{threeparttable}
-\begin{tabular}{llcc}
+\begin{tabular}{llccc}
 \toprule
-City & Road type & Prop.\ female & Sex ratio (F/1000\,M) \\
+City & Road type & Prop.\ female [95\% CI] & Sex ratio & N (clusters) \\
 \midrule
-Mumbai & Primary & 0.147 & 173 \\
- & Secondary & 0.141 & 165 \\
- & Tertiary & 0.169 & 203 \\
- & Residential & 0.171 & 207 \\
+Mumbai & Primary & 0.147 [0.115, 0.180] & 173 & 103 (4) \\
+ & Secondary & 0.141 [0.101, 0.182] & 165 & 256 (12) \\
+ & Tertiary & 0.169 [0.110, 0.228] & 203 & 334 (20) \\
+ & Residential & 0.171 [0.157, 0.186] & 207 & 795 (38) \\
 \addlinespace
-Navi Mumbai & Primary & 0.179 & 217 \\
- & Secondary & 0.155 & 184 \\
- & Tertiary & 0.164 & 197 \\
- & Residential & 0.149 & 175 \\
+Navi Mumbai & Primary & 0.157 [nan, nan] & 217 & 4 (1) \\
+ & Secondary & 0.155 [0.116, 0.194] & 184 & 60 (4) \\
+ & Tertiary & 0.164 [0.119, 0.210] & 197 & 142 (12) \\
+ & Residential & 0.149 [0.128, 0.170] & 175 & 606 (24) \\
 \addlinespace
 \bottomrule
 \end{tabular}
 \begin{tablenotes}[flushleft]
 \item Road type assigned from itinerary classification.
+\item 95\% CIs use cluster-robust standard errors (clustered by video session).
 \item Person-weighted estimates.
 \end{tablenotes}
 \end{threeparttable}
