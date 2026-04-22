@@ -212,3 +212,9 @@ streamlit/.secrets.toml
 /data/mumbai/exif_metadata
 /data/navi_mumbai/exif_metadata
 data/mumbai/validation_batch_input.jsonl
+/cache
+/scripts/gen_data/cache
+/scripts/gen_data/delhi/cache
+/scripts/gen_data/hyderabad/cache
+/sampling/hyderabad/network
+/sampling/delhi/network

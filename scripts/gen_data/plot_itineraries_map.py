@@ -107,7 +107,7 @@ def main():
     parser = argparse.ArgumentParser(description="Generate itinerary maps")
     parser.add_argument(
         "--city",
-        choices=["bangalore", "navi_mumbai", "all"],
+        choices=["bangalore", "delhi", "hyderabad", "navi_mumbai", "mumbai", "all"],
         default="all",
         help="City to generate map for",
     )
@@ -122,11 +122,29 @@ def main():
             "sampled_points": base_dir / "bangalore/sampled_points/sampled_points.geojson",
             "output": base_dir / "bangalore/visualizations/itineraries_map.html",
         },
+        "delhi": {
+            "itineraries": base_dir / "delhi/itineraries/itineraries.geojson",
+            "boundary": base_dir / "delhi/boundaries/delhi_boundary.geojson",
+            "sampled_points": base_dir / "delhi/sampled_points/sampled_points.geojson",
+            "output": base_dir / "delhi/visualizations/itineraries_map.html",
+        },
         "navi_mumbai": {
             "itineraries": base_dir / "navi_mumbai/itineraries/itineraries.geojson",
             "boundary": base_dir / "navi_mumbai/boundaries/boundary.geojson",
             "sampled_points": base_dir / "navi_mumbai/sampled_points/sampled_points.geojson",
             "output": base_dir / "navi_mumbai/visualizations/itineraries_map.html",
+        },
+        "hyderabad": {
+            "itineraries": base_dir / "hyderabad/itineraries/itineraries.geojson",
+            "boundary": base_dir / "hyderabad/boundaries/hyderabad_boundary.geojson",
+            "sampled_points": base_dir / "hyderabad/sampled_points/sampled_points.geojson",
+            "output": base_dir / "hyderabad/visualizations/itineraries_map.html",
+        },
+        "mumbai": {
+            "itineraries": base_dir / "mumbai/itineraries/itineraries.geojson",
+            "boundary": base_dir / "mumbai/boundaries/mumbai_boundary.geojson",
+            "sampled_points": None,
+            "output": base_dir / "mumbai/visualizations/itineraries_map.html",
         },
     }
 
