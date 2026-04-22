@@ -12,6 +12,7 @@ Shared functions for:
 """
 
 import math
+import time
 import urllib.parse
 
 import geopandas as gpd
@@ -19,9 +20,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import requests
+from requests.adapters import HTTPAdapter
 from shapely.geometry import LineString
+from urllib3.util.retry import Retry
 
-from allocator.core.itinerary import greedy_grow_itineraries, tsp_optimize_route
+from allocator.core.itinerary import greedy_grow_itineraries
 
 
 def haversine(lat1, lon1, lat2, lon2):
@@ -71,9 +74,22 @@ def split_road_segment(geom, segment_length=500):
     return points
 
 
-def osrm_distance_matrix(X, Y=None, chunksize=100):
-    """Compute OSRM distance matrix in chunks."""
-    api_base = "http://router.project-osrm.org/table/v1/driving/"
+def osrm_distance_matrix(X, Y=None, chunksize=100, use_local=True):
+    """Compute OSRM distance matrix in chunks with retry logic."""
+    if use_local:
+        api_base = "http://localhost:5000/table/v1/driving/"
+    else:
+        api_base = "http://router.project-osrm.org/table/v1/driving/"
+
+    session = requests.Session()
+    retry_strategy = Retry(
+        total=5,
+        backoff_factor=2,
+        status_forcelist=[429, 500, 502, 503, 504],
+    )
+    adapter = HTTPAdapter(max_retries=retry_strategy)
+    session.mount("http://", adapter)
+    session.mount("https://", adapter)
 
     n_X = len(X)
     if Y is None:
@@ -82,6 +98,7 @@ def osrm_distance_matrix(X, Y=None, chunksize=100):
     m = chunksize * 1.0
     Xsplits = math.ceil(n_X / m)
     Ysplits = math.ceil(n_Y / m)
+    total_requests = Xsplits * Ysplits
     o = None
     count = 0
     for s in np.array_split(X, Xsplits):
@@ -99,16 +116,31 @@ def osrm_distance_matrix(X, Y=None, chunksize=100):
                 + destinations
             )
             count += 1
-            r = requests.get(url)
-            if r.status_code != 200:
-                print(f"   OSRM Table API request error: {r.text}")
-                break
-            dm = r.json()["distances"]
+            try:
+                r = session.get(url, timeout=60)
+                if r.status_code != 200:
+                    print(f"   OSRM Table API request error: {r.text}")
+                    time.sleep(5)
+                    continue
+                dm = r.json()["distances"]
+            except requests.exceptions.RequestException as e:
+                print(f"   OSRM request failed: {e}, retrying after delay...")
+                time.sleep(10)
+                try:
+                    r = session.get(url, timeout=60)
+                    dm = r.json()["distances"]
+                except Exception:
+                    print(f"   OSRM request permanently failed at chunk {count}")
+                    return None
             arr = np.array(dm)
             if c is None:
                 c = arr
             else:
                 c = np.concatenate((c, arr), axis=1)
+            if count % 10 == 0:
+                print(f"   Progress: {count}/{total_requests} requests")
+            if not use_local:
+                time.sleep(0.5)
         if o is None:
             o = c
         else:
@@ -182,14 +214,7 @@ def create_itineraries(df_sampled, distance_matrix, max_distance, rng):
 
     print(f"   Created {len(itinerary_indices)} itineraries")
 
-    print("   Applying TSP optimization...")
-    optimized_itineraries = []
-    for indices in itinerary_indices:
-        if len(indices) > 2:
-            optimized = tsp_optimize_route(indices, distance_matrix)
-        else:
-            optimized = indices
-        optimized_itineraries.append(optimized)
+    optimized_itineraries = itinerary_indices
 
     all_itineraries = []
     for itin_idx, indices in enumerate(optimized_itineraries):

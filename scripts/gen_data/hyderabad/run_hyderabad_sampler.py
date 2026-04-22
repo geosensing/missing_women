@@ -40,7 +40,7 @@ from common.sampler_utils import (
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent.parent.parent
 OUTPUT_DIR = PROJECT_ROOT / "sampling" / "hyderabad"
-N_SAMPLE_POINTS = 2000
+N_SAMPLE_POINTS = 1000
 MAX_ITINERARY_DISTANCE = 100000  # 100 km in meters
 SEGMENT_LENGTH = 500  # meters
 RANDOM_SEED = 42
@@ -199,7 +199,7 @@ def main():
     # 4. Compute full OSRM distance matrix
     print("\n4. Computing OSRM distance matrix for all points...")
     coords = df_sampled[["lon", "lat"]].to_numpy()
-    distance_matrix = osrm_distance_matrix(coords)
+    distance_matrix = osrm_distance_matrix(coords, use_local=False)
 
     if distance_matrix is None:
         raise ValueError("OSRM distance matrix computation failed")
