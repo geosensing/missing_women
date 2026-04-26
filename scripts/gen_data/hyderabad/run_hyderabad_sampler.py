@@ -28,6 +28,7 @@ from shapely.geometry import Point
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from common.sampler_utils import (
+    ItineraryConfig,
     create_folium_map,
     create_itineraries,
     create_static_visualizations,
@@ -67,6 +68,9 @@ def main():
     parser = argparse.ArgumentParser(description="Hyderabad Data Collection Sampler")
     parser.add_argument(
         "--resume", action="store_true", help="Resume from completed steps"
+    )
+    parser.add_argument(
+        "--tsp", action="store_true", help="Enable TSP optimization for route ordering"
     )
     args = parser.parse_args()
 
@@ -211,8 +215,12 @@ def main():
 
     # 5. Create itineraries
     print("\n5. Creating ~100km itineraries...")
+    config = ItineraryConfig(
+        max_distance=MAX_ITINERARY_DISTANCE,
+        optimize_tsp=args.tsp,
+    )
     all_itineraries, optimized_indices, itinerary_distances = create_itineraries(
-        df_sampled, distance_matrix, MAX_ITINERARY_DISTANCE, rng
+        df_sampled, distance_matrix, config, rng
     )
 
     # 6. Save itineraries

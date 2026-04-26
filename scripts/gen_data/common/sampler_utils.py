@@ -14,6 +14,7 @@ Shared functions for:
 import math
 import time
 import urllib.parse
+from dataclasses import dataclass
 
 import geopandas as gpd
 import matplotlib.pyplot as plt
@@ -22,9 +23,19 @@ import pandas as pd
 import requests
 from requests.adapters import HTTPAdapter
 from shapely.geometry import LineString
+from tqdm import tqdm
 from urllib3.util.retry import Retry
 
-from allocator.core.itinerary import greedy_grow_itineraries
+from allocator.core.itinerary import greedy_grow_itineraries, tsp_optimize_route
+
+
+@dataclass
+class ItineraryConfig:
+    """Configuration for itinerary generation."""
+
+    max_distance: float = 100_000
+    start_method: str = "furthest"
+    optimize_tsp: bool = False
 
 
 def haversine(lat1, lon1, lat2, lon2):
@@ -100,52 +111,52 @@ def osrm_distance_matrix(X, Y=None, chunksize=100, use_local=True):
     Ysplits = math.ceil(n_Y / m)
     total_requests = Xsplits * Ysplits
     o = None
-    count = 0
-    for s in np.array_split(X, Xsplits):
-        c = None
-        for d in np.array_split(Y, Ysplits):
-            a = ";".join([",".join([str(x) for x in b]) for b in (list(s) + list(d))])
-            sources = ";".join([str(k) for k in range(0, len(s))])
-            destinations = ";".join([str(k) for k in range(len(s), len(s) + len(d))])
-            url = (
-                api_base
-                + a
-                + "?annotations=distance,duration&sources="
-                + sources
-                + "&destinations="
-                + destinations
-            )
-            count += 1
-            try:
-                r = session.get(url, timeout=60)
-                if r.status_code != 200:
-                    print(f"   OSRM Table API request error: {r.text}")
-                    time.sleep(5)
-                    continue
-                dm = r.json()["distances"]
-            except requests.exceptions.RequestException as e:
-                print(f"   OSRM request failed: {e}, retrying after delay...")
-                time.sleep(10)
+
+    with tqdm(total=total_requests, desc="OSRM distance matrix") as pbar:
+        for s in np.array_split(X, Xsplits):
+            c = None
+            for d in np.array_split(Y, Ysplits):
+                a = ";".join([",".join([str(x) for x in b]) for b in (list(s) + list(d))])
+                sources = ";".join([str(k) for k in range(0, len(s))])
+                destinations = ";".join([str(k) for k in range(len(s), len(s) + len(d))])
+                url = (
+                    api_base
+                    + a
+                    + "?annotations=distance,duration&sources="
+                    + sources
+                    + "&destinations="
+                    + destinations
+                )
                 try:
                     r = session.get(url, timeout=60)
+                    if r.status_code != 200:
+                        print(f"   OSRM Table API request error: {r.text}")
+                        time.sleep(5)
+                        pbar.update(1)
+                        continue
                     dm = r.json()["distances"]
-                except Exception:
-                    print(f"   OSRM request permanently failed at chunk {count}")
-                    return None
-            arr = np.array(dm)
-            if c is None:
-                c = arr
+                except requests.exceptions.RequestException as e:
+                    print(f"   OSRM request failed: {e}, retrying after delay...")
+                    time.sleep(10)
+                    try:
+                        r = session.get(url, timeout=60)
+                        dm = r.json()["distances"]
+                    except Exception:
+                        print(f"   OSRM request permanently failed")
+                        return None
+                arr = np.array(dm)
+                if c is None:
+                    c = arr
+                else:
+                    c = np.concatenate((c, arr), axis=1)
+                pbar.update(1)
+                if not use_local:
+                    time.sleep(0.5)
+            if o is None:
+                o = c
             else:
-                c = np.concatenate((c, arr), axis=1)
-            if count % 10 == 0:
-                print(f"   Progress: {count}/{total_requests} requests")
-            if not use_local:
-                time.sleep(0.5)
-        if o is None:
-            o = c
-        else:
-            o = np.concatenate((o, c), axis=0)
-    print(f"   OSRM API requests: {count}")
+                o = np.concatenate((o, c), axis=0)
+
     return o
 
 
@@ -194,9 +205,22 @@ def haversine_distance_matrix(coords):
     return matrix
 
 
-def create_itineraries(df_sampled, distance_matrix, max_distance, rng):
+def optimize_itinerary_tsp(indices: list[int], distance_matrix: np.ndarray) -> list[int]:
+    """Apply TSP optimization to reorder points within an itinerary."""
+    if len(indices) < 3:
+        return indices
+    return tsp_optimize_route(indices, distance_matrix)
+
+
+def create_itineraries(df_sampled, distance_matrix, config: ItineraryConfig, rng):
     """
-    Create itineraries using allocator.greedy_grow_itineraries + TSP optimization.
+    Create itineraries using allocator.greedy_grow_itineraries + optional TSP optimization.
+
+    Args:
+        df_sampled: DataFrame with sampled points
+        distance_matrix: OSRM distance matrix
+        config: ItineraryConfig with max_distance, start_method, optimize_tsp
+        rng: Random number generator
 
     Returns:
         all_itineraries: List of dicts with itinerary_id and segments
@@ -207,14 +231,20 @@ def create_itineraries(df_sampled, distance_matrix, max_distance, rng):
 
     itinerary_indices, itinerary_distances = greedy_grow_itineraries(
         distance_matrix,
-        max_distance=max_distance,
-        start_method="furthest",
+        max_distance=config.max_distance,
+        start_method=config.start_method,
         rng=rng,
     )
 
     print(f"   Created {len(itinerary_indices)} itineraries")
 
-    optimized_itineraries = itinerary_indices
+    if config.optimize_tsp:
+        print("   Applying TSP optimization...")
+        optimized_itineraries = []
+        for indices in tqdm(itinerary_indices, desc="TSP optimization"):
+            optimized_itineraries.append(optimize_itinerary_tsp(indices, distance_matrix))
+    else:
+        optimized_itineraries = itinerary_indices
 
     all_itineraries = []
     for itin_idx, indices in enumerate(optimized_itineraries):
@@ -377,7 +407,7 @@ def create_folium_map(all_itineraries, boundary_gdf, boundary, output_dir, city_
         center_lat = (boundary.bounds[1] + boundary.bounds[3]) / 2
         center_lon = (boundary.bounds[0] + boundary.bounds[2]) / 2
 
-        m = folium.Map(location=[center_lat, center_lon], zoom_start=11)
+        m = folium.Map(location=[center_lat, center_lon], zoom_start=11, tiles="CartoDB positron")
 
         folium.GeoJson(
             boundary_gdf.__geo_interface__,
