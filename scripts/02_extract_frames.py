@@ -14,6 +14,8 @@ import argparse
 import json
 import subprocess
 import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 from fractions import Fraction
 from pathlib import Path
@@ -92,8 +94,8 @@ def extract_frames_ffmpeg(
     scale_width: int | None = None,
 ) -> dict:
     """
-    Extract frames from a video using ffmpeg with time-based sampling.
-    Flat output: all frames go directly to output_folder with unique names.
+    Extract frames from a video using fast seeking.
+    Uses -ss before -i for keyframe seeking (much faster than fps filter).
     """
     video_name = video_path.stem
     source_folder = video_path.parent.name
@@ -135,34 +137,40 @@ def extract_frames_ffmpeg(
         }
 
     expected = expected_frames_for_interval(duration_sec, every_seconds)
-
-    # ffmpeg extraction - flat output with video_id prefix
     qv = jpeg_quality_to_ffmpeg_qv(quality)
-    output_pattern = str(output_folder / f"{video_id}_frame%06d.jpg")
 
-    # Build video filter chain
-    vf_filters = [f"fps=1/{every_seconds}"]
-    if scale_width is not None:
-        vf_filters.append(f"scale={scale_width}:-1")
-    vf_string = ",".join(vf_filters)
+    # Build video filter
+    vf_string = f"scale={scale_width}:-1" if scale_width else None
 
-    cmd = [
-        "ffmpeg", "-hide_banner", "-loglevel", "error", "-nostdin",
-        "-i", str(video_path),
-        "-vf", vf_string,
-        "-vsync", "vfr",
-        "-q:v", str(qv),
-        "-start_number", "0",
-        output_pattern,
-    ]
+    # Fast seek-based extraction: jump to each timestamp directly
+    timestamps = [i * every_seconds for i in range(expected)]
+    extracted = 0
+    errors = []
 
-    res = subprocess.run(cmd, capture_output=True, text=True)
-    if res.returncode != 0:
+    for i, ts in enumerate(timestamps):
+        output_file = output_folder / f"{video_id}_frame{i:06d}.jpg"
+        cmd = [
+            "ffmpeg", "-hide_banner", "-loglevel", "error", "-nostdin",
+            "-ss", str(ts),
+            "-i", str(video_path),
+            "-frames:v", "1",
+        ]
+        if vf_string:
+            cmd.extend(["-vf", vf_string])
+        cmd.extend(["-q:v", str(qv), str(output_file)])
+
+        res = subprocess.run(cmd, capture_output=True, text=True)
+        if res.returncode == 0 and output_file.exists():
+            extracted += 1
+        else:
+            errors.append(f"ts={ts}: {res.stderr.strip()}")
+
+    if extracted == 0:
         return {
             "video_id": video_id,
             "video_path": str(video_path),
             "status": "error",
-            "error": f"ffmpeg failed: {res.stderr.strip()}",
+            "error": f"No frames extracted. Errors: {errors[:3]}",
             "expected_frames": expected,
             "extracted_frames": 0,
             "duration_sec": duration_sec,
@@ -245,8 +253,9 @@ def process_videos(
     extensions: list[str] | None = None,
     overwrite: bool = False,
     scale_width: int | None = None,
+    workers: int = 1,
 ) -> list[dict]:
-    """Process all videos in folder, single-threaded with progress reporting."""
+    """Process all videos in folder with optional parallel processing."""
     if extensions is None:
         extensions = [".mp4", ".mov", ".avi", ".mkv"]
 
@@ -254,19 +263,17 @@ def process_videos(
     log_file_path.parent.mkdir(parents=True, exist_ok=True)
 
     videos = find_videos(input_folder, extensions)
-    print(f"Found {len(videos)} video files\n")
+    print(f"Found {len(videos)} video files (using {workers} worker(s))\n")
 
     results = []
     total_frames = 0
     ok_count = 0
     skipped_count = 0
     error_count = 0
+    log_lock = threading.Lock()
 
-    pbar = tqdm(videos, desc="Extracting frames", unit="video")
-    for video_path in pbar:
-        pbar.set_postfix_str(f"{video_path.name[:30]}...")
-
-        result = extract_frames_ffmpeg(
+    def process_one(video_path: Path) -> dict:
+        return extract_frames_ffmpeg(
             video_path,
             output_folder,
             every_seconds,
@@ -274,37 +281,78 @@ def process_videos(
             overwrite=overwrite,
             scale_width=scale_width,
         )
-        results.append(result)
 
-        # Update running totals
-        total_frames += result["extracted_frames"]
-        if result["status"] in ("ok", "warning"):
-            ok_count += 1
-        elif result["status"] == "skipped":
-            skipped_count += 1
-        else:
-            error_count += 1
+    pbar = tqdm(total=len(videos), desc="Extracting frames", unit="video")
 
-        # Update progress bar description with running totals
-        pbar.set_description(
-            f"Frames: {total_frames} | OK: {ok_count} | Skip: {skipped_count} | Err: {error_count}"
-        )
+    if workers == 1:
+        for video_path in videos:
+            pbar.set_postfix_str(f"{video_path.name[:30]}...")
+            result = process_one(video_path)
+            results.append(result)
 
-        # Write log entries if extraction succeeded
-        if result["status"] in ("ok", "warning") and result["extracted_frames"] > 0:
-            write_log_entries(
-                log_file_path,
-                video_path,
-                result["video_id"],
-                output_folder,
-                every_seconds,
-                result["fps"],
-                result["duration_sec"],
+            total_frames += result["extracted_frames"]
+            if result["status"] in ("ok", "warning"):
+                ok_count += 1
+            elif result["status"] == "skipped":
+                skipped_count += 1
+            else:
+                error_count += 1
+
+            pbar.set_description(
+                f"Frames: {total_frames} | OK: {ok_count} | Skip: {skipped_count} | Err: {error_count}"
             )
 
-        # Log errors to stderr so they're visible
-        if result["status"] == "error":
-            tqdm.write(f"ERROR: {video_path.name} - {result.get('error', 'Unknown error')}")
+            if result["status"] in ("ok", "warning") and result["extracted_frames"] > 0:
+                write_log_entries(
+                    log_file_path,
+                    video_path,
+                    result["video_id"],
+                    output_folder,
+                    every_seconds,
+                    result["fps"],
+                    result["duration_sec"],
+                )
+
+            if result["status"] == "error":
+                tqdm.write(f"ERROR: {video_path.name} - {result.get('error', 'Unknown error')}")
+
+            pbar.update(1)
+    else:
+        with ThreadPoolExecutor(max_workers=workers) as executor:
+            future_to_video = {executor.submit(process_one, v): v for v in videos}
+            for future in as_completed(future_to_video):
+                video_path = future_to_video[future]
+                result = future.result()
+                results.append(result)
+
+                total_frames += result["extracted_frames"]
+                if result["status"] in ("ok", "warning"):
+                    ok_count += 1
+                elif result["status"] == "skipped":
+                    skipped_count += 1
+                else:
+                    error_count += 1
+
+                pbar.set_description(
+                    f"Frames: {total_frames} | OK: {ok_count} | Skip: {skipped_count} | Err: {error_count}"
+                )
+
+                if result["status"] in ("ok", "warning") and result["extracted_frames"] > 0:
+                    with log_lock:
+                        write_log_entries(
+                            log_file_path,
+                            video_path,
+                            result["video_id"],
+                            output_folder,
+                            every_seconds,
+                            result["fps"],
+                            result["duration_sec"],
+                        )
+
+                if result["status"] == "error":
+                    tqdm.write(f"ERROR: {video_path.name} - {result.get('error', 'Unknown error')}")
+
+                pbar.update(1)
 
     pbar.close()
     return results
@@ -367,6 +415,7 @@ def main():
     parser.add_argument("--scale", type=int, default=None, help="Scale output width in pixels (height scales proportionally)")
     parser.add_argument("--extensions", "-e", default=".mp4,.mov,.avi,.mkv", help="Comma-separated extensions")
     parser.add_argument("--overwrite", action="store_true", help="Re-extract even if already done")
+    parser.add_argument("--workers", "-w", type=int, default=1, help="Number of parallel workers (default: 1)")
 
     args = parser.parse_args()
 
@@ -389,6 +438,7 @@ def main():
         extensions=extensions,
         overwrite=args.overwrite,
         scale_width=args.scale,
+        workers=args.workers,
     )
 
     # Save CSV report

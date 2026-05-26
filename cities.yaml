@@ -14,7 +14,7 @@ bangalore:
   timezone: Asia/Kolkata
 
 delhi:
-  video_dir: /Volumes/Samsung USB/missing_women/delhi_vids
+  video_dir: /Volumes/Samsung USB/delhi
   osm_file: delhi-latest.osm.pbf
   timezone: Asia/Kolkata
 
