@@ -5,8 +5,7 @@ Chains all pipeline steps, using in-memory DataFrames where possible
 to minimize unnecessary I/O.
 
 Pipeline steps:
-- 00: Extract EXIF metadata from videos (optional, if raw videos available)
-- 01: Parse EXIF to GPS timeseries (optional, if raw exif dumps available)
+- 00: Process videos (EXIF extraction, GPS parsing, frame extraction)
 - 04: Build GPS index (PERSISTED - expensive to rebuild)
 - 05: Parse annotations (IN-MEMORY)
 - 06: Assign frame GPS (IN-MEMORY)
@@ -26,8 +25,8 @@ Usage:
     # Skip visualization steps:
     python scripts/run_pipeline.py --city all --skip-osm --skip-viz
 
-    # Skip EXIF parsing and GPS rebuild (use cached data):
-    python scripts/run_pipeline.py --city mumbai --skip-parse-exif --skip-rebuild-gps
+    # Skip video processing (use cached data):
+    python scripts/run_pipeline.py --city mumbai --skip-process-videos --skip-rebuild-gps
 
 """
 
@@ -80,13 +79,16 @@ def load_city_config(project_root: Path, city: str) -> dict:
     return city_config
 
 
-def run_extract_exif(
+def run_process_videos(
     project_root: Path,
     city: str,
     city_config: dict,
+    every_seconds: float = 120,
+    quality: int = 95,
+    frames_dir: Path | None = None,
 ) -> None:
     """
-    Run step 00: Extract EXIF metadata from video files.
+    Run step 00: Process videos (EXIF extraction, GPS parsing, frame extraction).
 
     Requires video_dir in city config.
     """
@@ -98,43 +100,67 @@ def run_extract_exif(
     if not video_dir.exists():
         raise FileNotFoundError(f"Video directory not found: {video_dir}")
 
-    exif_output = project_root / "data" / city / "exif"
-    metadata_csv = project_root / "data" / city / "exif_metadata" / "video_metadata.csv"
+    output_dir = project_root / "data" / city
+    if frames_dir is None:
+        frames_dir = project_root / "data" / "annotation_task" / f"{city}_frames"
 
-    script_path = scripts_dir / "00_extract_exif.py"
+    script_path = scripts_dir / "00_process_videos.py"
 
     cmd = [
         sys.executable,
         str(script_path),
         "--input", str(video_dir),
-        "--exif-output", str(exif_output),
-        "--metadata-csv", str(metadata_csv),
+        "--output", str(output_dir),
+        "--frames-dir", str(frames_dir),
+        "--every-seconds", str(every_seconds),
+        "--quality", str(quality),
     ]
 
     print(f"Running: {' '.join(cmd)}")
     subprocess.run(cmd, check=True)
 
 
-def run_parse_exif(
+def run_extract_face_frames(
     project_root: Path,
     city: str,
+    city_config: dict,
+    face_frames_dir: Path | None = None,
+    scale_width: int = 1020,
+    min_confidence: int = 90,
 ) -> None:
     """
-    Run step 01: Parse EXIF text files to GPS timeseries CSV.
+    Run step 01: Extract frames at face detection timestamps.
+
+    Requires video_dir in city config and EXIF files from step 00.
     """
+    video_dir = city_config.get("video_dir")
+    if not video_dir:
+        raise ValueError(f"No video_dir configured for {city} in cities.yaml")
+
+    video_dir = Path(video_dir)
+    if not video_dir.exists():
+        raise FileNotFoundError(f"Video directory not found: {video_dir}")
+
     exif_dir = project_root / "data" / city / "exif"
     if not exif_dir.exists():
-        raise FileNotFoundError(f"EXIF directory not found: {exif_dir}")
+        raise FileNotFoundError(f"EXIF directory not found: {exif_dir}. Run step 00 first.")
 
-    output_csv = project_root / "data" / city / "exif_metadata" / "gps_timeseries.csv"
+    if face_frames_dir is None:
+        face_frames_dir = project_root / "data" / "annotation_task" / f"{city}_face_frames"
 
-    script_path = scripts_dir / "01_parse_exif.py"
+    script_path = scripts_dir / "01_extract_face_frames.py"
+
+    log_path = project_root / "data" / city / "face_frame_metadata.csv"
 
     cmd = [
         sys.executable,
         str(script_path),
-        "--input", str(exif_dir),
-        "--output", str(output_csv),
+        "--exif-dir", str(exif_dir),
+        "--video-dir", str(video_dir),
+        "--output", str(face_frames_dir),
+        "--log", str(log_path),
+        "--scale", str(scale_width),
+        "--min-confidence", str(min_confidence),
     ]
 
     print(f"Running: {' '.join(cmd)}")
@@ -146,8 +172,10 @@ def run_pipeline(
     city: str,
     rebuild_gps: bool = True,
     skip_osm: bool = False,
-    extract_exif: bool = False,
-    parse_exif: bool = True,
+    process_videos: bool = False,
+    every_seconds: float = 120,
+    quality: int = 95,
+    frames_dir: Path | None = None,
 ) -> pd.DataFrame:
     """
     Run the full analysis data pipeline for a specific city.
@@ -157,8 +185,10 @@ def run_pipeline(
         city: City to process (e.g., 'mumbai', 'navi_mumbai', 'bangalore')
         rebuild_gps: If True, rebuild GPS index even if it exists
         skip_osm: If True, skip OSM enrichment
-        extract_exif: If True, run step 00 (extract EXIF from videos)
-        parse_exif: If True, run step 01 (parse EXIF to GPS timeseries)
+        process_videos: If True, run step 00 (process videos)
+        every_seconds: Frame extraction interval
+        quality: JPEG quality for frame extraction
+        frames_dir: Output directory for frames (default: data/annotation_task/{city}_frames)
 
     Returns:
         Final analysis DataFrame
@@ -179,19 +209,17 @@ def run_pipeline(
     print(f"PIPELINE FOR: {city.upper()}")
     print("=" * 60)
 
-    if extract_exif:
+    if process_videos:
         print("\n" + "=" * 60)
-        print("STEP 00: Extract EXIF from Videos")
+        print("STEP 00: Process Videos (EXIF, GPS, Frames)")
         print("=" * 60)
-        run_extract_exif(project_root, city, city_config)
-
-    exif_dir = project_root / "data" / city / "exif"
-    if parse_exif and exif_dir.exists() and any(exif_dir.glob("*_exif.txt")):
-        print("\n" + "=" * 60)
-        print("STEP 01: Parse EXIF to GPS Timeseries")
-        print("=" * 60)
-        run_parse_exif(project_root, city)
+        run_process_videos(project_root, city, city_config, every_seconds, quality, frames_dir)
         rebuild_gps = True
+
+        print("\n" + "=" * 60)
+        print("STEP 01: Extract Face Frames")
+        print("=" * 60)
+        run_extract_face_frames(project_root, city, city_config)
 
     print("\n" + "=" * 60)
     print("STEP 04: Build GPS Index")
@@ -336,14 +364,27 @@ def main():
         help="Skip visualization steps (EDA, analysis, maps)",
     )
     parser.add_argument(
-        "--extract-exif",
+        "--process-videos",
         action="store_true",
-        help="Run step 00: Extract EXIF from videos (requires video_dir in cities.yaml)",
+        help="Run step 00: Process videos - EXIF, GPS, frames (requires video_dir in cities.yaml)",
     )
     parser.add_argument(
-        "--skip-parse-exif",
-        action="store_true",
-        help="Skip step 01: Parse EXIF (runs by default if exif files exist)",
+        "--every-seconds",
+        type=float,
+        default=120,
+        help="Frame extraction interval in seconds (default: 120)",
+    )
+    parser.add_argument(
+        "--frames-dir",
+        type=str,
+        default=None,
+        help="Output directory for frames (default: data/annotation_task/{city}_frames)",
+    )
+    parser.add_argument(
+        "--quality",
+        type=int,
+        default=95,
+        help="JPEG quality for frame extraction (default: 95)",
     )
     args = parser.parse_args()
 
@@ -367,8 +408,10 @@ def main():
                 city=city,
                 rebuild_gps=not args.skip_rebuild_gps,
                 skip_osm=args.skip_osm,
-                extract_exif=args.extract_exif,
-                parse_exif=not args.skip_parse_exif,
+                process_videos=args.process_videos,
+                every_seconds=args.every_seconds,
+                quality=args.quality,
+                frames_dir=Path(args.frames_dir) if args.frames_dir else None,
             )
             print_summary(result)
             results[city] = result

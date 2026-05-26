@@ -1,9 +1,26 @@
 #!/usr/bin/env python3
-"""Compress high-resolution frame images for annotation tasks."""
+"""
+Compress high-resolution frame images for annotation tasks.
+
+Resizes frames and reduces JPEG quality for faster upload/download
+while preserving sufficient detail for human annotation.
+
+Inputs:
+    - Input directory: High-resolution JPEG frames
+
+Outputs:
+    - Output directory: Compressed JPEG frames at target resolution
+
+Usage:
+    python scripts/03_compress_frames.py \\
+        -i data/annotation_task/delhi_frames \\
+        -o data/annotation_task/delhi_frames_compressed \\
+        -r 1280x720 \\
+        -q 75
+"""
 
 import argparse
 import concurrent.futures
-import logging
 import sys
 import time
 from pathlib import Path
@@ -12,24 +29,8 @@ from typing import Tuple
 from PIL import Image, ImageOps
 from tqdm import tqdm
 
-# Configure logging
-logger = logging.getLogger(__name__)
 
-
-def setup_logging(verbose: bool = False) -> None:
-    """Setup logging configuration for the application."""
-    level = logging.DEBUG if verbose else logging.INFO
-    logging.basicConfig(
-        level=level,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        handlers=[
-            logging.StreamHandler(sys.stdout),
-            logging.FileHandler('frame_compression.log', mode='a')
-        ]
-    )
-
-
-def compress_image(input_path: Path, output_path: Path, target_size: Tuple[int, int] = (1280, 720), 
+def compress_image(input_path: Path, output_path: Path, target_size: Tuple[int, int] = (1280, 720),
                    quality: int = 75) -> bool:
     """Compress a single image file.
     
