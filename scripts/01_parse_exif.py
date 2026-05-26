@@ -6,7 +6,6 @@ import logging
 import re
 import sys
 import time
-from datetime import datetime
 from pathlib import Path
 from typing import Dict, List
 
@@ -106,41 +105,57 @@ def parse_gps_from_exif(exif_file: Path) -> List[Dict]:
     return gps_data
 
 
-def process_exif_directory(exif_dir: Path, file_pattern: str = "*_exif.txt") -> pd.DataFrame:
+def process_exif_directory(
+    exif_dir: Path, file_pattern: str = "*_exif.txt", existing_video_ids: set = None
+) -> pd.DataFrame:
     """Process all EXIF files in a directory to extract GPS data.
-    
+
     Args:
         exif_dir (Path): Directory containing EXIF text files.
         file_pattern (str): File pattern to match EXIF files.
-        
+        existing_video_ids (set): Set of video_ids already in CSV (skip these).
+
     Returns:
         pd.DataFrame: DataFrame with GPS timeseries data.
     """
+    if existing_video_ids is None:
+        existing_video_ids = set()
+
     exif_files = list(exif_dir.glob(file_pattern))
-    
+
     if not exif_files:
         logger.warning(f"No EXIF files found matching pattern '{file_pattern}' in {exif_dir}")
         return pd.DataFrame()
-    
+
     logger.info(f"Found {len(exif_files)} EXIF files to process")
-    
+
     all_gps_data = []
-    
+    skipped_count = 0
+
     for exif_file in tqdm(exif_files, desc="Processing EXIF files"):
+        video_id = extract_video_id_from_filename(exif_file.name)
+        if video_id in existing_video_ids:
+            logger.debug(f"Skipping {exif_file.name} - already parsed")
+            skipped_count += 1
+            continue
+
         gps_points = parse_gps_from_exif(exif_file)
         all_gps_data.extend(gps_points)
-        
+
         if gps_points:
             logger.debug(f"Extracted {len(gps_points)} GPS points from {exif_file.name}")
         else:
             logger.debug(f"No GPS data found in {exif_file.name}")
-    
+
+    if skipped_count > 0:
+        print(f"Skipped {skipped_count} EXIF files (already parsed)")
+
     if all_gps_data:
         df = pd.DataFrame(all_gps_data)
-        
+
         # Sort by video_id and datetime for consistent output
         df = df.sort_values(['video_id', 'gps_datetime'])
-        
+
         return df
     else:
         return pd.DataFrame()
@@ -189,32 +204,48 @@ Examples:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
     start_time = time.time()
-    
+
+    # Load existing CSV to get already-parsed video_ids
+    existing_video_ids = set()
+    existing_df = pd.DataFrame()
+    if output_path.exists():
+        try:
+            existing_df = pd.read_csv(output_path)
+            if 'video_id' in existing_df.columns:
+                existing_video_ids = set(existing_df['video_id'].unique())
+                logger.info(f"Found {len(existing_video_ids)} already-parsed video_ids in {output_path}")
+        except Exception as e:
+            logger.warning(f"Could not read existing CSV: {e}")
+
     try:
         # Process EXIF files
-        gps_df = process_exif_directory(exif_dir, args.pattern)
+        gps_df = process_exif_directory(exif_dir, args.pattern, existing_video_ids)
         
-        if gps_df.empty:
+        if gps_df.empty and existing_df.empty:
             logger.warning("No GPS data found in any EXIF files")
-            # Create empty CSV with headers
-            empty_df = pd.DataFrame(columns=[
-                'video_id', 'gps_datetime', 'gps_latitude', 'gps_longitude', 
-                'gps_altitude', 'gps_speed', 'gps_speed_3d', 'gps_measure_mode', 'gpsdop'
-            ])
-            empty_df.to_csv(output_path, index=False)
-        else:
-            # Save GPS data
             gps_df.to_csv(output_path, index=False)
-        
+        elif gps_df.empty:
+            logger.info("No new GPS data found (all files already parsed)")
+        else:
+            # Combine with existing data and save
+            if not existing_df.empty:
+                combined_df = pd.concat([existing_df, gps_df], ignore_index=True)
+                combined_df = combined_df.sort_values(['video_id', 'gps_datetime'])
+                combined_df.to_csv(output_path, index=False)
+            else:
+                gps_df.to_csv(output_path, index=False)
+
         elapsed = time.time() - start_time
-        
+
         # Final summary
+        total_points = len(gps_df) + (len(existing_df) if not existing_df.empty else 0)
         print("\n" + "=" * 60)
         print("GPS TIMESERIES EXTRACTION COMPLETE")
         print("=" * 60)
-        print(f"EXIF files processed: {len(list(exif_dir.glob(args.pattern)))}")
-        print(f"GPS data points extracted: {len(gps_df)}")
-        print(f"Unique videos with GPS: {gps_df['video_id'].nunique() if not gps_df.empty else 0}")
+        print(f"EXIF files in directory: {len(list(exif_dir.glob(args.pattern)))}")
+        print(f"New GPS data points extracted: {len(gps_df)}")
+        print(f"Total GPS data points in CSV: {total_points}")
+        print(f"Unique videos with GPS: {gps_df['video_id'].nunique() if not gps_df.empty else 0} new")
         print(f"Output file: {output_path}")
         print(f"Total execution time: {elapsed:.2f} seconds ({elapsed/60:.1f} minutes)")
         print("=" * 60)

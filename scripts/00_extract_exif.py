@@ -4,7 +4,6 @@
 import argparse
 import concurrent.futures
 import hashlib
-import json
 import logging
 import subprocess
 import sys
@@ -38,7 +37,7 @@ def setup_logging(verbose: bool = False) -> None:
     )
 
 
-def extract_video_exif(video_path: Path, output_folder: Path, timeout: int = 180) -> Dict:
+def extract_video_exif(video_path: Path, output_folder: Path, timeout: int = 180) -> Optional[Dict]:
     """Extract EXIF metadata from a single video file.
     
     Args:
@@ -61,7 +60,14 @@ def extract_video_exif(video_path: Path, output_folder: Path, timeout: int = 180
     
     # Generate globally unique video identifier using path hash
     path_hash = hashlib.md5(str(video_path).encode()).hexdigest()[:8]
-    
+
+    # Check if EXIF file already exists (skip-if-exists)
+    exif_filename = f"{source_folder}_{video_name}_{path_hash}_exif.txt"
+    exif_file_path = output_folder / exif_filename
+    if exif_file_path.exists():
+        logger.debug(f"Skipping {video_path} - EXIF already exists")
+        return None
+
     file_info = {
         # Core Identity (consistent across EXIF and frame CSVs)
         'video_id': f"{source_folder}_{video_name}_{path_hash}",
@@ -245,7 +251,7 @@ def extract_gps_data(video_path: Path, timeout: int = 180) -> List[Dict]:
         return []
 
 
-def process_video_file(video_info: Tuple[Path, Path], timeout: int = 180) -> Dict:
+def process_video_file(video_info: Tuple[Path, Path], timeout: int = 180) -> Optional[Dict]:
     """Process a single video file for EXIF extraction.
     
     Args:
@@ -322,23 +328,30 @@ def process_videos_parallel(input_folder: Path, exif_output_folder: Path, video_
     
     # Process videos in parallel
     all_metadata = []
-    
+    skipped_count = 0
+
     process_func = partial(process_video_file, timeout=timeout)
-    
+
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_video = {
-            executor.submit(process_func, file_info): file_info[0] 
+            executor.submit(process_func, file_info): file_info[0]
             for file_info in file_infos
         }
-        
-        for future in tqdm(concurrent.futures.as_completed(future_to_video), 
+
+        for future in tqdm(concurrent.futures.as_completed(future_to_video),
                           total=len(file_infos), desc="Processing Videos"):
             video_path = future_to_video[future]
             try:
                 metadata = future.result()
-                all_metadata.append(metadata)
+                if metadata is None:
+                    skipped_count += 1
+                else:
+                    all_metadata.append(metadata)
             except Exception as e:
                 logger.error(f"Error processing {video_path}: {str(e)}")
+
+    if skipped_count > 0:
+        print(f"Skipped {skipped_count} videos (EXIF already exists)")
     
     # Create DataFrame
     metadata_df = pd.DataFrame(all_metadata) if all_metadata else pd.DataFrame()
