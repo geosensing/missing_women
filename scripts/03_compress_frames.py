@@ -24,88 +24,91 @@ import concurrent.futures
 import sys
 import time
 from pathlib import Path
-from typing import Tuple
+from typing import Optional, Tuple
 
 from PIL import Image, ImageOps
 from tqdm import tqdm
 
 
-def compress_image(input_path: Path, output_path: Path, target_size: Tuple[int, int] = (1280, 720),
-                   quality: int = 75) -> bool:
+def compress_image(
+    input_path: Path,
+    output_path: Path,
+    target_size: Tuple[int, int] = (1280, 720),
+    quality: int = 75,
+) -> bool:
     """Compress a single image file.
-    
+
     Args:
-        input_path (Path): Path to input image
-        output_path (Path): Path to output compressed image
-        target_size (Tuple[int, int]): Target resolution (width, height)
-        quality (int): JPEG quality (1-100)
-        
+        input_path: Path to input image
+        output_path: Path to output compressed image
+        target_size: Target resolution (width, height)
+        quality: JPEG quality (1-100)
+
     Returns:
-        bool: True if successful, False otherwise
+        True if successful, False otherwise
     """
     try:
         with Image.open(input_path) as img:
-            # Convert to RGB if necessary (handles RGBA, etc.)
-            if img.mode != 'RGB':
-                img = img.convert('RGB')
-            
-            # Resize image maintaining aspect ratio
+            if img.mode != "RGB":
+                img = img.convert("RGB")
+
             img_resized = ImageOps.fit(img, target_size, Image.Resampling.LANCZOS)
-            
-            # Save with specified quality
-            img_resized.save(output_path, 'JPEG', quality=quality, optimize=True)
-            
+            img_resized.save(output_path, "JPEG", quality=quality, optimize=True)
+
         return True
-        
+
     except Exception as e:
-        logger.error(f"Error processing {input_path}: {e}")
+        print(f"Error: Failed to process {input_path}: {e}")
         return False
 
 
-def compress_batch(input_dir: Path, output_dir: Path, target_size: Tuple[int, int] = (1280, 720),
-                   quality: int = 75, workers: int = None, pattern: str = "*.jpg") -> None:
+def compress_batch(
+    input_dir: Path,
+    output_dir: Path,
+    target_size: Tuple[int, int] = (1280, 720),
+    quality: int = 75,
+    workers: Optional[int] = None,
+    pattern: str = "*.jpg",
+) -> Tuple[int, int, int]:
     """Compress all images in a directory using parallel processing.
-    
+
     Args:
-        input_dir (Path): Input directory containing images
-        output_dir (Path): Output directory for compressed images
-        target_size (Tuple[int, int]): Target resolution (width, height)
-        quality (int): JPEG quality (1-100)
-        workers (int): Number of worker threads (default: CPU count)
-        pattern (str): File pattern to match
+        input_dir: Input directory containing images
+        output_dir: Output directory for compressed images
+        target_size: Target resolution (width, height)
+        quality: JPEG quality (1-100)
+        workers: Number of worker threads (default: CPU count)
+        pattern: File pattern to match
+
+    Returns:
+        Tuple of (total_files, successful, failed)
     """
-    # Ensure output directory exists
     output_dir.mkdir(parents=True, exist_ok=True)
-    
-    # Find all image files
+
     image_files = list(input_dir.glob(pattern))
     total_files = len(image_files)
-    
+
     if total_files == 0:
-        logger.warning(f"No image files found in {input_dir}")
-        return
-    
-    logger.info(f"Found {total_files} image files to compress")
-    logger.info(f"Target resolution: {target_size[0]}x{target_size[1]}")
-    logger.info(f"JPEG quality: {quality}%")
-    
-    # Prepare arguments for parallel processing
+        print(f"Warning: No image files found in {input_dir}")
+        return 0, 0, 0
+
+    print(f"Found {total_files} image files to compress")
+    print(f"Target resolution: {target_size[0]}x{target_size[1]}")
+    print(f"JPEG quality: {quality}%")
+
     def process_image(input_path: Path) -> bool:
         output_path = output_dir / input_path.name
         return compress_image(input_path, output_path, target_size, quality)
-    
-    # Process images in parallel
+
     successful = 0
     failed = 0
-    
+
     with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
-        # Submit all tasks
         future_to_path = {
-            executor.submit(process_image, img_path): img_path 
+            executor.submit(process_image, img_path): img_path
             for img_path in image_files
         }
-        
-        # Process completed tasks with progress bar
+
         with tqdm(total=total_files, desc="Compressing images") as pbar:
             for future in concurrent.futures.as_completed(future_to_path):
                 img_path = future_to_path[future]
@@ -116,125 +119,132 @@ def compress_batch(input_dir: Path, output_dir: Path, target_size: Tuple[int, in
                     else:
                         failed += 1
                 except Exception as e:
-                    logger.error(f"Exception processing {img_path}: {e}")
+                    print(f"Error: Exception processing {img_path}: {e}")
                     failed += 1
                 finally:
                     pbar.update(1)
-    
-    logger.info(f"Compression completed: {successful} successful, {failed} failed")
+
+    return total_files, successful, failed
 
 
 def main() -> int:
     """Main function for command-line interface."""
     parser = argparse.ArgumentParser(
-        description='Compress high-resolution frame images for annotation tasks',
+        description="Compress high-resolution frame images for annotation tasks",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python compress_frames.py --input ../frames --output ../small_frames
-  python compress_frames.py --input ../frames --output ../small_frames --quality 80 --resolution 1920x1080
-        """
+  python 03_compress_frames.py -i ../frames -o ../small_frames
+  python 03_compress_frames.py -i ../frames -o ../small_frames -q 80 -r 1920x1080
+        """,
     )
-    
+
     parser.add_argument(
-        '--input', '-i',
+        "-i",
+        "--input",
         type=Path,
         required=True,
-        help='Input directory containing high-resolution frames'
+        help="Input directory containing high-resolution frames",
     )
-    
+
     parser.add_argument(
-        '--output', '-o',
+        "-o",
+        "--output",
         type=Path,
         required=True,
-        help='Output directory for compressed frames'
+        help="Output directory for compressed frames",
     )
-    
+
     parser.add_argument(
-        '--resolution', '-r',
+        "-r",
+        "--resolution",
         type=str,
-        default='1280x720',
-        help='Target resolution (format: WIDTHxHEIGHT, default: 1280x720)'
+        default="1280x720",
+        help="Target resolution (format: WIDTHxHEIGHT, default: 1280x720)",
     )
-    
+
     parser.add_argument(
-        '--quality', '-q',
+        "-q",
+        "--quality",
         type=int,
         default=75,
         choices=range(1, 101),
-        help='JPEG quality (1-100, default: 75)'
+        metavar="QUALITY",
+        help="JPEG quality (1-100, default: 75)",
     )
-    
+
     parser.add_argument(
-        '--workers', '-w',
+        "-w",
+        "--workers",
         type=int,
         default=None,
-        help='Number of worker threads (default: CPU count)'
+        help="Number of worker threads (default: CPU count)",
     )
-    
+
     parser.add_argument(
-        '--pattern', '-p',
+        "-p",
+        "--pattern",
         type=str,
-        default='*.jpg',
-        help='File pattern to match (default: *.jpg)'
+        default="*.jpg",
+        help="File pattern to match (default: *.jpg)",
     )
-    
-    parser.add_argument(
-        '--verbose', '-v',
-        action='store_true',
-        help='Enable verbose logging'
-    )
-    
+
     args = parser.parse_args()
-    
-    # Setup logging
-    setup_logging(args.verbose)
-    
-    # Parse resolution
+
     try:
-        width, height = map(int, args.resolution.split('x'))
+        width, height = map(int, args.resolution.split("x"))
         target_size = (width, height)
     except ValueError:
-        logger.error(f"Invalid resolution format: {args.resolution}. Use WIDTHxHEIGHT (e.g., 1280x720)")
+        print(
+            f"Error: Invalid resolution format: {args.resolution}. "
+            "Use WIDTHxHEIGHT (e.g., 1280x720)"
+        )
         return 1
-    
-    # Validate input directory
+
     if not args.input.exists():
-        logger.error(f"Input directory does not exist: {args.input}")
+        print(f"Error: Input directory does not exist: {args.input}")
         return 1
-    
+
     if not args.input.is_dir():
-        logger.error(f"Input path is not a directory: {args.input}")
+        print(f"Error: Input path is not a directory: {args.input}")
         return 1
-    
-    logger.info(f"Starting frame compression")
-    logger.info(f"Input: {args.input}")
-    logger.info(f"Output: {args.output}")
-    
+
+    print(f"Starting frame compression")
+    print(f"Input: {args.input}")
+    print(f"Output: {args.output}")
+
     start_time = time.time()
-    
+
     try:
-        compress_batch(
+        total_files, successful, failed = compress_batch(
             input_dir=args.input,
             output_dir=args.output,
             target_size=target_size,
             quality=args.quality,
             workers=args.workers,
-            pattern=args.pattern
+            pattern=args.pattern,
         )
-        
+
         elapsed = time.time() - start_time
-        logger.info(f"Total execution time: {elapsed:.1f} seconds")
-        
+
+        print("\n" + "=" * 60)
+        print("SUMMARY")
+        print("=" * 60)
+        print(f"Total images: {total_files}")
+        print(f"  Successful: {successful}")
+        print(f"  Failed:     {failed}")
+        print(f"\nExecution time: {elapsed:.1f} seconds")
+        print(f"Output: {args.output}")
+
         return 0
-        
+
     except KeyboardInterrupt:
-        logger.info("Interrupted by user")
+        print("\nInterrupted by user")
         return 1
     except Exception as e:
-        logger.error(f"Unexpected error: {e}")
+        print(f"Error: Unexpected error: {e}")
         return 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())
