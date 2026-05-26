@@ -19,6 +19,7 @@ from fractions import Fraction
 from pathlib import Path
 
 import pandas as pd
+from tqdm import tqdm
 
 
 def parse_fraction(s: str) -> float:
@@ -88,6 +89,7 @@ def extract_frames_ffmpeg(
     tolerance_pct: float = 0.05,
     tolerance_abs: int = 1,
     overwrite: bool = False,
+    scale_width: int | None = None,
 ) -> dict:
     """
     Extract frames from a video using ffmpeg with time-based sampling.
@@ -138,10 +140,16 @@ def extract_frames_ffmpeg(
     qv = jpeg_quality_to_ffmpeg_qv(quality)
     output_pattern = str(output_folder / f"{video_id}_frame%06d.jpg")
 
+    # Build video filter chain
+    vf_filters = [f"fps=1/{every_seconds}"]
+    if scale_width is not None:
+        vf_filters.append(f"scale={scale_width}:-1")
+    vf_string = ",".join(vf_filters)
+
     cmd = [
         "ffmpeg", "-hide_banner", "-loglevel", "error", "-nostdin",
         "-i", str(video_path),
-        "-vf", f"fps=1/{every_seconds}",
+        "-vf", vf_string,
         "-vsync", "vfr",
         "-q:v", str(qv),
         "-start_number", "0",
@@ -233,12 +241,12 @@ def process_videos(
     output_folder: Path,
     every_seconds: float,
     log_file_path: Path,
-    report_path: Path,
     quality: int = 95,
-    extensions: list[str] = None,
+    extensions: list[str] | None = None,
     overwrite: bool = False,
+    scale_width: int | None = None,
 ) -> list[dict]:
-    """Process all videos in folder, single-threaded."""
+    """Process all videos in folder, single-threaded with progress reporting."""
     if extensions is None:
         extensions = [".mp4", ".mov", ".avi", ".mkv"]
 
@@ -246,12 +254,17 @@ def process_videos(
     log_file_path.parent.mkdir(parents=True, exist_ok=True)
 
     videos = find_videos(input_folder, extensions)
-    print(f"Found {len(videos)} video files")
+    print(f"Found {len(videos)} video files\n")
 
     results = []
+    total_frames = 0
+    ok_count = 0
+    skipped_count = 0
+    error_count = 0
 
-    for i, video_path in enumerate(videos, 1):
-        print(f"[{i}/{len(videos)}] Processing: {video_path.name}")
+    pbar = tqdm(videos, desc="Extracting frames", unit="video")
+    for video_path in pbar:
+        pbar.set_postfix_str(f"{video_path.name[:30]}...")
 
         result = extract_frames_ffmpeg(
             video_path,
@@ -259,8 +272,23 @@ def process_videos(
             every_seconds,
             quality=quality,
             overwrite=overwrite,
+            scale_width=scale_width,
         )
         results.append(result)
+
+        # Update running totals
+        total_frames += result["extracted_frames"]
+        if result["status"] in ("ok", "warning"):
+            ok_count += 1
+        elif result["status"] == "skipped":
+            skipped_count += 1
+        else:
+            error_count += 1
+
+        # Update progress bar description with running totals
+        pbar.set_description(
+            f"Frames: {total_frames} | OK: {ok_count} | Skip: {skipped_count} | Err: {error_count}"
+        )
 
         # Write log entries if extraction succeeded
         if result["status"] in ("ok", "warning") and result["extracted_frames"] > 0:
@@ -274,12 +302,11 @@ def process_videos(
                 result["duration_sec"],
             )
 
-        # Print status
-        status_symbol = {"ok": "+", "warning": "!", "skipped": "-", "error": "X"}.get(result["status"], "?")
-        print(f"    [{status_symbol}] {result['status']}: {result['extracted_frames']}/{result['expected_frames']} frames")
-        if result.get("error"):
-            print(f"        {result['error']}")
+        # Log errors to stderr so they're visible
+        if result["status"] == "error":
+            tqdm.write(f"ERROR: {video_path.name} - {result.get('error', 'Unknown error')}")
 
+    pbar.close()
     return results
 
 
@@ -333,10 +360,11 @@ def main():
     )
     parser.add_argument("--input", "-i", required=True, help="Input folder containing videos")
     parser.add_argument("--output", "-o", required=True, help="Output folder for frames")
-    parser.add_argument("--every-seconds", "-s", type=float, default=10, help="Extract one frame every N seconds (default: 10)")
+    parser.add_argument("--every-seconds", "-s", type=float, default=60, help="Extract one frame every N seconds (default: 60)")
     parser.add_argument("--log", "-l", required=True, help="Path for metadata log file")
     parser.add_argument("--report", "-r", required=True, help="Path for CSV report")
     parser.add_argument("--quality", "-q", type=int, default=95, help="JPEG quality 1-100 (default: 95)")
+    parser.add_argument("--scale", type=int, default=None, help="Scale output width in pixels (height scales proportionally)")
     parser.add_argument("--extensions", "-e", default=".mp4,.mov,.avi,.mkv", help="Comma-separated extensions")
     parser.add_argument("--overwrite", action="store_true", help="Re-extract even if already done")
 
@@ -357,10 +385,10 @@ def main():
         output_folder,
         args.every_seconds,
         log_file_path,
-        report_path,
         quality=args.quality,
         extensions=extensions,
         overwrite=args.overwrite,
+        scale_width=args.scale,
     )
 
     # Save CSV report
