@@ -218,3 +218,4 @@ data/mumbai/validation_batch_input.jsonl
 /scripts/gen_data/hyderabad/cache
 /sampling/hyderabad/network
 /sampling/delhi/network
+*.pbf
