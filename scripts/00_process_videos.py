@@ -536,7 +536,7 @@ def main() -> int:
         all_frames.extend(frames)
 
     exif_csv = output_dir / "exif_metadata.csv"
-    gps_csv = output_dir / "gps_timeseries.csv"
+    gps_csv = output_dir / "gps_timeseries.csv.gz"
     frame_csv = output_dir / "frame_metadata.csv"
 
     if all_video_meta:
@@ -546,7 +546,7 @@ def main() -> int:
     if all_gps:
         gps_df = pd.DataFrame(all_gps)
         gps_df = gps_df.sort_values(["video_id", "gps_datetime"])
-        gps_df.to_csv(gps_csv, index=False)
+        gps_df.to_csv(gps_csv, index=False, compression="gzip")
         print(f"Saved {len(all_gps)} GPS points to {gps_csv}")
     else:
         pd.DataFrame().to_csv(gps_csv, index=False)
