@@ -324,6 +324,7 @@ def extract_frames(
             frame_num_est = int(round(ts * fps)) if fps > 0 else i
             time_display = str(timedelta(seconds=ts))
 
+            frame_hash = hashlib.md5(output_file.read_bytes()).hexdigest()
             frame_meta.append(
                 {
                     "video_id": frame_id,
@@ -336,6 +337,7 @@ def extract_frames(
                     "timestamp_display": time_display,
                     "video_fps": fps,
                     "video_duration_sec": duration_sec,
+                    "md5_hash": frame_hash,
                 }
             )
 
@@ -359,6 +361,7 @@ def build_frame_metadata_from_existing(
         frame_num_est = int(round(ts * fps)) if fps > 0 else i
         time_display = str(timedelta(seconds=ts))
 
+        frame_hash = hashlib.md5(frame_path.read_bytes()).hexdigest()
         frame_meta.append(
             {
                 "video_id": frame_id,
@@ -371,10 +374,36 @@ def build_frame_metadata_from_existing(
                 "timestamp_display": time_display,
                 "video_fps": fps,
                 "video_duration_sec": duration_sec,
+                "md5_hash": frame_hash,
             }
         )
 
     return frame_meta
+
+
+def dedupe_frames(
+    frame_records: List[Dict], frames_dir: Path, delete: bool = False
+) -> List[Dict]:
+    """Remove duplicate frames by MD5 hash, keeping first occurrence."""
+    seen = {}
+    unique = []
+    duplicates = []
+    for rec in frame_records:
+        h = rec.get("md5_hash")
+        if h in seen:
+            duplicates.append(rec)
+        else:
+            seen[h] = rec
+            unique.append(rec)
+    if delete:
+        for dup in duplicates:
+            dup_path = frames_dir / dup["frame_filename"]
+            dup_path.unlink(missing_ok=True)
+    if duplicates:
+        print(f"Found {len(duplicates)} duplicate frames")
+        if delete:
+            print(f"Deleted {len(duplicates)} duplicate frame files")
+    return unique
 
 
 def process_video(
@@ -490,6 +519,11 @@ def main() -> int:
         default=None,
         help="Scale output width in pixels (height scales proportionally)",
     )
+    parser.add_argument(
+        "--dedupe",
+        action="store_true",
+        help="Remove duplicate frames by MD5 hash (default: report only)",
+    )
 
     args = parser.parse_args()
 
@@ -534,6 +568,9 @@ def main() -> int:
             all_video_meta.append(meta)
         all_gps.extend(gps)
         all_frames.extend(frames)
+
+    if all_frames:
+        all_frames = dedupe_frames(all_frames, frames_dir, delete=args.dedupe)
 
     exif_csv = output_dir / "exif_metadata.csv"
     gps_csv = output_dir / "gps_timeseries.csv.gz"
