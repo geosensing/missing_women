@@ -1,0 +1,576 @@
+[ExifTool]      ExifTool Version Number         : 13.25
+[File]          File Name                       : Itinerary_77.4.MP4
+[File]          Directory                       : /Volumes/Samsung USB/bangalore/day_4_3_25_2026
+[File]          File Size                       : 19 MB
+[File]          File Modification Date/Time     : 2026:05:31 20:58:00-07:00
+[File]          File Access Date/Time           : 2026:05:31 20:58:00-07:00
+[File]          File Inode Change Date/Time     : 2026:05:31 20:58:00-07:00
+[File]          File Permissions                : -rwx------
+[File]          File Type                       : MP4
+[File]          File Type Extension             : mp4
+[File]          MIME Type                       : video/mp4
+[QuickTime]     Major Brand                     : MP4 v1 [ISO 14496-1:ch13]
+[QuickTime]     Minor Version                   : 2013.10.18
+[QuickTime]     Compatible Brands               : mp41
+[QuickTime]     Media Data Size                 : 18697728
+[QuickTime]     Media Data Offset               : 36
+[QuickTime]     Movie Header Version            : 0
+[QuickTime]     Create Date                     : 2026:03:25 08:59:40
+[QuickTime]     Modify Date                     : 2026:03:25 08:59:40
+[QuickTime]     Time Scale                      : 60000
+[QuickTime]     Duration                        : 2.45 s
+[QuickTime]     Preferred Rate                  : 1
+[QuickTime]     Preferred Volume                : 100.00%
+[QuickTime]     Matrix Structure                : 1 0 0 0 1 0 0 0 1
+[QuickTime]     Preview Time                    : 0 s
+[QuickTime]     Preview Duration                : 0 s
+[QuickTime]     Poster Time                     : 0 s
+[QuickTime]     Selection Time                  : 0 s
+[QuickTime]     Selection Duration              : 0 s
+[QuickTime]     Current Time                    : 0 s
+[QuickTime]     Next Track ID                   : 5
+[QuickTime]     GPS Coordinates                 : 12 deg 59' 4.20" N, 77 deg 44' 43.80" E
+[QuickTime]     Firmware Version                : H24.01.02.10.00
+[QuickTime]     Lens Serial Number              : LEN1234567891011
+[QuickTime]     Camera Serial Number Hash       : 892aab055e6187941a9d818652a20a83
+[QuickTime]     Media UID                       : 892aab055e6187941a9d818652a20a8300000000000000000000000000000000
+[QuickTime]     Device Name                     : Global Settings
+[QuickTime]     Metadata Version                : 8.2.2
+[QuickTime]     Firmware Version                : H24.01.02.10.00
+[QuickTime]     Camera Serial Number            : C3531350765482
+[QuickTime]     Camera Model Name               : HERO13 Black
+[QuickTime]     Media Unique ID                 : 05ab2a899487615e86819d1a830aa25296bc35a5d74c37681f243b8c526f14da
+[QuickTime]     Chapter Number                  : 1
+[QuickTime]     HDR Video                       : No
+[QuickTime]     Auto Rotation                   : Up
+[QuickTime]     Digital Zoom On                 : Yes
+[QuickTime]     Digital Zoom                    : 0
+[QuickTime]     Spot Meter                      : No
+[QuickTime]     Protune                         : On
+[QuickTime]     White Balance                   : AUTO
+[QuickTime]     Sharpness                       : MED
+[QuickTime]     Color Mode                      : NATURAL
+[QuickTime]     Exposure Type                   : AUTO
+[QuickTime]     Auto ISO Max                    : 6400
+[QuickTime]     Auto ISO Min                    : 100
+[QuickTime]     Exposure Compensation           : -0.5
+[QuickTime]     Rate                            : OFF
+[QuickTime]     Sensor Readout Time             : 15.5640001296997
+[QuickTime]     Electronic Stabilization On     : Yes
+[QuickTime]     Electronic Image Stabilization  : HS EIS
+[QuickTime]     Auto Protune                    : No
+[QuickTime]     Audio Protune Option            : OFF
+[QuickTime]     Audio Setting                   : WIND
+[QuickTime]     Audio Blue Tooth                : No
+[QuickTime]     Lens Projection                 : GPRO
+[QuickTime]     Creation Date                   : 2026:03:25 14:29:40
+[QuickTime]     Schedule Capture Time           : 0
+[QuickTime]     Schedule Capture                : No
+[QuickTime]     Capture Delay Timer             : 0
+[QuickTime]     Duration Setting                : NO_LIMIT
+[QuickTime]     Video Frame Size                : 3840x3360
+[QuickTime]     Video Frame Rate                : 60000/1001
+[QuickTime]     Hindsight Settings              : OFF
+[QuickTime]     Bitrate Setting                 : STANDARD
+[QuickTime]     Media Mode                      : STEREO
+[QuickTime]     Speed Ramp Setting              : 
+[QuickTime]     Time Zone                       : +05:30
+[QuickTime]     Digital Zoom Amount             : 1.39999997615814
+[QuickTime]     Control Level                   : Pro
+[QuickTime]     Power Profile                   : PERFORMANCE
+[QuickTime]     Orientation Data Present        : Yes
+[QuickTime]     Classification Data Present     : Yes
+[QuickTime]     Protune ISO Mode                : MANUAL
+[QuickTime]     Device Name                     : Large FOV
+[QuickTime]     Auto Boost Score                : 0
+[QuickTime]     Diagonal Field Of View          : 145.414840698242
+[QuickTime]     Field Of View                   : Wide
+[QuickTime]     Mapping X Mode                  : x1
+[QuickTime]     Mapping X Coefficients          : 1
+[QuickTime]     Mapping Y Mode                  : y1
+[QuickTime]     Mapping Y Coefficients          : 1
+[QuickTime]     Polynomial Power                : r0, r1, r2, r3, r4, r5, r6
+[QuickTime]     Polynomial Coefficients         : 0 2.11120247840881 0.14325800538063 -1.03014612197876 0.640983164310455 -2.23835855991776e-13 1.09335724339261e-13
+[QuickTime]     Zoom Scale Normalization        : 0.652929663658142
+[QuickTime]     Aspect Ratio Unwarped           : 1.14285719394684
+[QuickTime]     Aspect Ratio Warped             : 1.14285719394684
+[QuickTime]     Device Name                     : Highlights
+[QuickTime]     Track Header Version            : 0
+[QuickTime]     Track Create Date               : 2026:03:25 08:59:40
+[QuickTime]     Track Modify Date               : 2026:03:25 08:59:40
+[QuickTime]     Track ID                        : 1
+[QuickTime]     Track Duration                  : 2.45 s
+[QuickTime]     Track Layer                     : 0
+[QuickTime]     Track Volume                    : 0.00%
+[QuickTime]     Matrix Structure                : 1 0 0 0 1 0 0 0 1
+[QuickTime]     Image Width                     : 3840
+[QuickTime]     Image Height                    : 3360
+[QuickTime]     Time Code                       : 3
+[QuickTime]     Media Header Version            : 0
+[QuickTime]     Media Create Date               : 2026:03:25 08:59:40
+[QuickTime]     Media Modify Date               : 2026:03:25 08:59:40
+[QuickTime]     Media Time Scale                : 60000
+[QuickTime]     Media Duration                  : 2.45 s
+[QuickTime]     Handler Class                   : Media Handler
+[QuickTime]     Handler Type                    : Video Track
+[QuickTime]     Handler Description             : GoPro H.265
+[QuickTime]     Graphics Mode                   : srcCopy
+[QuickTime]     Op Color                        : 0 0 0
+[QuickTime]     Compressor ID                   : hvc1
+[QuickTime]     Source Image Width              : 3840
+[QuickTime]     Source Image Height             : 3360
+[QuickTime]     X Resolution                    : 72
+[QuickTime]     Y Resolution                    : 72
+[QuickTime]     Compressor Name                 : GoPro H.265 encoder
+[QuickTime]     Bit Depth                       : 24
+[QuickTime]     Video Frame Rate                : 59.94
+[QuickTime]     Track Header Version            : 0
+[QuickTime]     Track Create Date               : 2026:03:25 08:59:40
+[QuickTime]     Track Modify Date               : 2026:03:25 08:59:40
+[QuickTime]     Track ID                        : 2
+[QuickTime]     Track Duration                  : 2.45 s
+[QuickTime]     Track Layer                     : 0
+[QuickTime]     Track Volume                    : 39.06%
+[QuickTime]     Matrix Structure                : 1 0 0 0 1 0 0 0 1
+[QuickTime]     Time Code                       : 3
+[QuickTime]     Media Header Version            : 0
+[QuickTime]     Media Create Date               : 2026:03:25 08:59:40
+[QuickTime]     Media Modify Date               : 2026:03:25 08:59:40
+[QuickTime]     Media Time Scale                : 48000
+[QuickTime]     Media Duration                  : 2.45 s
+[QuickTime]     Media Language Code             : Unknown (32767)
+[QuickTime]     Handler Class                   : Media Handler
+[QuickTime]     Handler Type                    : Audio Track
+[QuickTime]     Handler Description             : GoPro AAC
+[QuickTime]     Balance                         : 0
+[QuickTime]     Audio Format                    : mp4a
+[QuickTime]     Audio Channels                  : 2
+[QuickTime]     Audio Bits Per Sample           : 24
+[QuickTime]     Audio Sample Rate               : 48000
+[QuickTime]     Track Header Version            : 0
+[QuickTime]     Track Create Date               : 2026:03:25 08:59:40
+[QuickTime]     Track Modify Date               : 2026:03:25 08:59:40
+[QuickTime]     Track ID                        : 3
+[QuickTime]     Track Duration                  : 2.45 s
+[QuickTime]     Track Layer                     : 0
+[QuickTime]     Track Volume                    : 0.00%
+[QuickTime]     Matrix Structure                : 1 0 0 0 1 0 0 0 1
+[QuickTime]     Media Header Version            : 0
+[QuickTime]     Media Create Date               : 2026:03:25 08:59:40
+[QuickTime]     Media Modify Date               : 2026:03:25 08:59:40
+[QuickTime]     Media Time Scale                : 60000
+[QuickTime]     Media Duration                  : 2.45 s
+[QuickTime]     Handler Class                   : Media Handler
+[QuickTime]     Handler Type                    : Time Code
+[QuickTime]     Handler Description             : GoPro TCD
+[QuickTime]     Gen Media Version               : 0
+[QuickTime]     Gen Flags                       : 0 0 0
+[QuickTime]     Gen Graphics Mode               : ditherCopy
+[QuickTime]     Gen Op Color                    : 32768 32768 32768
+[QuickTime]     Gen Balance                     : 0
+[QuickTime]     Text Font                       : Unknown (21)
+[QuickTime]     Text Face                       : Plain
+[QuickTime]     Text Size                       : 10
+[QuickTime]     Text Color                      : 0 0 0
+[QuickTime]     Background Color                : 65535 65535 65535
+[QuickTime]     Font Name                       : Helvetica
+[QuickTime]     Other Format                    : tmcd
+[QuickTime]     Playback Frame Rate             : 59.94005994
+[QuickTime]     Track Header Version            : 0
+[QuickTime]     Track Create Date               : 2026:03:25 08:59:40
+[QuickTime]     Track Modify Date               : 2026:03:25 08:59:40
+[QuickTime]     Track ID                        : 4
+[QuickTime]     Track Duration                  : 2.45 s
+[QuickTime]     Track Layer                     : 0
+[QuickTime]     Track Volume                    : 0.00%
+[QuickTime]     Matrix Structure                : 1 0 0 0 1 0 0 0 1
+[QuickTime]     Media Header Version            : 0
+[QuickTime]     Media Create Date               : 2026:03:25 08:59:40
+[QuickTime]     Media Modify Date               : 2026:03:25 08:59:40
+[QuickTime]     Media Time Scale                : 1000
+[QuickTime]     Media Duration                  : 2.45 s
+[QuickTime]     Handler Class                   : Media Handler
+[QuickTime]     Handler Type                    : NRT Metadata
+[QuickTime]     Handler Description             : GoPro MET
+[QuickTime]     Gen Media Version               : 0
+[QuickTime]     Gen Flags                       : 0 0 0
+[QuickTime]     Gen Graphics Mode               : srcCopy
+[QuickTime]     Gen Op Color                    : 0 0 0
+[QuickTime]     Gen Balance                     : 0
+[QuickTime]     Meta Format                     : gpmd
+[QuickTime]     Sample Time                     : 0 s
+[QuickTime]     Sample Duration                 : 1.00 s
+[QuickTime]     Sample Time                     : 1.00 s
+[QuickTime]     Sample Duration                 : 1.00 s
+[QuickTime]     Sample Time                     : 2.00 s
+[QuickTime]     Sample Duration                 : 0.45 s
+[GoPro]         Device Name                     : HERO13 Black
+[GoPro]         Time Stamp                      : 0.024594
+[GoPro]         Input Orientation               : ZXY
+[GoPro]         Camera Temperature              : 73.3828125 C
+[GoPro]         Accelerometer                   : (Binary data 10094 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 0.024594
+[GoPro]         Input Orientation               : ZXY
+[GoPro]         Camera Temperature              : 73.3828125 C
+[GoPro]         Gyroscope                       : (Binary data 11151 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 0.022502
+[GoPro]         Exposure Times                  : 1/1089 1/1089 1/1039 1/975 1/924 1/873 1/827 1/790 1/752 1/718 1/690 1/667 1/642 1/622 1/603 1/588 1/573 1/559 1/547 1/538 1/527 1/520 1/513 1/507 1/500 1/494 1/489 1/486 1/482 1/479
+[GoPro]         Time Stamp                      : 0.022502
+[GoPro]         Color Temperatures              : 5006 5020 5060 5099 5139 5139 5178 5218 5258 5258
+[GoPro]         Time Stamp                      : 0.022502
+[GoPro]         White Balance RGB               : (Binary data 218 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 0.022502
+[GoPro]         ISO Speeds                      : 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100
+[GoPro]         Time Stamp                      : 0.022502
+[GoPro]         Luma Average                    : 90 88 89 92 94 97 99 99 99 99
+[GoPro]         Time Stamp                      : 0.022502
+[GoPro]         Input Uniformity                : 0 0 0 0 0 0 0 0 0 0
+[GoPro]         Time Stamp                      : 0.022502
+[GoPro]         Scene Classification            : SNOW 0.109999999403954, URBA 0.330000013113022, INDO 0.239999994635582, WATR 0.0299999993294477, VEGE 0.25, BEAC 0.0399999991059303
+[GoPro]         Scene Classification            : SNOW 0.119999997317791, URBA 0.319999992847443, INDO 0.159999996423721, WATR 0.0799999982118607, VEGE 0.28999999165535, BEAC 0.0299999993294477
+[GoPro]         Scene Classification            : SNOW 0.150000005960464, URBA 0.239999994635582, INDO 0.180000007152557, WATR 0.0700000002980232, VEGE 0.280000001192093, BEAC 0.0799999982118607
+[GoPro]         Scene Classification            : SNOW 0.129999995231628, URBA 0.319999992847443, INDO 0.159999996423721, WATR 0.0500000007450581, VEGE 0.259999990463257, BEAC 0.0799999982118607
+[GoPro]         Scene Classification            : SNOW 0.140000000596046, URBA 0.280000001192093, INDO 0.219999998807907, WATR 0.0799999982118607, VEGE 0.209999993443489, BEAC 0.0700000002980232
+[GoPro]         Scene Classification            : SNOW 0.150000005960464, URBA 0.28999999165535, INDO 0.159999996423721, WATR 0.0900000035762787, VEGE 0.239999994635582, BEAC 0.0700000002980232
+[GoPro]         Scene Classification            : SNOW 0.109999999403954, URBA 0.340000003576279, INDO 0.170000001788139, WATR 0.0500000007450581, VEGE 0.270000010728836, BEAC 0.0599999986588955
+[GoPro]         Scene Classification            : SNOW 0.159999996423721, URBA 0.360000014305115, INDO 0.159999996423721, WATR 0.0399999991059303, VEGE 0.209999993443489, BEAC 0.0700000002980232
+[GoPro]         Scene Classification            : SNOW 0.109999999403954, URBA 0.349999994039536, INDO 0.170000001788139, WATR 0.0299999993294477, VEGE 0.280000001192093, BEAC 0.0599999986588955
+[GoPro]         Scene Classification            : SNOW 0.109999999403954, URBA 0.300000011920929, INDO 0.200000002980232, WATR 0.0599999986588955, VEGE 0.280000001192093, BEAC 0.0500000007450581
+[GoPro]         Time Stamp                      : 0.022502
+[GoPro]         Prediminant Hue                 : 253 104, 172 64, 49 35
+[GoPro]         Prediminant Hue                 : 253 114, 172 75, 125 20
+[GoPro]         Prediminant Hue                 : 253 112, 172 79, 49 18
+[GoPro]         Prediminant Hue                 : 253 116, 172 74, 49 18
+[GoPro]         Prediminant Hue                 : 253 117, 172 61, 49 24
+[GoPro]         Prediminant Hue                 : 253 115, 172 56, 49 25
+[GoPro]         Prediminant Hue                 : 253 119, 172 54, 49 24
+[GoPro]         Prediminant Hue                 : 253 111, 172 47, 49 29
+[GoPro]         Prediminant Hue                 : 253 93, 172 50, 49 31
+[GoPro]         Prediminant Hue                 : 253 89, 172 52, 49 28
+[GoPro]         Time Stamp                      : 0.022502
+[GoPro]         Lens Projection                 : GPRO
+[GoPro]         Time Stamp                      : 0.058986
+[GoPro]         GPS Altitude System             : MSLV
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.27" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.72" E
+[GoPro]         GPS Altitude                    : 908.604 m
+[GoPro]         GPS Speed                       : 16.0956
+[GoPro]         GPS Speed 3D                    : 18.504
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:40.499
+[GoPro]         GPSDOP                          : 3.91
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.23" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.70" E
+[GoPro]         GPS Altitude                    : 907.689 m
+[GoPro]         GPS Speed                       : 19.1844
+[GoPro]         GPS Speed 3D                    : 16.992
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:40.599
+[GoPro]         GPSDOP                          : 3.91
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.22" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.71" E
+[GoPro]         GPS Altitude                    : 907.591 m
+[GoPro]         GPS Speed                       : 21.8808
+[GoPro]         GPS Speed 3D                    : 19.584
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:40.699
+[GoPro]         GPSDOP                          : 3.91
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.21" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.70" E
+[GoPro]         GPS Altitude                    : 907.804 m
+[GoPro]         GPS Speed                       : 20.9988
+[GoPro]         GPS Speed 3D                    : 22.248
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:40.799
+[GoPro]         GPSDOP                          : 3.91
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.20" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.70" E
+[GoPro]         GPS Altitude                    : 908.088 m
+[GoPro]         GPS Speed                       : 20.7936
+[GoPro]         GPS Speed 3D                    : 21.24
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:40.899
+[GoPro]         GPSDOP                          : 3.91
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.18" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.68" E
+[GoPro]         GPS Altitude                    : 908.16 m
+[GoPro]         GPS Speed                       : 20.6676
+[GoPro]         GPS Speed 3D                    : 20.952
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:41.000
+[GoPro]         GPSDOP                          : 3.91
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.13" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.66" E
+[GoPro]         GPS Altitude                    : 907.626 m
+[GoPro]         GPS Speed                       : 21.9024
+[GoPro]         GPS Speed 3D                    : 20.772
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:41.099
+[GoPro]         GPSDOP                          : 3.91
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.09" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.64" E
+[GoPro]         GPS Altitude                    : 906.997 m
+[GoPro]         GPS Speed                       : 21.1464
+[GoPro]         GPS Speed 3D                    : 21.96
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:41.199
+[GoPro]         GPSDOP                          : 3.91
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.05" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.62" E
+[GoPro]         GPS Altitude                    : 906.579 m
+[GoPro]         GPS Speed                       : 21.6828
+[GoPro]         GPS Speed 3D                    : 21.276
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:41.299
+[GoPro]         GPSDOP                          : 3.91
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         Time Stamp                      : 0.022502
+[GoPro]         Camera Orientation              : (Binary data 4571 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 0.022502
+[GoPro]         Image Orientation               : (Binary data 4759 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 0.022502
+[GoPro]         Gravity Vector                  : (Binary data 3202 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 0.122218
+[GoPro]         Wind Processing                 : 0 0 1 85 1 81 1 76 1 72 1 71 1 70 1 69 1 67
+[GoPro]         Time Stamp                      : 0.122218
+[GoPro]         Microphone Wet                  : 0 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0
+[GoPro]         Time Stamp                      : 0.122218
+[GoPro]         Audio Level                     : -128 -128 -17 -11 -17 -9 -17 -10 -20 -13 -16 -9 -17 -9 -20 -12 -18 -11
+[GoPro]         Time Stamp                      : 0.022502
+[GoPro]         Time Stamp                      : 0.022502
+[GoPro]         Time Stamp                      : 0.022502
+[GoPro]         Time Stamp                      : 0.022502
+[GoPro]         Device Name                     : HERO13 Black
+[GoPro]         Time Stamp                      : 1.022226
+[GoPro]         Input Orientation               : ZXY
+[GoPro]         Camera Temperature              : 73.78125 C
+[GoPro]         Accelerometer                   : (Binary data 10108 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 1.022226
+[GoPro]         Input Orientation               : ZXY
+[GoPro]         Camera Temperature              : 73.78125 C
+[GoPro]         Gyroscope                       : (Binary data 11171 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 1.023502
+[GoPro]         Exposure Times                  : 1/476 1/475 1/472 1/471 1/469 1/468 1/466 1/465 1/465 1/464 1/464 1/464 1/464 1/464 1/462 1/462 1/462 1/462 1/462 1/464 1/465 1/465 1/466 1/468 1/469 1/472 1/473 1/476 1/481 1/485
+[GoPro]         Time Stamp                      : 1.023502
+[GoPro]         Color Temperatures              : 5297 5297 5297 5337 5337 5337 5337 5337 5376 5376
+[GoPro]         Time Stamp                      : 1.023502
+[GoPro]         White Balance RGB               : (Binary data 211 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 1.023502
+[GoPro]         ISO Speeds                      : 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100
+[GoPro]         Time Stamp                      : 1.023502
+[GoPro]         Luma Average                    : 99 98 100 101 101 103 104 103 102 103
+[GoPro]         Time Stamp                      : 1.023502
+[GoPro]         Input Uniformity                : 0 0 0 0 0 0 0 0 0 0
+[GoPro]         Time Stamp                      : 1.023502
+[GoPro]         Scene Classification            : SNOW 0.159999996423721, URBA 0.379999995231628, INDO 0.140000000596046, WATR 0.0399999991059303, VEGE 0.209999993443489, BEAC 0.0700000002980232
+[GoPro]         Scene Classification            : SNOW 0.150000005960464, URBA 0.349999994039536, INDO 0.150000005960464, WATR 0.0900000035762787, VEGE 0.239999994635582, BEAC 0.0199999995529652
+[GoPro]         Scene Classification            : SNOW 0.159999996423721, URBA 0.28999999165535, INDO 0.159999996423721, WATR 0.119999997317791, VEGE 0.239999994635582, BEAC 0.0299999993294477
+[GoPro]         Scene Classification            : SNOW 0.150000005960464, URBA 0.330000013113022, INDO 0.150000005960464, WATR 0.109999999403954, VEGE 0.200000002980232, BEAC 0.0599999986588955
+[GoPro]         Scene Classification            : SNOW 0.129999995231628, URBA 0.360000014305115, INDO 0.0900000035762787, WATR 0.109999999403954, VEGE 0.270000010728836, BEAC 0.0399999991059303
+[GoPro]         Scene Classification            : SNOW 0.109999999403954, URBA 0.349999994039536, INDO 0.129999995231628, WATR 0.0599999986588955, VEGE 0.310000002384186, BEAC 0.0399999991059303
+[GoPro]         Scene Classification            : SNOW 0.0799999982118607, URBA 0.300000011920929, INDO 0.170000001788139, WATR 0.100000001490116, VEGE 0.310000002384186, BEAC 0.0399999991059303
+[GoPro]         Scene Classification            : SNOW 0.140000000596046, URBA 0.389999985694885, INDO 0.0799999982118607, WATR 0.0700000002980232, VEGE 0.270000010728836, BEAC 0.0500000007450581
+[GoPro]         Scene Classification            : SNOW 0.0799999982118607, URBA 0.379999995231628, INDO 0.170000001788139, WATR 0.0700000002980232, VEGE 0.239999994635582, BEAC 0.0599999986588955
+[GoPro]         Scene Classification            : SNOW 0.100000001490116, URBA 0.349999994039536, INDO 0.189999997615814, WATR 0.0599999986588955, VEGE 0.25, BEAC 0.0500000007450581
+[GoPro]         Time Stamp                      : 1.023502
+[GoPro]         Prediminant Hue                 : 253 91, 172 41, 86 34
+[GoPro]         Prediminant Hue                 : 253 84, 172 51, 86 33
+[GoPro]         Prediminant Hue                 : 253 78, 172 47, 86 36
+[GoPro]         Prediminant Hue                 : 253 82, 172 47, 86 35
+[GoPro]         Prediminant Hue                 : 253 74, 172 60, 86 36
+[GoPro]         Prediminant Hue                 : 172 67, 253 65, 86 33
+[GoPro]         Prediminant Hue                 : 172 74, 253 48, 86 38
+[GoPro]         Prediminant Hue                 : 172 96, 86 41, 253 36
+[GoPro]         Prediminant Hue                 : 172 94, 86 44, 253 36
+[GoPro]         Prediminant Hue                 : 172 98, 86 46, 253 35
+[GoPro]         Time Stamp                      : 1.023502
+[GoPro]         Lens Projection                 : GPRO
+[GoPro]         Time Stamp                      : 1.019752
+[GoPro]         GPS Altitude System             : MSLV
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.01" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.61" E
+[GoPro]         GPS Altitude                    : 906.524 m
+[GoPro]         GPS Speed                       : 21.2508
+[GoPro]         GPS Speed 3D                    : 21.744
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:41.399
+[GoPro]         GPSDOP                          : 3.63
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.03" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.64" E
+[GoPro]         GPS Altitude                    : 907.04 m
+[GoPro]         GPS Speed                       : 22.7016
+[GoPro]         GPS Speed 3D                    : 21.276
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:41.499
+[GoPro]         GPSDOP                          : 2.89
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.05" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.67" E
+[GoPro]         GPS Altitude                    : 907.408 m
+[GoPro]         GPS Speed                       : 21.8412
+[GoPro]         GPS Speed 3D                    : 22.716
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:41.599
+[GoPro]         GPSDOP                          : 2.89
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.08" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.71" E
+[GoPro]         GPS Altitude                    : 908.128 m
+[GoPro]         GPS Speed                       : 22.9788
+[GoPro]         GPS Speed 3D                    : 21.852
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:41.699
+[GoPro]         GPSDOP                          : 2.25
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.06" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.71" E
+[GoPro]         GPS Altitude                    : 908.469 m
+[GoPro]         GPS Speed                       : 22.428
+[GoPro]         GPS Speed 3D                    : 23.004
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:41.799
+[GoPro]         GPSDOP                          : 2.52
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.06" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.72" E
+[GoPro]         GPS Altitude                    : 909.022 m
+[GoPro]         GPS Speed                       : 21.78
+[GoPro]         GPS Speed 3D                    : 22.464
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:41.899
+[GoPro]         GPSDOP                          : 2.05
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.04" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.71" E
+[GoPro]         GPS Altitude                    : 908.932 m
+[GoPro]         GPS Speed                       : 21.2004
+[GoPro]         GPS Speed 3D                    : 21.78
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:42.000
+[GoPro]         GPSDOP                          : 2.26
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.08" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.76" E
+[GoPro]         GPS Altitude                    : 909.79 m
+[GoPro]         GPS Speed                       : 20.9304
+[GoPro]         GPS Speed 3D                    : 21.204
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:42.099
+[GoPro]         GPSDOP                          : 2.25
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.06" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.76" E
+[GoPro]         GPS Altitude                    : 910.215 m
+[GoPro]         GPS Speed                       : 21.7152
+[GoPro]         GPS Speed 3D                    : 20.952
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:42.199
+[GoPro]         GPSDOP                          : 2.05
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         Time Stamp                      : 1.023502
+[GoPro]         Camera Orientation              : (Binary data 4506 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 1.023502
+[GoPro]         Image Orientation               : (Binary data 4616 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 1.023502
+[GoPro]         Gravity Vector                  : (Binary data 3218 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 1.022218
+[GoPro]         Wind Processing                 : 1 66 1 69 1 69 1 67 1 64 1 63 1 62 1 62 1 61 1 65
+[GoPro]         Time Stamp                      : 1.022218
+[GoPro]         Microphone Wet                  : 0 1 0 0 1 0 0 1 0 0 1 100 0 1 100 0 1 0 0 1 0 0 1 0 0 1 100 0 1 100
+[GoPro]         Time Stamp                      : 1.022218
+[GoPro]         Audio Level                     : -16 -9 -17 -11 -18 -12 -18 -10 -17 -10 -17 -10 -17 -10 -17 -9 -16 -10 -18 -11
+[GoPro]         Time Stamp                      : 1.023502
+[GoPro]         Time Stamp                      : 1.023502
+[GoPro]         Time Stamp                      : 1.023502
+[GoPro]         Time Stamp                      : 0.967149
+[GoPro]         Device Name                     : HERO13 Black
+[GoPro]         Time Stamp                      : 2.024867
+[GoPro]         Input Orientation               : ZXY
+[GoPro]         Camera Temperature              : 73.9375 C
+[GoPro]         Accelerometer                   : (Binary data 4698 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 2.024867
+[GoPro]         Input Orientation               : ZXY
+[GoPro]         Camera Temperature              : 73.9375 C
+[GoPro]         Gyroscope                       : (Binary data 5303 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 2.024502
+[GoPro]         Exposure Times                  : 1/493 1/500 1/508 1/517 1/523 1/530 1/540 1/547 1/555 1/565 1/571 1/579 1/588 1/594
+[GoPro]         Time Stamp                      : 2.024502
+[GoPro]         Color Temperatures              : 5376 5376 5376 5376 5376
+[GoPro]         Time Stamp                      : 2.024502
+[GoPro]         White Balance RGB               : (Binary data 94 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 2.024502
+[GoPro]         ISO Speeds                      : 100 100 100 100 100 100 100 100 100 100 100 100 100 100
+[GoPro]         Time Stamp                      : 2.024502
+[GoPro]         Luma Average                    : 105 105 102 102 104
+[GoPro]         Time Stamp                      : 2.024502
+[GoPro]         Input Uniformity                : 0 0 0 0 0
+[GoPro]         Time Stamp                      : 2.024502
+[GoPro]         Scene Classification            : SNOW 0.129999995231628, URBA 0.379999995231628, INDO 0.150000005960464, WATR 0.0199999995529652, VEGE 0.259999990463257, BEAC 0.0599999986588955
+[GoPro]         Scene Classification            : SNOW 0.0700000002980232, URBA 0.400000005960464, INDO 0.170000001788139, WATR 0.0599999986588955, VEGE 0.259999990463257, BEAC 0.0399999991059303
+[GoPro]         Scene Classification            : SNOW 0.0900000035762787, URBA 0.360000014305115, INDO 0.180000007152557, WATR 0.0799999982118607, VEGE 0.259999990463257, BEAC 0.0299999993294477
+[GoPro]         Scene Classification            : SNOW 0.0700000002980232, URBA 0.430000007152557, INDO 0.129999995231628, WATR 0.0900000035762787, VEGE 0.239999994635582, BEAC 0.0399999991059303
+[GoPro]         Scene Classification            : SNOW 0.0700000002980232, URBA 0.340000003576279, INDO 0.140000000596046, WATR 0.159999996423721, VEGE 0.259999990463257, BEAC 0.0299999993294477
+[GoPro]         Time Stamp                      : 2.024502
+[GoPro]         Prediminant Hue                 : 172 84, 86 53, 253 31
+[GoPro]         Prediminant Hue                 : 172 73, 86 56, 49 36
+[GoPro]         Prediminant Hue                 : 172 83, 86 46, 253 32
+[GoPro]         Prediminant Hue                 : 172 58, 86 47, 253 36
+[GoPro]         Prediminant Hue                 : 172 64, 253 42, 86 38
+[GoPro]         Time Stamp                      : 2.024502
+[GoPro]         Lens Projection                 : GPRO
+[GoPro]         Time Stamp                      : 1.989081
+[GoPro]         GPS Altitude System             : MSLV
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.09" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.80" E
+[GoPro]         GPS Altitude                    : 910.971 m
+[GoPro]         GPS Speed                       : 20.9448
+[GoPro]         GPS Speed 3D                    : 21.708
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:42.299
+[GoPro]         GPSDOP                          : 2.25
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.11" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.83" E
+[GoPro]         GPS Altitude                    : 911.681 m
+[GoPro]         GPS Speed                       : 21.3264
+[GoPro]         GPS Speed 3D                    : 20.952
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:42.399
+[GoPro]         GPSDOP                          : 2.25
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.09" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.82" E
+[GoPro]         GPS Altitude                    : 911.779 m
+[GoPro]         GPS Speed                       : 20.9484
+[GoPro]         GPS Speed 3D                    : 21.312
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:42.499
+[GoPro]         GPSDOP                          : 2.05
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.06" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.81" E
+[GoPro]         GPS Altitude                    : 911.814 m
+[GoPro]         GPS Speed                       : 20.2176
+[GoPro]         GPS Speed 3D                    : 20.952
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:42.599
+[GoPro]         GPSDOP                          : 2.43
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         GPS Latitude                    : 12 deg 59' 4.03" N
+[GoPro]         GPS Longitude                   : 77 deg 44' 43.80" E
+[GoPro]         GPS Altitude                    : 911.82 m
+[GoPro]         GPS Speed                       : 21.474
+[GoPro]         GPS Speed 3D                    : 20.232
+[GoPro]         GPS Date Time                   : 2026:03:25 08:58:42.699
+[GoPro]         GPSDOP                          : 2.43
+[GoPro]         GPS Measure Mode                : 3-Dimensional Measurement
+[GoPro]         Time Stamp                      : 2.024502
+[GoPro]         Camera Orientation              : (Binary data 1997 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 2.024502
+[GoPro]         Image Orientation               : (Binary data 2108 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 2.024502
+[GoPro]         Gravity Vector                  : (Binary data 1451 bytes, use -b option to extract)
+[GoPro]         Time Stamp                      : 2.022218
+[GoPro]         Wind Processing                 : 1 75 1 77 1 77 1 76 1 76
+[GoPro]         Time Stamp                      : 2.022218
+[GoPro]         Microphone Wet                  : 0 1 100 0 1 100 0 1 100 0 1 100 0 1 100
+[GoPro]         Time Stamp                      : 2.022218
+[GoPro]         Audio Level                     : -17 -10 -16 -9 -17 -10 -19 -10 -19 -11
+[GoPro]         Time Stamp                      : 2.024502
+[GoPro]         Time Stamp                      : 2.024502
+[GoPro]         Time Stamp                      : 2.024502
+[GoPro]         Time Stamp                      : 1.657469
+[Composite]     Image Size                      : 3840x3360
+[Composite]     Megapixels                      : 12.9
+[Composite]     Avg Bitrate                     : 61 Mbps
+[Composite]     GPS Latitude                    : 12 deg 59' 4.20" N
+[Composite]     GPS Longitude                   : 77 deg 44' 43.80" E
+[Composite]     Rotation                        : 0
+[Composite]     GPS Position                    : 12 deg 59' 4.20" N, 77 deg 44' 43.80" E
