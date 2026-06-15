@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate maps for the Missing Women project.
+Generate maps for the Streetscope project.
 
 Creates both interactive HTML maps (Folium) and static PDF maps (matplotlib + contextily).
 
@@ -21,14 +21,14 @@ from pathlib import Path
 
 import contextily as cx
 import folium
-from folium.plugins import MarkerCluster
 import geopandas as gpd
 import matplotlib
+from folium.plugins import MarkerCluster
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.colors import LinearSegmentedColormap
-import numpy as np
 import pandas as pd
+from matplotlib.colors import LinearSegmentedColormap
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -120,10 +120,10 @@ def make_locations_map(df: pd.DataFrame) -> None:
         for _, row in city_data.iterrows():
             popup_text = f"""
             <b>{label}</b><br>
-            Video: {row.get('base_video_id', 'N/A')}<br>
-            Frame: {row.get('frame_number', 'N/A')}<br>
-            People: {row.get('total_people', 'N/A')}<br>
-            Prop women: {row.get('prop_women', 0):.2f}
+            Video: {row.get("base_video_id", "N/A")}<br>
+            Frame: {row.get("frame_number", "N/A")}<br>
+            People: {row.get("total_people", "N/A")}<br>
+            Prop women: {row.get("prop_women", 0):.2f}
             """
             folium.CircleMarker(
                 location=[row["gps_lat"], row["gps_lon"]],
@@ -180,9 +180,9 @@ def make_sex_ratio_map(df: pd.DataFrame) -> None:
 
         popup_text = f"""
         <b>{city_label}</b><br>
-        Video: {row.get('base_video_id', 'N/A')}<br>
-        People: {row.get('total_people', 'N/A')}<br>
-        Women: {row.get('total_women', 'N/A')}<br>
+        Video: {row.get("base_video_id", "N/A")}<br>
+        People: {row.get("total_people", "N/A")}<br>
+        Women: {row.get("total_women", "N/A")}<br>
         <b>Prop women: {prop:.2f}</b>
         """
 

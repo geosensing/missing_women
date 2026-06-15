@@ -225,12 +225,8 @@ def process_results(sample: pd.DataFrame, output_path: Path) -> pd.DataFrame:
                     }
 
     sample = sample.copy()
-    sample["ai_men_count"] = sample.index.map(
-        lambda x: results.get(x, {}).get("men_count")
-    )
-    sample["ai_women_count"] = sample.index.map(
-        lambda x: results.get(x, {}).get("women_count")
-    )
+    sample["ai_men_count"] = sample.index.map(lambda x: results.get(x, {}).get("men_count"))
+    sample["ai_women_count"] = sample.index.map(lambda x: results.get(x, {}).get("women_count"))
     sample["ai_men_twowheeler"] = sample.index.map(
         lambda x: results.get(x, {}).get("men_twowheeler")
     )
@@ -284,12 +280,9 @@ def compute_metrics(df: pd.DataFrame) -> None:
 
     total_human_men = df["men_count"].sum() + df["men_twowheeler"].sum()
     total_human_women = df["women_count"].sum() + df["women_twowheeler"].sum()
-    total_ai_men = (
-        df["ai_men_count"].fillna(0).sum() + df["ai_men_twowheeler"].fillna(0).sum()
-    )
+    total_ai_men = df["ai_men_count"].fillna(0).sum() + df["ai_men_twowheeler"].fillna(0).sum()
     total_ai_women = (
-        df["ai_women_count"].fillna(0).sum()
-        + df["ai_women_twowheeler"].fillna(0).sum()
+        df["ai_women_count"].fillna(0).sum() + df["ai_women_twowheeler"].fillna(0).sum()
     )
 
     human_ratio = total_human_women / total_human_men if total_human_men > 0 else 0
@@ -304,12 +297,8 @@ def compute_metrics(df: pd.DataFrame) -> None:
 
 def main():
     parser = argparse.ArgumentParser(description="Validate annotations with OpenAI")
-    parser.add_argument(
-        "--submit", action="store_true", help="Submit batch job to OpenAI"
-    )
-    parser.add_argument(
-        "--check", action="store_true", help="Check batch status and get results"
-    )
+    parser.add_argument("--submit", action="store_true", help="Submit batch job to OpenAI")
+    parser.add_argument("--check", action="store_true", help="Check batch status and get results")
     args = parser.parse_args()
 
     if not args.submit and not args.check:
@@ -345,9 +334,7 @@ def main():
             sys.exit(1)
 
         sample = pd.read_csv(sample_path, index_col=0)
-        sample["resolved_path"] = sample.apply(
-            lambda r: resolve_image_path(r, lookup), axis=1
-        )
+        sample["resolved_path"] = sample.apply(lambda r: resolve_image_path(r, lookup), axis=1)
 
         result = check_batch_status(client)
 

@@ -1,15 +1,15 @@
 mumbai:
-  video_dir: /Volumes/Samsung USB/missing_women/mumbai_vids
+  video_dir: /Volumes/Samsung USB/streetscope/mumbai_vids
   osm_file: maharashtra-latest.osm.pbf
   timezone: Asia/Kolkata
 
 navi_mumbai:
-  video_dir: /Volumes/Samsung USB/missing_women/navi_mumbai_vids
+  video_dir: /Volumes/Samsung USB/streetscope/navi_mumbai_vids
   osm_file: maharashtra-latest.osm.pbf
   timezone: Asia/Kolkata
 
 bangalore:
-  video_dir: /Volumes/Samsung USB/missing_women/bangalore_vids
+  video_dir: /Volumes/Samsung USB/streetscope/bangalore_vids
   osm_file: karnataka-latest.osm.pbf
   timezone: Asia/Kolkata
 
@@ -19,6 +19,6 @@ delhi:
   timezone: Asia/Kolkata
 
 hyderabad:
-  video_dir: /Volumes/Samsung USB/missing_women/hyderabad_vids
+  video_dir: /Volumes/Samsung USB/streetscope/hyderabad_vids
   osm_file: telangana-latest.osm.pbf
   timezone: Asia/Kolkata

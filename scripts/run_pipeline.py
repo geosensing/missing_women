@@ -53,10 +53,14 @@ def import_from_path(name: str, path: Path):
 scripts_dir = Path(__file__).parent
 
 build_gps_index_mod = import_from_path("build_gps_index", scripts_dir / "04_build_gps_index.py")
-parse_annotations_mod = import_from_path("parse_annotations", scripts_dir / "05_parse_annotations.py")
+parse_annotations_mod = import_from_path(
+    "parse_annotations", scripts_dir / "05_parse_annotations.py"
+)
 assign_frame_gps_mod = import_from_path("assign_frame_gps", scripts_dir / "06_assign_frame_gps.py")
 enrich_with_geo_mod = import_from_path("enrich_with_geo", scripts_dir / "07_enrich_with_geo.py")
-build_analysis_data_mod = import_from_path("build_analysis_data", scripts_dir / "08_build_analysis_data.py")
+build_analysis_data_mod = import_from_path(
+    "build_analysis_data", scripts_dir / "08_build_analysis_data.py"
+)
 
 build_gps_index = build_gps_index_mod.build_gps_index
 parse_all_annotations = parse_annotations_mod.parse_all_annotations
@@ -109,11 +113,16 @@ def run_process_videos(
     cmd = [
         sys.executable,
         str(script_path),
-        "--input", str(video_dir),
-        "--output", str(output_dir),
-        "--frames-dir", str(frames_dir),
-        "--every-seconds", str(every_seconds),
-        "--quality", str(quality),
+        "--input",
+        str(video_dir),
+        "--output",
+        str(output_dir),
+        "--frames-dir",
+        str(frames_dir),
+        "--every-seconds",
+        str(every_seconds),
+        "--quality",
+        str(quality),
     ]
 
     print(f"Running: {' '.join(cmd)}")
@@ -155,12 +164,18 @@ def run_extract_face_frames(
     cmd = [
         sys.executable,
         str(script_path),
-        "--exif-dir", str(exif_dir),
-        "--video-dir", str(video_dir),
-        "--output", str(face_frames_dir),
-        "--log", str(log_path),
-        "--scale", str(scale_width),
-        "--min-confidence", str(min_confidence),
+        "--exif-dir",
+        str(exif_dir),
+        "--video-dir",
+        str(video_dir),
+        "--output",
+        str(face_frames_dir),
+        "--log",
+        str(log_path),
+        "--scale",
+        str(scale_width),
+        "--min-confidence",
+        str(min_confidence),
     ]
 
     print(f"Running: {' '.join(cmd)}")
@@ -250,7 +265,15 @@ def run_pipeline(
     print("STEP 07: Enrich with Geographic Data")
     print("=" * 60)
 
-    osm_path_arg = None if skip_osm else osm_path
+    if skip_osm:
+        osm_path_arg = None
+    elif osm_path.exists():
+        osm_path_arg = osm_path
+        print(f"Using OSM ground truth: {osm_path}")
+    else:
+        osm_path_arg = None
+        print(f"OSM PBF not found at {osm_path}; using itinerary road type only.")
+        print("  (Download the region from Geofabrik into data/osm/ to enable OSM ground truth.)")
     with_geo = enrich_with_geo(with_gps, sampling_dir, city, osm_path_arg)
 
     print("\n" + "=" * 60)
@@ -278,13 +301,13 @@ def print_summary(df: pd.DataFrame) -> None:
     print(f"\n1. Row count: {len(df):,}")
 
     gps_rate = df["gps_lat"].notna().mean()
-    print(f"\n2. GPS coverage: {100*gps_rate:.1f}%")
+    print(f"\n2. GPS coverage: {100 * gps_rate:.1f}%")
 
     if "region" in df.columns:
         for region in df["region"].unique():
             mask = df["region"] == region
             region_gps = df.loc[mask, "gps_lat"].notna().mean()
-            print(f"   - {region}: {100*region_gps:.1f}%")
+            print(f"   - {region}: {100 * region_gps:.1f}%")
 
     if "gps_time_diff_sec" in df.columns:
         diff = df["gps_time_diff_sec"].dropna()
@@ -296,13 +319,15 @@ def print_summary(df: pd.DataFrame) -> None:
 
     if "itinerary_road_type" in df.columns:
         match_rate = df["itinerary_road_type"].notna().mean()
-        print(f"\n5. Itinerary match rate: {100*match_rate:.1f}%")
+        print(f"\n5. Itinerary match rate: {100 * match_rate:.1f}%")
 
     if "gps_lat" in df.columns:
         lat = df["gps_lat"].dropna()
         lon = df["gps_lon"].dropna()
-        print(f"\n6. Lat/lon ranges: {lat.min():.2f}-{lat.max():.2f}°N, "
-              f"{lon.min():.2f}-{lon.max():.2f}°E")
+        print(
+            f"\n6. Lat/lon ranges: {lat.min():.2f}-{lat.max():.2f}°N, "
+            f"{lon.min():.2f}-{lon.max():.2f}°E"
+        )
 
     if "prop_female" in df.columns:
         prop = df["prop_female"].dropna()
@@ -392,8 +417,12 @@ def main():
 
     if args.city.lower() == "all":
         cities = get_all_cities(project_root)
-        cities = [c for c in cities if (project_root / "data" / c / "labelstudio").exists()
-                  and any((project_root / "data" / c / "labelstudio").iterdir())]
+        cities = [
+            c
+            for c in cities
+            if (project_root / "data" / c / "labelstudio").exists()
+            and any((project_root / "data" / c / "labelstudio").iterdir())
+        ]
         if not cities:
             print("No cities with annotation data found")
             return

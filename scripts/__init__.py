@@ -1,1 +1,1 @@
-"""Scripts for Missing Women project."""
+"""Scripts for Streetscope project."""

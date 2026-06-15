@@ -169,7 +169,7 @@ def parse_all_annotations(labelstudio_dir: Path, city: str) -> pd.DataFrame:
     dfs = [df.dropna(axis=1, how="all") for df in dfs if not df.empty]
     combined = pd.concat(dfs, ignore_index=True, join="outer")
 
-    print(f"\nFiltering incomplete annotations...")
+    print("\nFiltering incomplete annotations...")
     n_before = len(combined)
     combined = filter_skip_rows(combined)
     n_after = len(combined)
@@ -193,6 +193,6 @@ if __name__ == "__main__":
     print("\n=== Summary ===")
     print(f"Total annotations: {len(df)}")
     print(f"Unique videos: {df['base_video_id'].nunique()}")
-    print(f"\nRegion breakdown:")
+    print("\nRegion breakdown:")
     print(df["region"].value_counts())
     print(f"\nSample columns: {list(df.columns)}")

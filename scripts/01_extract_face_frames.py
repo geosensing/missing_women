@@ -101,8 +101,9 @@ def parse_exif_filename(exif_path: Path) -> tuple[str, str, str]:
     """
     Parse EXIF filename to extract day folder, video name, and frame_id.
 
-    EXIF filename format: day_1_4_28_2026_11.15_5856a1d1_exif.txt
-                      or: day_3_4_30_2026_Itinerary_37.1_d7470e01_exif.txt
+    EXIF filename formats:
+        Old: day_1_4_28_2026_11.15_5856a1d1_exif.txt (day_NUM_MONTH_DATE_YEAR)
+        New: day_13_6_2026_GX012552_95e48ead_exif.txt (day_NUM_MONTH_YEAR)
     Returns: (day_folder, video_name, frame_id)
 
     frame_id is without hash to avoid duplicates from same video.
@@ -113,8 +114,11 @@ def parse_exif_filename(exif_path: Path) -> tuple[str, str, str]:
 
     name = name[:-5]  # Remove _exif
 
-    # Extract day_folder pattern from the start
-    match = re.match(r"(day_\d+_\d+_\d+_\d+)_(.+)_([a-f0-9]{8})$", name)
+    # Try new format first: day_NUM_MONTH_YEAR (3 numbers)
+    match = re.match(r"(day_\d+_\d+_\d{4})_(.+)_([a-f0-9]{8})$", name)
+    if not match:
+        # Try old format: day_NUM_MONTH_DATE_YEAR (4 numbers)
+        match = re.match(r"(day_\d+_\d+_\d+_\d+)_(.+)_([a-f0-9]{8})$", name)
     if not match:
         raise ValueError(f"Cannot parse EXIF filename: {exif_path.name}")
 

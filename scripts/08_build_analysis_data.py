@@ -13,12 +13,11 @@ Outputs (persisted):
         All annotations, for inter-rater reliability analysis
 """
 
-from pathlib import Path
 from datetime import timedelta
+from pathlib import Path
 
-import pandas as pd
 import numpy as np
-
+import pandas as pd
 
 IST_OFFSET = timedelta(hours=5, minutes=30)
 
@@ -125,8 +124,15 @@ def normalize_categorical(df: pd.DataFrame) -> pd.DataFrame:
     """Normalize categorical fields for consistency."""
     result = df.copy()
 
-    bool_cols = ["footpath", "lane_markings", "potholes", "litter",
-                 "bus_station", "railway_station", "street_vendor"]
+    bool_cols = [
+        "footpath",
+        "lane_markings",
+        "potholes",
+        "litter",
+        "bus_station",
+        "railway_station",
+        "street_vendor",
+    ]
 
     yes_values = {"Yes", "yes", "YES", "1", "True", "true"}
     no_values = {"No", "no", "NO", "0", "False", "false", "No sidewalk"}
@@ -280,6 +286,7 @@ def build_analysis_data(
 if __name__ == "__main__":
     import argparse
     import importlib.util
+
     import yaml
 
     def import_from_path(name: str, path: Path):
@@ -295,8 +302,12 @@ if __name__ == "__main__":
     project_root = Path(__file__).parent.parent
     scripts_dir = Path(__file__).parent
 
-    parse_annotations_mod = import_from_path("parse_annotations", scripts_dir / "05_parse_annotations.py")
-    assign_frame_gps_mod = import_from_path("assign_frame_gps", scripts_dir / "06_assign_frame_gps.py")
+    parse_annotations_mod = import_from_path(
+        "parse_annotations", scripts_dir / "05_parse_annotations.py"
+    )
+    assign_frame_gps_mod = import_from_path(
+        "assign_frame_gps", scripts_dir / "06_assign_frame_gps.py"
+    )
     enrich_with_geo_mod = import_from_path("enrich_with_geo", scripts_dir / "07_enrich_with_geo.py")
     parse_all_annotations = parse_annotations_mod.parse_all_annotations
     assign_frame_gps = assign_frame_gps_mod.assign_frame_gps
@@ -324,8 +335,10 @@ if __name__ == "__main__":
     print(f"Primary rows: {len(primary)}")
     print(f"Long rows: {len(long)}")
     print(f"Columns: {len(primary.columns)}")
-    print(f"\nGPS coverage: {primary['gps_lat'].notna().sum()}/{len(primary)} "
-          f"({100*primary['gps_lat'].notna().mean():.1f}%)")
+    print(
+        f"\nGPS coverage: {primary['gps_lat'].notna().sum()}/{len(primary)} "
+        f"({100 * primary['gps_lat'].notna().mean():.1f}%)"
+    )
 
     if "frame_hour" in primary.columns:
         print(f"\nHour range (IST): {primary['frame_hour'].min()}-{primary['frame_hour'].max()}")
@@ -334,5 +347,5 @@ if __name__ == "__main__":
         print(f"\nMean prop_female: {primary['prop_female'].mean():.3f}")
 
     if "itinerary_road_type" in primary.columns:
-        print(f"\nRoad types (itinerary):")
+        print("\nRoad types (itinerary):")
         print(primary["itinerary_road_type"].value_counts().head(10))

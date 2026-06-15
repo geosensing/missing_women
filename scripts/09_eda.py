@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-EDA: Exploratory Data Analysis for Missing Women Project
+EDA: Exploratory Data Analysis for Streetscope Project
 =========================================================
 Produces diagnostic plots and console stats from analysis_data.parquet files.
 
@@ -20,6 +20,7 @@ import argparse
 from pathlib import Path
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
@@ -36,20 +37,22 @@ COLORS = {
     "bangalore": "#1b7837",
 }
 
-plt.rcParams.update({
-    "font.family": "sans-serif",
-    "font.sans-serif": ["Helvetica", "Arial", "DejaVu Sans"],
-    "font.size": 8,
-    "axes.linewidth": 0.5,
-    "axes.spines.top": False,
-    "axes.spines.right": False,
-    "figure.dpi": 300,
-    "savefig.dpi": 300,
-    "savefig.bbox": "tight",
-    "savefig.pad_inches": 0.08,
-    "pdf.fonttype": 42,
-    "ps.fonttype": 42,
-})
+plt.rcParams.update(
+    {
+        "font.family": "sans-serif",
+        "font.sans-serif": ["Helvetica", "Arial", "DejaVu Sans"],
+        "font.size": 8,
+        "axes.linewidth": 0.5,
+        "axes.spines.top": False,
+        "axes.spines.right": False,
+        "figure.dpi": 300,
+        "savefig.dpi": 300,
+        "savefig.bbox": "tight",
+        "savefig.pad_inches": 0.08,
+        "pdf.fonttype": 42,
+        "ps.fonttype": 42,
+    }
+)
 
 
 def load_all_cities(cities: list[str]) -> pd.DataFrame:
@@ -101,10 +104,20 @@ def print_field_completeness(df: pd.DataFrame) -> None:
     print("=" * 60)
 
     annotation_fields = [
-        "men_count", "women_count", "men_twowheeler", "women_twowheeler",
-        "footpath", "lane_markings", "potholes", "litter",
-        "bus_station", "railway_station", "street_vendor",
-        "itinerary_road_type", "gps_lat", "gps_lon",
+        "men_count",
+        "women_count",
+        "men_twowheeler",
+        "women_twowheeler",
+        "footpath",
+        "lane_markings",
+        "potholes",
+        "litter",
+        "bus_station",
+        "railway_station",
+        "street_vendor",
+        "itinerary_road_type",
+        "gps_lat",
+        "gps_lon",
     ]
 
     for city in df["city"].unique():
@@ -138,16 +151,22 @@ def print_headline_numbers(df: pd.DataFrame) -> None:
 
         pedestrians_women = sub["women_count"].sum()
         pedestrians_men = sub["men_count"].sum()
-        ped_prop = pedestrians_women / (pedestrians_women + pedestrians_men) if (pedestrians_women + pedestrians_men) > 0 else 0
+        ped_prop = (
+            pedestrians_women / (pedestrians_women + pedestrians_men)
+            if (pedestrians_women + pedestrians_men) > 0
+            else 0
+        )
         ped_sex_ratio = (pedestrians_women / pedestrians_men * 1000) if pedestrians_men > 0 else 0
 
         print(f"\n{city}:")
         print(f"  Total people: {total_people:,}")
         print(f"  Total women: {total_women:,}")
-        print(f"  Person-weighted prop_women: {weighted_prop:.4f} ({weighted_prop*100:.2f}%)")
-        print(f"  Image-level mean prop_women: {image_level_mean:.4f} ({image_level_mean*100:.2f}%)")
+        print(f"  Person-weighted prop_women: {weighted_prop:.4f} ({weighted_prop * 100:.2f}%)")
+        print(
+            f"  Image-level mean prop_women: {image_level_mean:.4f} ({image_level_mean * 100:.2f}%)"
+        )
         print(f"  Sex ratio (women per 1000 men): {sex_ratio:.1f}")
-        print(f"  Pedestrian prop_women: {ped_prop:.4f} ({ped_prop*100:.2f}%)")
+        print(f"  Pedestrian prop_women: {ped_prop:.4f} ({ped_prop * 100:.2f}%)")
         print(f"  Pedestrian sex ratio: {ped_sex_ratio:.1f}")
 
 
@@ -180,7 +199,9 @@ def plot_gps_coverage(df: pd.DataFrame, city: str, out_dir: Path) -> None:
 
     ax.set_xlabel("Longitude")
     ax.set_ylabel("Latitude")
-    ax.set_title(f"GPS Coverage: {city.replace('_', ' ').title()}\n(n={len(sub_valid):,} images with GPS & people)")
+    ax.set_title(
+        f"GPS Coverage: {city.replace('_', ' ').title()}\n(n={len(sub_valid):,} images with GPS & people)"
+    )
 
     ax.set_aspect("equal", adjustable="box")
 
@@ -200,8 +221,13 @@ def plot_temporal_coverage(df: pd.DataFrame, out_dir: Path) -> None:
         if len(sub) == 0:
             continue
         hours = sub["frame_hour"].values
-        ax.hist(hours, bins=np.arange(-0.5, 24.5, 1), alpha=0.5,
-                label=city.replace("_", " ").title(), color=COLORS.get(city, "#666666"))
+        ax.hist(
+            hours,
+            bins=np.arange(-0.5, 24.5, 1),
+            alpha=0.5,
+            label=city.replace("_", " ").title(),
+            color=COLORS.get(city, "#666666"),
+        )
     ax.set_xlabel("Hour of day (IST)")
     ax.set_ylabel("Number of images")
     ax.set_title("Distribution by hour")
@@ -217,8 +243,14 @@ def plot_temporal_coverage(df: pd.DataFrame, out_dir: Path) -> None:
         if len(sub) == 0:
             continue
         counts = sub["frame_dayofweek"].value_counts().reindex(range(7), fill_value=0)
-        ax.bar(x + i * width, counts.values, width, alpha=0.7,
-               label=city.replace("_", " ").title(), color=COLORS.get(city, "#666666"))
+        ax.bar(
+            x + i * width,
+            counts.values,
+            width,
+            alpha=0.7,
+            label=city.replace("_", " ").title(),
+            color=COLORS.get(city, "#666666"),
+        )
     ax.set_xlabel("Day of week")
     ax.set_ylabel("Number of images")
     ax.set_title("Distribution by day")
@@ -242,8 +274,13 @@ def plot_crowd_size_distribution(df: pd.DataFrame, out_dir: Path) -> None:
 
     for city in df["city"].unique():
         sub = df[df["city"] == city]
-        ax.hist(sub["total_people"].clip(upper=max_people), bins=bins, alpha=0.5,
-                label=city.replace("_", " ").title(), color=COLORS.get(city, "#666666"))
+        ax.hist(
+            sub["total_people"].clip(upper=max_people),
+            bins=bins,
+            alpha=0.5,
+            label=city.replace("_", " ").title(),
+            color=COLORS.get(city, "#666666"),
+        )
 
     ax.set_xlabel("Total people per image")
     ax.set_ylabel("Number of images")
@@ -251,7 +288,6 @@ def plot_crowd_size_distribution(df: pd.DataFrame, out_dir: Path) -> None:
     ax.legend(fontsize=7, frameon=False)
 
     mean_all = df["total_people"].mean()
-    median_all = df["total_people"].median()
     ax.axvline(mean_all, color="black", linestyle="--", linewidth=1, alpha=0.7)
     ax.text(mean_all + 0.5, ax.get_ylim()[1] * 0.9, f"Mean: {mean_all:.1f}", fontsize=7)
 
@@ -295,7 +331,7 @@ def plot_prop_female_vs_crowd(df: pd.DataFrame, out_dir: Path) -> None:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="EDA for Missing Women project")
+    parser = argparse.ArgumentParser(description="EDA for Streetscope project")
     parser.add_argument(
         "--cities",
         type=str,
@@ -307,7 +343,7 @@ def main():
     cities = [c.strip() for c in args.cities.split(",")]
 
     print("=" * 60)
-    print("MISSING WOMEN: EXPLORATORY DATA ANALYSIS")
+    print("STREETSCOPE: EXPLORATORY DATA ANALYSIS")
     print("=" * 60)
     print(f"Cities: {cities}")
 

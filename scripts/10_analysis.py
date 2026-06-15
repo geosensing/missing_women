@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Publication Figures and Tables for Missing Women Project
+Publication Figures and Tables for Streetscope Project
 =========================================================
 Produces publication-quality PDFs and LaTeX tables from analysis_data.parquet files.
 
@@ -28,14 +28,14 @@ import argparse
 from pathlib import Path
 
 import matplotlib
+
 matplotlib.use("Agg")
+import inference
 import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
-from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
 import pandas as pd
-
-import clustered_inference as ci
+from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.gridspec import GridSpec
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "data"
@@ -57,20 +57,49 @@ CITY_LABELS = {
     "bangalore": "Bangalore",
 }
 
-plt.rcParams.update({
-    "font.family": "sans-serif",
-    "font.sans-serif": ["Helvetica", "Arial", "DejaVu Sans"],
-    "font.size": 8,
-    "axes.linewidth": 0.5,
-    "axes.spines.top": False,
-    "axes.spines.right": False,
-    "figure.dpi": 300,
-    "savefig.dpi": 300,
-    "savefig.bbox": "tight",
-    "savefig.pad_inches": 0.08,
-    "pdf.fonttype": 42,
-    "ps.fonttype": 42,
-})
+# Map raw OSM highway tags onto the four design road-type buckets so the
+# OSM "ground truth" road type is comparable to the itinerary road type.
+OSM_ROAD_CLASS = {
+    "trunk": "primary",
+    "trunk_link": "primary",
+    "primary": "primary",
+    "primary_link": "primary",
+    "secondary": "secondary",
+    "secondary_link": "secondary",
+    "tertiary": "tertiary",
+    "tertiary_link": "tertiary",
+    "residential": "residential",
+    "living_street": "residential",
+    "unclassified": "residential",
+    "service": "residential",
+}
+
+
+def osm_road_class(highway) -> str | None:
+    """Bucket a raw OSM highway tag into a design road-type, or None."""
+    if highway is None or (isinstance(highway, float) and pd.isna(highway)):
+        return None
+    if isinstance(highway, list):  # osmnx can return a list of tags per edge
+        highway = highway[0] if highway else None
+    return OSM_ROAD_CLASS.get(highway)
+
+
+plt.rcParams.update(
+    {
+        "font.family": "sans-serif",
+        "font.sans-serif": ["Helvetica", "Arial", "DejaVu Sans"],
+        "font.size": 8,
+        "axes.linewidth": 0.5,
+        "axes.spines.top": False,
+        "axes.spines.right": False,
+        "figure.dpi": 300,
+        "savefig.dpi": 300,
+        "savefig.bbox": "tight",
+        "savefig.pad_inches": 0.08,
+        "pdf.fonttype": 42,
+        "ps.fonttype": 42,
+    }
+)
 
 
 def load_all_cities(cities: list[str]) -> pd.DataFrame:
@@ -91,7 +120,7 @@ def load_all_cities(cities: list[str]) -> pd.DataFrame:
 
 def pct(x: float) -> str:
     """Format as percentage for LaTeX."""
-    return f"{100*x:.1f}\\%"
+    return f"{100 * x:.1f}\\%"
 
 
 def write_tex(path: Path, lines: list[str]) -> None:
@@ -102,6 +131,7 @@ def write_tex(path: Path, lines: list[str]) -> None:
 # =============================================================================
 # TABLE FUNCTIONS
 # =============================================================================
+
 
 def make_table1_city_summary(df: pd.DataFrame, cities: list[str]) -> None:
     """City-level summary table with images, people, prop_women, sex ratio, and cluster-robust CIs."""
@@ -122,49 +152,95 @@ def make_table1_city_summary(df: pd.DataFrame, cities: list[str]) -> None:
         sub = df[df["city"] == city]
         valid = sub[sub["total_people"] > 0]
 
-        weighted_ci = ci.compute_cluster_robust_ci(
-            valid, "prop_women", "base_video_id", weight_col="total_people"
-        )
-        unweighted_ci = ci.compute_cluster_robust_ci(
-            valid, "prop_women", "base_video_id"
-        )
-        icc_info = ci.compute_icc(valid, "prop_women", "base_video_id")
+        s = inference.summarize(valid)
 
         row_data[city] = {
             "n_images": len(sub),
-            "n_clusters": icc_info["n_clusters"],
+            "n_clusters": s["n_clusters"],
             "n_people": sub["total_people"].sum(),
-            "weighted": weighted_ci["mean"],
-            "weighted_ci_lower": weighted_ci["ci_lower"],
-            "weighted_ci_upper": weighted_ci["ci_upper"],
-            "unweighted": unweighted_ci["mean"],
-            "unweighted_ci_lower": unweighted_ci["ci_lower"],
-            "unweighted_ci_upper": unweighted_ci["ci_upper"],
-            "sex_ratio": (sub["total_women"].sum() / sub["total_men"].sum() * 1000) if sub["total_men"].sum() > 0 else 0,
-            "ped_prop": sub["women_count"].sum() / (sub["women_count"].sum() + sub["men_count"].sum()) if (sub["women_count"].sum() + sub["men_count"].sum()) > 0 else 0,
-            "ped_sex_ratio": (sub["women_count"].sum() / sub["men_count"].sum() * 1000) if sub["men_count"].sum() > 0 else 0,
-            "icc": icc_info["icc"],
-            "design_effect": icc_info["design_effect"],
+            "weighted": s["weighted"],
+            "weighted_ci_lower": s["weighted_ci_lower"],
+            "weighted_ci_upper": s["weighted_ci_upper"],
+            "unweighted": s["unweighted"],
+            "unweighted_ci_lower": s["unweighted_ci_lower"],
+            "unweighted_ci_upper": s["unweighted_ci_upper"],
+            "sex_ratio": (
+                (sub["total_women"].sum() / sub["total_men"].sum() * 1000)
+                if sub["total_men"].sum() > 0
+                else 0
+            ),
+            "ped_prop": (
+                sub["women_count"].sum() / (sub["women_count"].sum() + sub["men_count"].sum())
+                if (sub["women_count"].sum() + sub["men_count"].sum()) > 0
+                else 0
+            ),
+            "ped_sex_ratio": (
+                (sub["women_count"].sum() / sub["men_count"].sum() * 1000)
+                if sub["men_count"].sum() > 0
+                else 0
+            ),
+            "icc": s["icc"],
+            "design_effect": s["design_effect"],
         }
 
     def fmt_ci(d: dict, key: str) -> str:
         return f"{d[key]:.3f} [{d[key + '_ci_lower']:.3f}, {d[key + '_ci_upper']:.3f}]"
 
-    lines.append("Images annotated & " + " & ".join(f"{row_data[c]['n_images']:,}" for c in cities) + r" \\")
-    lines.append("Video sessions (clusters) & " + " & ".join(f"{row_data[c]['n_clusters']:,}" for c in cities) + r" \\")
-    lines.append("Total people classified & " + " & ".join(f"{row_data[c]['n_people']:,}" for c in cities) + r" \\")
+    lines.append(
+        "Images annotated & " + " & ".join(f"{row_data[c]['n_images']:,}" for c in cities) + r" \\"
+    )
+    lines.append(
+        "Video sessions (clusters) & "
+        + " & ".join(f"{row_data[c]['n_clusters']:,}" for c in cities)
+        + r" \\"
+    )
+    lines.append(
+        "Total people classified & "
+        + " & ".join(f"{row_data[c]['n_people']:,}" for c in cities)
+        + r" \\"
+    )
     lines.append(r"\addlinespace")
-    lines.append("Prop.\\ female (person-weighted) & " + " & ".join(fmt_ci(row_data[c], "weighted") for c in cities) + r" \\")
-    lines.append("Prop.\\ female (image-level mean) & " + " & ".join(fmt_ci(row_data[c], "unweighted") for c in cities) + r" \\")
+    lines.append(
+        "Prop.\\ female (person-weighted) & "
+        + " & ".join(fmt_ci(row_data[c], "weighted") for c in cities)
+        + r" \\"
+    )
+    lines.append(
+        "Prop.\\ female (image-level mean) & "
+        + " & ".join(fmt_ci(row_data[c], "unweighted") for c in cities)
+        + r" \\"
+    )
     lines.append(r"\addlinespace")
-    lines.append("Sex ratio (F/1000 M) & " + " & ".join(f"{row_data[c]['sex_ratio']:.0f}" for c in cities) + r" \\")
+    lines.append(
+        "Sex ratio (F/1000 M) & "
+        + " & ".join(f"{row_data[c]['sex_ratio']:.0f}" for c in cities)
+        + r" \\"
+    )
     lines.append(r"\addlinespace")
-    lines.append("Pedestrian prop.\\ female & " + " & ".join(f"{row_data[c]['ped_prop']:.3f}" for c in cities) + r" \\")
-    lines.append("Pedestrian sex ratio (F/1000 M) & " + " & ".join(f"{row_data[c]['ped_sex_ratio']:.0f}" for c in cities) + r" \\")
+    lines.append(
+        "Pedestrian prop.\\ female & "
+        + " & ".join(f"{row_data[c]['ped_prop']:.3f}" for c in cities)
+        + r" \\"
+    )
+    lines.append(
+        "Pedestrian sex ratio (F/1000 M) & "
+        + " & ".join(f"{row_data[c]['ped_sex_ratio']:.0f}" for c in cities)
+        + r" \\"
+    )
     lines.append(r"\addlinespace")
-    lines.append(r"\multicolumn{" + str(len(cities) + 1) + r"}{l}{\textit{Clustering diagnostics}} \\")
-    lines.append("ICC (prop.\\ female by video) & " + " & ".join(f"{row_data[c]['icc']:.3f}" for c in cities) + r" \\")
-    lines.append("Design effect & " + " & ".join(f"{row_data[c]['design_effect']:.2f}" for c in cities) + r" \\")
+    lines.append(
+        r"\multicolumn{" + str(len(cities) + 1) + r"}{l}{\textit{Clustering diagnostics}} \\"
+    )
+    lines.append(
+        "ICC (prop.\\ female by video) & "
+        + " & ".join(f"{row_data[c]['icc']:.3f}" for c in cities)
+        + r" \\"
+    )
+    lines.append(
+        "Design effect & "
+        + " & ".join(f"{row_data[c]['design_effect']:.2f}" for c in cities)
+        + r" \\"
+    )
 
     lines += [
         r"\bottomrule",
@@ -211,21 +287,58 @@ def make_tableS1_road_type(df: pd.DataFrame, cities: list[str]) -> None:
             total_women = rt_sub["total_women"].sum()
             total_men = rt_sub["total_men"].sum()
 
-            result = ci.compute_cluster_robust_ci(
-                valid, "prop_women", "base_video_id", weight_col="total_people"
-            )
+            s = inference.summarize(valid)
             sr = (total_women / total_men * 1000) if total_men > 0 else 0
             city_col = city_label if first else ""
-            prop_ci = f"{result['mean']:.3f} [{result['ci_lower']:.3f}, {result['ci_upper']:.3f}]"
-            lines.append(f"{city_col} & {rt.title()} & {prop_ci} & {sr:.0f} & {result['n_obs']} ({result['n_clusters']}) \\\\")
+            prop_ci = (
+                f"{s['weighted']:.3f} [{s['weighted_ci_lower']:.3f}, {s['weighted_ci_upper']:.3f}]"
+            )
+            lines.append(
+                f"{city_col} & {rt.title()} & {prop_ci} & {sr:.0f} & {s['n_obs']} ({s['n_clusters']}) \\\\"
+            )
             first = False
         lines.append(r"\addlinespace")
+
+    has_osm = "osm_highway" in df.columns and df["osm_highway"].notna().any()
+    if has_osm:
+        osm = df.copy()
+        osm["osm_road_class"] = osm["osm_highway"].map(osm_road_class)
+        lines.append(r"\midrule")
+        lines.append(r"\multicolumn{5}{l}{\textit{OSM ground truth (nearest mapped road)}} \\")
+        lines.append(r"\midrule")
+        for city in cities:
+            sub = osm[osm["city"] == city]
+            city_label = CITY_LABELS.get(city, city)
+            first = True
+            for rt in road_types:
+                rt_sub = sub[sub["osm_road_class"] == rt]
+                valid = rt_sub[rt_sub["total_people"] > 0]
+                if len(valid) == 0:
+                    continue
+                total_women = rt_sub["total_women"].sum()
+                total_men = rt_sub["total_men"].sum()
+                s = inference.summarize(valid)
+                sr = (total_women / total_men * 1000) if total_men > 0 else 0
+                city_col = city_label if first else ""
+                prop_ci = f"{s['weighted']:.3f} [{s['weighted_ci_lower']:.3f}, {s['weighted_ci_upper']:.3f}]"
+                lines.append(
+                    f"{city_col} & {rt.title()} & {prop_ci} & {sr:.0f} & {s['n_obs']} ({s['n_clusters']}) \\\\"
+                )
+                first = False
+            lines.append(r"\addlinespace")
+
+    itin_note = r"\item Road type assigned from itinerary classification."
+    if has_osm:
+        itin_note = (
+            r"\item Itinerary road type is the sampling design's intended class; "
+            r"OSM ground truth is the nearest mapped road's highway tag."
+        )
 
     lines += [
         r"\bottomrule",
         r"\end{tabular}",
         r"\begin{tablenotes}[flushleft]",
-        r"\item Road type assigned from itinerary classification.",
+        itin_note,
         r"\item 95\% CIs use cluster-robust standard errors (clustered by video session).",
         r"\item Person-weighted estimates.",
         r"\end{tablenotes}",
@@ -260,11 +373,13 @@ def make_tableS2_temporal(df: pd.DataFrame, cities: list[str]) -> None:
             valid = we_sub[we_sub["total_people"] > 0]
             if len(valid) == 0:
                 continue
-            result = ci.compute_cluster_robust_ci(
-                valid, "prop_women", "base_video_id", weight_col="total_people"
+            s = inference.summarize(valid)
+            prop_ci = (
+                f"{s['weighted']:.3f} [{s['weighted_ci_lower']:.3f}, {s['weighted_ci_upper']:.3f}]"
             )
-            prop_ci = f"{result['mean']:.3f} [{result['ci_lower']:.3f}, {result['ci_upper']:.3f}]"
-            lines.append(f"{city_label} & {label} & {prop_ci} & {len(we_sub):,} ({result['n_clusters']}) \\\\")
+            lines.append(
+                f"{city_label} & {label} & {prop_ci} & {len(we_sub):,} ({s['n_clusters']}) \\\\"
+            )
 
     lines.append(r"\midrule")
     lines.append(r"\multicolumn{4}{l}{\textit{Share of images by time window}} \\")
@@ -328,11 +443,13 @@ def make_tableS3_poi_infrastructure(df: pd.DataFrame) -> None:
             sub = valid[valid[field] == val]
             if len(sub) == 0:
                 continue
-            result = ci.compute_cluster_robust_ci(
-                sub, "prop_women", "base_video_id", weight_col="total_people"
+            s = inference.summarize(sub)
+            prop_ci = (
+                f"{s['weighted']:.3f} [{s['weighted_ci_lower']:.3f}, {s['weighted_ci_upper']:.3f}]"
             )
-            prop_ci = f"{result['mean']:.3f} [{result['ci_lower']:.3f}, {result['ci_upper']:.3f}]"
-            lines.append(f"{label} & {val_label} & {prop_ci} & {len(sub):,} ({result['n_clusters']}) \\\\")
+            lines.append(
+                f"{label} & {val_label} & {prop_ci} & {len(sub):,} ({s['n_clusters']}) \\\\"
+            )
         lines.append(r"\addlinespace")
 
     lines.append(r"\midrule")
@@ -373,6 +490,7 @@ def make_tableS3_poi_infrastructure(df: pd.DataFrame) -> None:
 # FIGURE FUNCTIONS
 # =============================================================================
 
+
 def make_fig2_distribution(df: pd.DataFrame, cities: list[str]) -> None:
     """Side-by-side histograms of prop_women with cluster-robust CIs."""
     valid = df[df["total_people"] > 0]
@@ -388,17 +506,18 @@ def make_fig2_distribution(df: pd.DataFrame, cities: list[str]) -> None:
         city_data = valid[valid["city"] == city]
         vals = city_data["prop_women"].dropna()
 
-        result = ci.compute_cluster_robust_ci(
-            city_data, "prop_women", "base_video_id", weight_col="total_people"
-        )
+        s = inference.summarize(city_data)
 
         ax.hist(vals, bins=bins, color=color, alpha=0.85, edgecolor="white", linewidth=0.3)
         ax.axvline(x=0.5, color=PARITY_C, linestyle="--", linewidth=0.7, label="Parity")
         ax.axvline(
-            x=result["mean"], color=color, linestyle="-", linewidth=1.2,
-            label=f"Mean = {result['mean']:.2f}",
+            x=s["weighted"],
+            color=color,
+            linestyle="-",
+            linewidth=1.2,
+            label=f"Mean = {s['weighted']:.2f}",
         )
-        ax.axvspan(result["ci_lower"], result["ci_upper"], alpha=0.15, color=color)
+        ax.axvspan(s["weighted_ci_lower"], s["weighted_ci_upper"], alpha=0.15, color=color)
         ax.set_xlabel("Proportion female")
         ax.set_title(CITY_LABELS.get(city, city), fontsize=9, fontweight="bold")
         ax.legend(fontsize=6.5, frameon=False, loc="upper right")
@@ -429,19 +548,30 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
         ped_women = c["women_count"].sum()
         ped_men = c["men_count"].sum()
         mode_data[city] = {
-            "Pedestrian": ped_women / (ped_women + ped_men) if (ped_women + ped_men) > 0 else 0,
-            "Two-wheeler": tw_women / (tw_women + tw_men) if (tw_women + tw_men) > 0 else 0,
+            "Pedestrian": (ped_women / (ped_women + ped_men) if (ped_women + ped_men) > 0 else 0),
+            "Two-wheeler": (tw_women / (tw_women + tw_men) if (tw_women + tw_men) > 0 else 0),
         }
 
     x = np.arange(2)
     for i, city in enumerate(cities):
         color = COLORS.get(city, "#666666")
         vals = [mode_data[city]["Pedestrian"], mode_data[city]["Two-wheeler"]]
-        bars = ax.bar(x + i * w, vals, w, color=color, alpha=0.85, label=CITY_LABELS.get(city, city))
+        bars = ax.bar(
+            x + i * w,
+            vals,
+            w,
+            color=color,
+            alpha=0.85,
+            label=CITY_LABELS.get(city, city),
+        )
         for bar, val in zip(bars, vals):
             ax.text(
-                bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.008,
-                f"{val:.1%}", ha="center", va="bottom", fontsize=6.5,
+                bar.get_x() + bar.get_width() / 2,
+                bar.get_height() + 0.008,
+                f"{val:.1%}",
+                ha="center",
+                va="bottom",
+                fontsize=6.5,
             )
 
     ax.set_xticks(x + w * (len(cities) - 1) / 2)
@@ -472,12 +602,23 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
     for i, city in enumerate(cities):
         color = COLORS.get(city, "#666666")
         vals = [road_data[city][rt] for rt in road_types]
-        bars = ax.bar(x + i * w, vals, w, color=color, alpha=0.85, label=CITY_LABELS.get(city, city))
+        bars = ax.bar(
+            x + i * w,
+            vals,
+            w,
+            color=color,
+            alpha=0.85,
+            label=CITY_LABELS.get(city, city),
+        )
         for bar, val in zip(bars, vals):
             if val > 0:
                 ax.text(
-                    bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.005,
-                    f"{val:.0%}", ha="center", va="bottom", fontsize=6,
+                    bar.get_x() + bar.get_width() / 2,
+                    bar.get_height() + 0.005,
+                    f"{val:.0%}",
+                    ha="center",
+                    va="bottom",
+                    fontsize=6,
                 )
 
     ax.set_xticks(x + w * (len(cities) - 1) / 2)
@@ -510,8 +651,12 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
         bars = ax.bar(x + i * w, vals, w, color=color, alpha=0.85, label=pres_label)
         for bar, val, n in zip(bars, vals, ns):
             ax.text(
-                bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.005,
-                f"{val:.1%}\n({n})", ha="center", va="bottom", fontsize=6,
+                bar.get_x() + bar.get_width() / 2,
+                bar.get_height() + 0.005,
+                f"{val:.1%}\n({n})",
+                ha="center",
+                va="bottom",
+                fontsize=6,
             )
 
     ax.set_xticks(x + w / 2)
@@ -532,9 +677,11 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
             .apply(
                 lambda g: pd.Series(
                     {
-                        "pf": g["total_women"].sum() / g["total_people"].sum()
-                        if g["total_people"].sum() > 0
-                        else np.nan,
+                        "pf": (
+                            g["total_women"].sum() / g["total_people"].sum()
+                            if g["total_people"].sum() > 0
+                            else np.nan
+                        ),
                         "n": len(g),
                     }
                 ),
@@ -544,8 +691,14 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
         )
         hourly = hourly[hourly["n"] >= 5]
         ax.plot(
-            hourly["hour_bin"], hourly["pf"], "o-",
-            color=color, markersize=3.5, linewidth=1, label=CITY_LABELS.get(city, city), alpha=0.85,
+            hourly["hour_bin"],
+            hourly["pf"],
+            "o-",
+            color=color,
+            markersize=3.5,
+            linewidth=1,
+            label=CITY_LABELS.get(city, city),
+            alpha=0.85,
         )
 
     ax.axhline(y=0.5, color=PARITY_C, linestyle="--", linewidth=0.5)
@@ -574,22 +727,36 @@ def make_fig4_weekday_weekend(df: pd.DataFrame, cities: list[str]) -> None:
         for we, label in [(False, "Weekday"), (True, "Weekend")]:
             sub = ct[ct["is_weekend"] == we]
             if len(sub) > 0:
-                items.append({
-                    "city": city, "day": label,
-                    "pf": sub["total_women"].sum() / sub["total_people"].sum(),
-                    "n": len(sub),
-                })
+                items.append(
+                    {
+                        "city": city,
+                        "day": label,
+                        "pf": sub["total_women"].sum() / sub["total_people"].sum(),
+                        "n": len(sub),
+                    }
+                )
 
     x = np.arange(2)
     for i, city in enumerate(cities):
         color = COLORS.get(city, "#666666")
         vals = [it["pf"] for it in items if it["city"] == city]
         ns = [it["n"] for it in items if it["city"] == city]
-        bars = ax.bar(x + i * w, vals, w, color=color, alpha=0.85, label=CITY_LABELS.get(city, city))
+        bars = ax.bar(
+            x + i * w,
+            vals,
+            w,
+            color=color,
+            alpha=0.85,
+            label=CITY_LABELS.get(city, city),
+        )
         for bar, val, n in zip(bars, vals, ns):
             ax.text(
-                bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.005,
-                f"{val:.1%}\n(n={n})", ha="center", va="bottom", fontsize=6.5,
+                bar.get_x() + bar.get_width() / 2,
+                bar.get_height() + 0.005,
+                f"{val:.1%}\n(n={n})",
+                ha="center",
+                va="bottom",
+                fontsize=6.5,
             )
 
     ax.set_xticks(x + w * (len(cities) - 1) / 2)
@@ -655,13 +822,23 @@ def make_map_locations(df: pd.DataFrame, cities: list[str]) -> None:
         color = COLORS.get(city, "#666666")
         sub = geo[geo["city"] == city]
         ax.scatter(
-            sub["gps_lon"], sub["gps_lat"],
-            c=color, s=4, alpha=0.35, linewidths=0,
+            sub["gps_lon"],
+            sub["gps_lat"],
+            c=color,
+            s=4,
+            alpha=0.35,
+            linewidths=0,
             label=f"{CITY_LABELS.get(city, city)} (n={len(sub):,})",
         )
 
-    ax.legend(fontsize=7, loc="lower left", frameon=True, facecolor="white",
-              framealpha=0.9, edgecolor="none")
+    ax.legend(
+        fontsize=7,
+        loc="lower left",
+        frameon=True,
+        facecolor="white",
+        framealpha=0.9,
+        edgecolor="none",
+    )
     ax.set_title("Data collection locations", fontsize=10, fontweight="bold")
     ax.set_xlabel("Longitude")
     ax.set_ylabel("Latitude")
@@ -692,9 +869,16 @@ def make_map_sexratio(df: pd.DataFrame) -> None:
 
     sizes = np.clip(geo["total_people"].values ** 0.5 * 4, 5, 50)
     sc = ax.scatter(
-        geo["gps_lon"], geo["gps_lat"],
-        c=geo["prop_women"].clip(0, 0.5), cmap=cmap, vmin=0, vmax=0.5,
-        s=sizes, alpha=0.55, linewidths=0.2, edgecolors="grey",
+        geo["gps_lon"],
+        geo["gps_lat"],
+        c=geo["prop_women"].clip(0, 0.5),
+        cmap=cmap,
+        vmin=0,
+        vmax=0.5,
+        s=sizes,
+        alpha=0.55,
+        linewidths=0.2,
+        edgecolors="grey",
     )
 
     cbar = fig.colorbar(sc, ax=ax, shrink=0.4, pad=0.02, aspect=25)
@@ -706,7 +890,8 @@ def make_map_sexratio(df: pd.DataFrame) -> None:
     n_zero = (geo["prop_women"] == 0).sum()
     ax.set_title(
         f"Female share by location (n={len(geo):,}; {100 * n_zero / len(geo):.0f}% with zero women)",
-        fontsize=9, fontweight="bold",
+        fontsize=9,
+        fontweight="bold",
     )
     ax.set_xlabel("Longitude")
     ax.set_ylabel("Latitude")
@@ -734,7 +919,7 @@ def main():
     cities = [c.strip() for c in args.cities.split(",")]
 
     print("=" * 60)
-    print("MISSING WOMEN: PUBLICATION OUTPUTS")
+    print("STREETSCOPE: PUBLICATION OUTPUTS")
     print("=" * 60)
     print(f"Cities: {cities}")
 
@@ -758,7 +943,7 @@ def main():
     make_fig5_pedestrian_loess(df, cities)
 
     print("\n" + "=" * 60)
-    print(f"COMPLETE.")
+    print("COMPLETE.")
     print(f"  Figures: {FIGS}")
     print(f"  Tables:  {TABS}")
     print("=" * 60)

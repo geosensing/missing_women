@@ -29,6 +29,7 @@ try:
     import geopandas as gpd
     from shapely.geometry import Point
     from sklearn.neighbors import BallTree
+
     HAS_GEO = True
 except ImportError:
     HAS_GEO = False
@@ -61,13 +62,15 @@ def load_itineraries(city_sampling_dir: Path, city: str) -> pd.DataFrame:
         if "lat" in df.columns and "lon" in df.columns:
             for _, row in df.iterrows():
                 road_type = row.get("highway_type", row.get("type", row.get("highway")))
-                rows.append({
-                    "lat": row["lat"],
-                    "lon": row["lon"],
-                    "road_type": road_type,
-                    "itinerary_id": row.get("route_id", row.get("itinerary_id")),
-                    "region": city,
-                })
+                rows.append(
+                    {
+                        "lat": row["lat"],
+                        "lon": row["lon"],
+                        "road_type": road_type,
+                        "itinerary_id": row.get("route_id", row.get("itinerary_id")),
+                        "region": city,
+                    }
+                )
         elif "start_lat" in df.columns and "start_long" in df.columns:
             sample_lat = df["start_lat"].dropna().iloc[0] if len(df) > 0 else 0
             swap_needed = sample_lat > 30
@@ -78,25 +81,29 @@ def load_itineraries(city_sampling_dir: Path, city: str) -> pd.DataFrame:
                     lat_val, lon_val = row["start_long"], row["start_lat"]
                 else:
                     lat_val, lon_val = row["start_lat"], row["start_long"]
-                rows.append({
-                    "lat": lat_val,
-                    "lon": lon_val,
-                    "road_type": road_type,
-                    "itinerary_id": row.get("itinerary_id"),
-                    "region": city,
-                })
-                if "end_lat" in df.columns and "end_long" in df.columns:
-                    if swap_needed:
-                        lat_val, lon_val = row["end_long"], row["end_lat"]
-                    else:
-                        lat_val, lon_val = row["end_lat"], row["end_long"]
-                    rows.append({
+                rows.append(
+                    {
                         "lat": lat_val,
                         "lon": lon_val,
                         "road_type": road_type,
                         "itinerary_id": row.get("itinerary_id"),
                         "region": city,
-                    })
+                    }
+                )
+                if "end_lat" in df.columns and "end_long" in df.columns:
+                    if swap_needed:
+                        lat_val, lon_val = row["end_long"], row["end_lat"]
+                    else:
+                        lat_val, lon_val = row["end_lat"], row["end_long"]
+                    rows.append(
+                        {
+                            "lat": lat_val,
+                            "lon": lon_val,
+                            "road_type": road_type,
+                            "itinerary_id": row.get("itinerary_id"),
+                            "region": city,
+                        }
+                    )
 
     return pd.DataFrame(rows)
 
@@ -173,10 +180,7 @@ def load_osm_roads(pbf_path: Path, bbox: tuple) -> "gpd.GeoDataFrame | None":
         minlat, minlon, maxlat, maxlon = bbox
         north, south, east, west = maxlat, minlat, maxlon, minlon
 
-        G = ox.graph_from_bbox(
-            north=north, south=south, east=east, west=west,
-            network_type="drive"
-        )
+        G = ox.graph_from_bbox(north=north, south=south, east=east, west=west, network_type="drive")
         edges = ox.graph_to_gdfs(G, nodes=False)
         return edges
     except Exception as e:
@@ -282,6 +286,7 @@ def enrich_with_geo(
 if __name__ == "__main__":
     import argparse
     import importlib.util
+
     import yaml
 
     def import_from_path(name: str, path: Path):
@@ -297,8 +302,12 @@ if __name__ == "__main__":
     project_root = Path(__file__).parent.parent
     scripts_dir = Path(__file__).parent
 
-    parse_annotations_mod = import_from_path("parse_annotations", scripts_dir / "05_parse_annotations.py")
-    assign_frame_gps_mod = import_from_path("assign_frame_gps", scripts_dir / "06_assign_frame_gps.py")
+    parse_annotations_mod = import_from_path(
+        "parse_annotations", scripts_dir / "05_parse_annotations.py"
+    )
+    assign_frame_gps_mod = import_from_path(
+        "assign_frame_gps", scripts_dir / "06_assign_frame_gps.py"
+    )
     parse_all_annotations = parse_annotations_mod.parse_all_annotations
     assign_frame_gps = assign_frame_gps_mod.assign_frame_gps
 

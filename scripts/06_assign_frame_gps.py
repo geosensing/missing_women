@@ -24,13 +24,10 @@ from pathlib import Path
 
 import pandas as pd
 
-
 MAX_GPS_GAP_SEC = 30.0
 
 
-def compute_frame_datetime(
-    row: pd.Series, video_meta: pd.DataFrame
-) -> pd.Timestamp | None:
+def compute_frame_datetime(row: pd.Series, video_meta: pd.DataFrame) -> pd.Timestamp | None:
     """
     Compute absolute datetime for a frame.
 
@@ -72,9 +69,7 @@ def compute_frame_datetime(
     return start_time + timedelta(seconds=offset_sec)
 
 
-def interpolate_gps(
-    frame_dt: pd.Timestamp, video_gps: pd.DataFrame
-) -> dict:
+def interpolate_gps(frame_dt: pd.Timestamp, video_gps: pd.DataFrame) -> dict:
     """
     Interpolate GPS coordinates at frame_dt.
 
@@ -210,7 +205,9 @@ def assign_frame_gps(
 
     result["frame_datetime"] = pd.to_datetime(result["frame_datetime"])
 
-    print(f"  Matched GPS for {n_matched}/{len(result)} frames ({100*n_matched/len(result):.1f}%)")
+    print(
+        f"  Matched GPS for {n_matched}/{len(result)} frames ({100 * n_matched / len(result):.1f}%)"
+    )
 
     return result
 
@@ -232,7 +229,9 @@ if __name__ == "__main__":
     project_root = Path(__file__).parent.parent
     scripts_dir = Path(__file__).parent
 
-    parse_annotations_mod = import_from_path("parse_annotations", scripts_dir / "05_parse_annotations.py")
+    parse_annotations_mod = import_from_path(
+        "parse_annotations", scripts_dir / "05_parse_annotations.py"
+    )
     parse_all_annotations = parse_annotations_mod.parse_all_annotations
 
     labelstudio_dir = project_root / "data" / args.city / "labelstudio"
