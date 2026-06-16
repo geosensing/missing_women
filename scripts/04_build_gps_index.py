@@ -91,14 +91,20 @@ def load_video_metadata(exif_dir: Path) -> pd.DataFrame:
 
 
 def load_gps_timeseries(exif_dir: Path) -> pd.DataFrame:
-    """Load and consolidate GPS timeseries from all batch CSVs."""
-    dfs = []
-    for csv_path in exif_dir.glob("*_gps_timeseries*.csv"):
-        df = pd.read_csv(csv_path)
-        dfs.append(df)
+    """Load and consolidate GPS timeseries from all batch files.
+
+    Prefers Parquet (`*_gps_timeseries*.parquet`); falls back to the legacy CSV glob
+    only when no Parquet is present. Reading a single format avoids double-counting a
+    lingering raw CSV left beside its Parquet conversion.
+    """
+    parquet_paths = sorted(exif_dir.glob("*_gps_timeseries*.parquet"))
+    if parquet_paths:
+        dfs = [pd.read_parquet(p) for p in parquet_paths]
+    else:
+        dfs = [pd.read_csv(p) for p in sorted(exif_dir.glob("*_gps_timeseries*.csv"))]
 
     if not dfs:
-        raise FileNotFoundError(f"No GPS timeseries CSVs in {exif_dir}")
+        raise FileNotFoundError(f"No GPS timeseries (.parquet or .csv) in {exif_dir}")
 
     combined = pd.concat(dfs, ignore_index=True)
 
@@ -112,6 +118,13 @@ def load_gps_timeseries(exif_dir: Path) -> pd.DataFrame:
 
     result = combined[["video_id", "gps_datetime", "lat", "lon", "alt"]].copy()
     result = result.dropna(subset=["gps_datetime", "lat", "lon"])
+
+    # Drop "null island" (0, 0) fixes: GoPro logs these for no-lock samples
+    # (typically at the start of a recording). They are not NaN, so they survive
+    # dropna and would otherwise corrupt interpolation toward (0, 0).
+    null_island = (result["lat"].abs() < 1e-3) & (result["lon"].abs() < 1e-3)
+    result = result[~null_island]
+
     result = result.sort_values(["video_id", "gps_datetime"]).reset_index(drop=True)
 
     return result

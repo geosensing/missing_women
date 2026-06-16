@@ -209,8 +209,15 @@ streamlit/.secrets.toml
 # LaTeX output
 /streetscope_science/tex
 /data/annotation_task
-/data/mumbai/exif_metadata
-/data/navi_mumbai/exif_metadata
+# Never commit the giant raw GPS-timeseries CSVs (any city); keep the compact Parquet.
+data/*/exif_metadata/*_gps_timeseries*.csv
+data/*/exif_metadata/gps_timeseries.csv
+# Bangalore/Delhi GPS timeseries is regenerable from committed exif/*.txt -> scratch, don't commit.
+data/bangalore/exif_metadata/*_gps_timeseries*.parquet
+data/delhi/exif_metadata/*_gps_timeseries*.parquet
+# (Mumbai/Navi *_gps_timeseries*.parquet ARE committed: their only raw GPS source.)
+# analysis_data is derived: rebuildable offline from committed inputs via `make data`.
+data/*/analysis_data.parquet
 data/mumbai/validation_batch_input.jsonl
 /cache
 /scripts/gen_data/cache

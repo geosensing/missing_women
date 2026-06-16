@@ -121,6 +121,10 @@ def parse_labelstudio_export(json_path: Path, region: str) -> pd.DataFrame:
                 "image": image,
                 "region": region,
                 "annotator": annotator,
+                # Kept so step 08 can dedup to the most recent annotation when an image
+                # is re-annotated or appears in overlapping Label Studio exports.
+                "created_at": annotation.get("created_at"),
+                "updated_at": annotation.get("updated_at"),
                 **frame_info,
                 **parsed_fields,
             }
@@ -131,17 +135,33 @@ def parse_labelstudio_export(json_path: Path, region: str) -> pd.DataFrame:
 
 def filter_skip_rows(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Remove incomplete or skip annotations.
+    Remove empty / skipped annotations only.
 
-    Filters out rows where essential count fields are missing.
+    A frame showing an empty street is a real observation: the taxonomy has no
+    explicit "0", so when there are no pedestrians the annotator simply leaves
+    ``men_count``/``women_count`` blank (imputed to 0 downstream in step 08).
+    Dropping those frames would discard genuine zero-count observations — and any
+    frame with only a two-wheeler rider, which still has ``total_people`` > 0.
+
+    So we keep any row that carries at least one annotation field, and drop only
+    rows with no annotation content at all (true skips).
     """
-    essential_fields = ["men_count", "women_count"]
-    existing = [f for f in essential_fields if f in df.columns]
+    meta_cols = {
+        "task_id",
+        "annotation_id",
+        "annotator",
+        "image",
+        "region",
+        "base_video_id",
+        "frame_number",
+        "timestamp_sec",
+    }
+    annotation_cols = [c for c in df.columns if c not in meta_cols]
 
-    if not existing:
+    if not annotation_cols:
         return df
 
-    mask = df[existing].notna().any(axis=1)
+    mask = df[annotation_cols].notna().any(axis=1)
     return df[mask].copy()
 
 

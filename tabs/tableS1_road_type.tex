@@ -7,20 +7,30 @@
 \toprule
 City & Road type & Prop.\ female [95\% CI] & Sex ratio & N (clusters) \\
 \midrule
-Mumbai & Primary & 0.147 [0.095, 0.199] & 173 & 103 (4) \\
- & Secondary & 0.141 [0.096, 0.187] & 165 & 256 (12) \\
- & Tertiary & 0.169 [0.106, 0.232] & 203 & 334 (20) \\
- & Residential & 0.171 [0.157, 0.186] & 207 & 795 (38) \\
+Mumbai & Primary & 0.164 [0.140, 0.187] & 196 & 597 (20) \\
+ & Secondary & 0.140 [0.119, 0.160] & 163 & 463 (26) \\
+ & Tertiary & 0.157 [0.117, 0.197] & 186 & 604 (26) \\
+ & Residential & 0.175 [0.151, 0.199] & 212 & 539 (29) \\
 \addlinespace
-Navi Mumbai & Primary & 0.179 [nan, nan] & 217 & 4 (1) \\
- & Secondary & 0.155 [0.092, 0.218] & 184 & 60 (4) \\
- & Tertiary & 0.164 [0.114, 0.215] & 197 & 142 (12) \\
- & Residential & 0.149 [0.127, 0.171] & 175 & 606 (24) \\
+Navi Mumbai & Primary & 0.097 [-0.065, 0.259] & 108 & 40 (2) \\
+ & Secondary & 0.133 [0.104, 0.162] & 153 & 117 (7) \\
+ & Tertiary & 0.147 [0.119, 0.176] & 173 & 283 (16) \\
+ & Residential & 0.137 [0.114, 0.160] & 159 & 809 (25) \\
+\addlinespace
+Bangalore & Primary & 0.154 [0.135, 0.173] & 182 & 383 (137) \\
+ & Secondary & 0.130 [0.108, 0.152] & 150 & 249 (100) \\
+ & Tertiary & 0.163 [0.140, 0.187] & 195 & 357 (151) \\
+ & Residential & 0.185 [0.159, 0.211] & 227 & 258 (118) \\
+\addlinespace
+Delhi & Primary & 0.084 [0.067, 0.101] & 92 & 408 (161) \\
+ & Secondary & 0.102 [0.082, 0.121] & 113 & 343 (163) \\
+ & Tertiary & 0.124 [0.104, 0.145] & 142 & 439 (199) \\
+ & Residential & 0.167 [0.146, 0.189] & 201 & 440 (210) \\
 \addlinespace
 \bottomrule
 \end{tabular}
 \begin{tablenotes}[flushleft]
-\item Road type assigned from itinerary classification.
+\item Road type is the OSM highway class of the nearest mapped road to each frame's GPS fix, bucketed into the four design classes.
 \item 95\% CIs use cluster-robust standard errors (clustered by video session).
 \item Person-weighted estimates.
 \end{tablenotes}

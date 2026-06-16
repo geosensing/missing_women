@@ -35,6 +35,7 @@ COLORS = {
     "mumbai": "#2166ac",
     "navi_mumbai": "#b2182b",
     "bangalore": "#1b7837",
+    "delhi": "#762a83",
 }
 
 plt.rcParams.update(
@@ -335,7 +336,7 @@ def main():
     parser.add_argument(
         "--cities",
         type=str,
-        default="mumbai,navi_mumbai",
+        default="mumbai,navi_mumbai,bangalore,delhi",
         help="Comma-separated list of cities (default: mumbai,navi_mumbai)",
     )
     args = parser.parse_args()

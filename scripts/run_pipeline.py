@@ -214,7 +214,6 @@ def run_pipeline(
     gps_index_dir = project_root / "data" / city / "gps_index"
     labelstudio_dir = project_root / "data" / city / "labelstudio"
     sampling_dir = project_root / "sampling" / city
-    osm_path = project_root / "data" / "osm" / city_config["osm_file"]
     output_dir = project_root / "data" / city
 
     video_meta_path = gps_index_dir / "video_metadata.parquet"
@@ -259,22 +258,15 @@ def run_pipeline(
     print("STEP 06: Assign Frame GPS")
     print("=" * 60)
 
-    with_gps = assign_frame_gps(annotations, video_meta, gps_df)
+    interval_sec = float(city_config.get("frame_interval_sec", 1.0 / 30.0))
+    anchor = city_config.get("frame_time_anchor", "gps")
+    with_gps = assign_frame_gps(annotations, video_meta, gps_df, interval_sec, anchor)
 
     print("\n" + "=" * 60)
     print("STEP 07: Enrich with Geographic Data")
     print("=" * 60)
 
-    if skip_osm:
-        osm_path_arg = None
-    elif osm_path.exists():
-        osm_path_arg = osm_path
-        print(f"Using OSM ground truth: {osm_path}")
-    else:
-        osm_path_arg = None
-        print(f"OSM PBF not found at {osm_path}; using itinerary road type only.")
-        print("  (Download the region from Geofabrik into data/osm/ to enable OSM ground truth.)")
-    with_geo = enrich_with_geo(with_gps, sampling_dir, city, osm_path_arg)
+    with_geo = enrich_with_geo(with_gps, sampling_dir, city, use_osm=not skip_osm)
 
     print("\n" + "=" * 60)
     print("STEP 08: Build Analysis Dataset")

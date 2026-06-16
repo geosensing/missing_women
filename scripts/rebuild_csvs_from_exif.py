@@ -1,13 +1,25 @@
 #!/usr/bin/env python3
 """
-Rebuild CSV files from existing EXIF .txt files.
+Rebuild the GPS-index input CSVs from raw EXIF .txt files for a city.
 
-This script parses all EXIF files in data/delhi/exif/*.txt and regenerates:
-- exif_metadata.csv
-- gps_timeseries.csv
-- frame_metadata.csv (from existing frames in delhi_frames)
+Parses every ``data/{city}/exif/*_exif.txt`` and writes the two files that
+``04_build_gps_index.py`` globs:
+
+- ``data/{city}/exif_metadata/{city}_exif_video_metadata.csv``
+- ``data/{city}/exif_metadata/{city}_gps_timeseries.csv``
+
+It also (re)writes ``data/{city}/frame_metadata.csv`` from the extracted frames
+when the frames directory is available.
+
+Use this for cities whose ``exif_metadata/`` parquet inputs were never built
+(e.g. bangalore, delhi). The itinerary-named exif files carry the GPS that links
+back to the itinerary-named annotation frames.
+
+Usage:
+    python scripts/rebuild_csvs_from_exif.py --city bangalore
 """
 
+import argparse
 import re
 import sys
 from datetime import timedelta
@@ -103,7 +115,6 @@ def parse_video_metadata_from_exif(exif_content: str, exif_file: Path) -> Option
     parts = video_id.rsplit("_", 2)
     if len(parts) >= 2:
         source_folder = "_".join(parts[:-2]) if len(parts) > 2 else parts[0]
-        video_name_with_hash = "_".join(parts[-2:]) if len(parts) > 2 else parts[-1]
         video_name = parts[-2] if len(parts) > 2 else parts[0]
     else:
         source_folder = video_id
@@ -223,17 +234,21 @@ def build_frame_metadata(frames_dir: Path, exif_files: List[Path]) -> List[Dict]
     return frame_meta
 
 
-def main():
-    exif_dir = Path("data/delhi/exif")
-    frames_dir = Path("data/annotation_task/delhi_frames")
-    output_dir = Path("data/delhi")
+def rebuild_csvs_from_exif(city: str, project_root: Path) -> int:
+    """Parse ``data/{city}/exif/*_exif.txt`` into the GPS-index input CSVs."""
+    exif_dir = project_root / "data" / city / "exif"
+    frames_dir = project_root / "data" / "annotation_task" / f"{city}_frames"
+    exif_metadata_dir = project_root / "data" / city / "exif_metadata"
+    output_dir = project_root / "data" / city
 
     if not exif_dir.exists():
         print(f"Error: EXIF directory not found: {exif_dir}")
         return 1
 
+    exif_metadata_dir.mkdir(parents=True, exist_ok=True)
+
     exif_files = sorted(exif_dir.glob("*_exif.txt"))
-    print(f"Found {len(exif_files)} EXIF files")
+    print(f"Found {len(exif_files)} EXIF files in {exif_dir}")
 
     all_video_meta = []
     all_gps = []
@@ -249,10 +264,13 @@ def main():
         gps_points = parse_gps_timeseries(content, video_id)
         all_gps.extend(gps_points)
 
-    all_frames = build_frame_metadata(frames_dir, exif_files)
-
-    exif_csv = output_dir / "exif_metadata.csv"
-    gps_csv = output_dir / "gps_timeseries.csv.gz"
+    # Names/suffixes here must match the globs in 04_build_gps_index.py:
+    # *_exif_video_metadata.csv and *_gps_timeseries*.parquet. The GPS timeseries is
+    # written as Parquet (~10x smaller than CSV) and is a regenerable scratch file
+    # (gitignored); the tiny video metadata stays CSV.
+    exif_csv = exif_metadata_dir / f"{city}_exif_video_metadata.csv"
+    gps_parquet = exif_metadata_dir / f"{city}_gps_timeseries.parquet"
+    gps_csv_stale = exif_metadata_dir / f"{city}_gps_timeseries.csv"
     frame_csv = output_dir / "frame_metadata.csv"
 
     if all_video_meta:
@@ -262,15 +280,32 @@ def main():
     if all_gps:
         gps_df = pd.DataFrame(all_gps)
         gps_df = gps_df.sort_values(["video_id", "gps_datetime"])
-        gps_df.to_csv(gps_csv, index=False, compression="gzip")
-        print(f"Saved {len(all_gps)} GPS points to {gps_csv}")
+        gps_df.to_parquet(gps_parquet, index=False)
+        print(f"Saved {len(all_gps)} GPS points to {gps_parquet}")
+        # Remove any stale CSV from the old format so 04's glob can't double-count.
+        if gps_csv_stale.exists():
+            gps_csv_stale.unlink()
+            print(f"Removed stale {gps_csv_stale}")
 
-    if all_frames:
-        pd.DataFrame(all_frames).to_csv(frame_csv, index=False)
-        print(f"Saved {len(all_frames)} frame records to {frame_csv}")
+    if frames_dir.exists():
+        all_frames = build_frame_metadata(frames_dir, exif_files)
+        if all_frames:
+            pd.DataFrame(all_frames).to_csv(frame_csv, index=False)
+            print(f"Saved {len(all_frames)} frame records to {frame_csv}")
+    else:
+        print(f"Frames directory not found ({frames_dir}); skipping frame_metadata.csv")
 
     print("\nDone!")
     return 0
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--city", required=True, help="City to process (e.g. bangalore, delhi)")
+    args = parser.parse_args()
+
+    project_root = Path(__file__).resolve().parents[1]
+    return rebuild_csvs_from_exif(args.city, project_root)
 
 
 if __name__ == "__main__":

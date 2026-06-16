@@ -26,12 +26,33 @@ import pandas as pd
 
 MAX_GPS_GAP_SEC = 30.0
 
+# Default frame-timing convention (seconds of video time per frame_number unit).
+# 1/30 means frame_number is a 30 fps video-frame index. Per-city values come from
+# cities.yaml (see compute_frame_datetime / assign_frame_gps).
+DEFAULT_INTERVAL_SEC = 1.0 / 30.0
+DEFAULT_ANCHOR = "gps"
 
-def compute_frame_datetime(row: pd.Series, video_meta: pd.DataFrame) -> pd.Timestamp | None:
+
+def compute_frame_datetime(
+    row: pd.Series,
+    video_meta: pd.DataFrame,
+    interval_sec: float = DEFAULT_INTERVAL_SEC,
+    anchor: str = DEFAULT_ANCHOR,
+) -> pd.Timestamp | None:
     """
     Compute absolute datetime for a frame.
 
-    Uses GPS first timestamp if clock drift detected, else recording_datetime.
+    The in-video offset is ``timestamp_sec`` when the filename carries one, else
+    ``frame_number * interval_sec``. ``interval_sec`` encodes the per-batch frame
+    convention: 1/30 for a 30 fps video-frame index (mumbai, navi_mumbai) or the
+    extraction interval in seconds for sampled frames (e.g. 120 for bangalore,
+    delhi, sampled every 2 min).
+
+    ``anchor`` picks the wall-clock origin: ``"recording"`` uses the camera clock
+    (correct when it is GPS-aligned, e.g. mumbai, where GPS logging starts well
+    before the recording), ``"gps"`` uses the first GPS timestamp (when the camera
+    clock is offset from GPS, e.g. navi_mumbai, bangalore, delhi). Each falls back
+    to the other when its preferred field is missing.
     """
     base_video_id = row.get("base_video_id")
     timestamp_sec = row.get("timestamp_sec")
@@ -50,19 +71,20 @@ def compute_frame_datetime(row: pd.Series, video_meta: pd.DataFrame) -> pd.Times
 
     video_row = video_row.iloc[0]
 
-    if video_row.get("use_gps_time", False) and pd.notna(video_row.get("gps_first_datetime")):
-        start_time = video_row["gps_first_datetime"]
-    else:
-        start_time = video_row.get("recording_datetime")
+    gps_first = video_row.get("gps_first_datetime")
+    recording = video_row.get("recording_datetime")
 
+    if anchor == "recording":
+        start_time = recording if pd.notna(recording) else gps_first
+    else:
+        start_time = gps_first if pd.notna(gps_first) else recording
     if pd.isna(start_time):
         return None
 
     if pd.notna(timestamp_sec):
         offset_sec = timestamp_sec
     elif pd.notna(frame_number):
-        fps = 30.0
-        offset_sec = frame_number / fps
+        offset_sec = frame_number * interval_sec
     else:
         return None
 
@@ -147,14 +169,22 @@ def assign_frame_gps(
     annotations: pd.DataFrame,
     video_meta: pd.DataFrame,
     gps_df: pd.DataFrame,
+    interval_sec: float = DEFAULT_INTERVAL_SEC,
+    anchor: str = DEFAULT_ANCHOR,
 ) -> pd.DataFrame:
     """
-    Assign GPS coordinates to all annotated frames.
+    Assign GPS coordinates and a wall-clock datetime to all annotated frames.
+
+    ``frame_datetime`` is computed for every frame with a resolvable video and
+    anchor (independent of whether a GPS fix is found), so the temporal fields
+    downstream are populated even where GPS coverage is incomplete.
 
     Args:
         annotations: Parsed annotation DataFrame
         video_meta: Video metadata with recording times
         gps_df: GPS timeseries sorted by (video_id, gps_datetime)
+        interval_sec: Seconds of video time per frame_number unit (per-batch).
+        anchor: "recording" or "gps" wall-clock origin (per-batch).
 
     Returns:
         annotations with added GPS columns
@@ -176,7 +206,7 @@ def assign_frame_gps(
     n_matched = 0
 
     for idx, row in result.iterrows():
-        frame_dt = compute_frame_datetime(row, video_meta)
+        frame_dt = compute_frame_datetime(row, video_meta, interval_sec, anchor)
         if frame_dt is None:
             continue
 

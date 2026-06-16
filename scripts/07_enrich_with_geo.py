@@ -27,7 +27,6 @@ import pandas as pd
 
 try:
     import geopandas as gpd
-    from shapely.geometry import Point
     from sklearn.neighbors import BallTree
 
     HAS_GEO = True
@@ -152,16 +151,47 @@ def assign_itinerary_road_type(
     return result
 
 
-def load_osm_roads(pbf_path: Path, bbox: tuple) -> "gpd.GeoDataFrame | None":
+def _first(value):
+    """OSM tag values can be a list/array (e.g. ['residential', 'service']); take the first.
+
+    osmnx returns Python lists for multi-tag edges, but a network read back from
+    GeoJSON returns numpy arrays; collapse both to a single scalar tag so the column
+    stays object-of-strings and is parquet-writable.
     """
-    Load road network from OSM PBF file within bounding box.
+    if isinstance(value, (list, tuple, np.ndarray)):
+        return value[0] if len(value) > 0 else None
+    return value
+
+
+def load_local_osm_roads(network_geojson: Path) -> "gpd.GeoDataFrame | None":
+    """
+    Load the OSM road network saved during route sampling.
+
+    ``sampling/{city}/network/streets.geojson`` is the exact OSM drive network the
+    itineraries were sampled from (LineStrings with a ``highway`` tag). Using it for
+    road-type attribution is offline, reproducible, and avoids the Overpass API.
+    """
+    if not HAS_GEO or not network_geojson.exists():
+        return None
+    try:
+        cols = ["highway", "name"]
+        roads = gpd.read_file(network_geojson, columns=cols)
+        keep = [c for c in [*cols, "geometry"] if c in roads.columns]
+        return roads[keep]
+    except Exception as e:
+        print(f"  Error reading local OSM network: {e}")
+        return None
+
+
+def load_osm_roads(bbox: tuple) -> "gpd.GeoDataFrame | None":
+    """
+    Download the drivable OSM road network within a bounding box via osmnx.
 
     Args:
-        pbf_path: Path to .osm.pbf file
         bbox: (minlat, minlon, maxlat, maxlon)
 
     Returns:
-        GeoDataFrame with road geometries, or None if not available
+        GeoDataFrame of road edges (EPSG:4326), or None if unavailable.
     """
     if not HAS_GEO:
         return None
@@ -172,17 +202,16 @@ def load_osm_roads(pbf_path: Path, bbox: tuple) -> "gpd.GeoDataFrame | None":
         print("  osmnx not installed, skipping OSM enrichment")
         return None
 
-    if not pbf_path.exists():
-        print(f"  OSM file not found: {pbf_path}")
-        return None
+    # City-wide drive networks are large; allow Overpass more time than the default.
+    ox.settings.requests_timeout = 600
 
     try:
         minlat, minlon, maxlat, maxlon = bbox
-        north, south, east, west = maxlat, minlat, maxlon, minlon
-
-        G = ox.graph_from_bbox(north=north, south=south, east=east, west=west, network_type="drive")
+        # osmnx >= 2.0 takes bbox=(left, bottom, right, top) = (minlon, minlat, maxlon, maxlat)
+        G = ox.graph_from_bbox(bbox=(minlon, minlat, maxlon, maxlat), network_type="drive")
         edges = ox.graph_to_gdfs(G, nodes=False)
-        return edges
+        keep = [c for c in ["highway", "name", "surface", "geometry"] if c in edges.columns]
+        return edges[keep].reset_index(drop=True)
     except Exception as e:
         print(f"  Error loading OSM: {e}")
         return None
@@ -192,9 +221,9 @@ def match_to_nearest_road(
     df: pd.DataFrame, roads_gdf: "gpd.GeoDataFrame | None", max_distance_m: float = 50.0
 ) -> pd.DataFrame:
     """
-    Match frames to nearest OSM road.
+    Match frames to the nearest OSM road via a spatial nearest-join.
 
-    Returns df with added osm_* columns.
+    Returns df with added osm_highway, osm_road_name, osm_surface, osm_distance_m.
     """
     result = df.copy()
     result["osm_highway"] = None
@@ -202,29 +231,33 @@ def match_to_nearest_road(
     result["osm_surface"] = None
     result["osm_distance_m"] = None
 
-    if roads_gdf is None or not HAS_GEO:
+    if roads_gdf is None or not HAS_GEO or len(roads_gdf) == 0:
         return result
 
     valid_mask = df["gps_lat"].notna() & df["gps_lon"].notna()
     if not valid_mask.any():
         return result
 
-    roads_gdf = roads_gdf.to_crs("EPSG:32643")
+    # Project to a metric CRS (UTM 43N covers all four cities) so distances are metres.
+    pts = gpd.GeoDataFrame(
+        {"_idx": df.index[valid_mask]},
+        geometry=gpd.points_from_xy(
+            df.loc[valid_mask, "gps_lon"], df.loc[valid_mask, "gps_lat"]
+        ),
+        crs="EPSG:4326",
+    ).to_crs("EPSG:32643")
+    roads = roads_gdf.to_crs("EPSG:32643")
 
-    for idx in df.index[valid_mask]:
-        lat, lon = df.at[idx, "gps_lat"], df.at[idx, "gps_lon"]
-        point = gpd.GeoSeries([Point(lon, lat)], crs="EPSG:4326").to_crs("EPSG:32643").iloc[0]
+    joined = gpd.sjoin_nearest(pts, roads, max_distance=max_distance_m, distance_col="osm_distance_m")
+    # Ties can yield multiple rows per point; keep the nearest.
+    joined = joined.sort_values("osm_distance_m").drop_duplicates("_idx")
 
-        distances = roads_gdf.geometry.distance(point)
-        nearest_idx = distances.idxmin()
-        nearest_dist = distances.loc[nearest_idx]
-
-        if nearest_dist <= max_distance_m:
-            road = roads_gdf.loc[nearest_idx]
-            result.at[idx, "osm_highway"] = road.get("highway")
-            result.at[idx, "osm_road_name"] = road.get("name")
-            result.at[idx, "osm_surface"] = road.get("surface")
-            result.at[idx, "osm_distance_m"] = nearest_dist
+    for _, r in joined.iterrows():
+        idx = r["_idx"]
+        result.at[idx, "osm_highway"] = _first(r.get("highway"))
+        result.at[idx, "osm_road_name"] = _first(r.get("name"))
+        result.at[idx, "osm_surface"] = _first(r.get("surface"))
+        result.at[idx, "osm_distance_m"] = r["osm_distance_m"]
 
     return result
 
@@ -233,7 +266,7 @@ def enrich_with_geo(
     annotations: pd.DataFrame,
     city_sampling_dir: Path,
     city: str,
-    osm_pbf_path: Path | None = None,
+    use_osm: bool = False,
 ) -> pd.DataFrame:
     """
     Add geographic attributes to annotations.
@@ -242,7 +275,9 @@ def enrich_with_geo(
         annotations: DataFrame with gps_lat, gps_lon columns
         city_sampling_dir: Path to sampling/{city} directory
         city: City name for region tagging
-        osm_pbf_path: Optional path to OSM PBF file
+        use_osm: If True, download the OSM drive network for the frames' bounding
+            box via osmnx and attach the nearest-road ``osm_highway`` (ground-truth
+            road type). Requires network access.
 
     Returns:
         DataFrame with itinerary and OSM road attributes
@@ -256,29 +291,52 @@ def enrich_with_geo(
     n_matched = result["itinerary_road_type"].notna().sum()
     print(f"  Matched {n_matched}/{len(result)} frames to itineraries")
 
-    if osm_pbf_path and osm_pbf_path.exists():
-        valid_coords = annotations[["gps_lat", "gps_lon"]].dropna()
-        if not valid_coords.empty:
-            bbox = (
-                valid_coords["gps_lat"].min() - 0.01,
-                valid_coords["gps_lon"].min() - 0.01,
-                valid_coords["gps_lat"].max() + 0.01,
-                valid_coords["gps_lon"].max() + 0.01,
-            )
-            print("Loading OSM road network...")
-            roads = load_osm_roads(osm_pbf_path, bbox)
+    result["osm_highway"] = None
+    result["osm_road_name"] = None
+    result["osm_surface"] = None
+    result["osm_distance_m"] = None
 
-            if roads is not None:
-                print("Matching to OSM roads...")
-                result = match_to_nearest_road(result, roads)
-                n_osm = result["osm_highway"].notna().sum()
-                print(f"  Matched {n_osm}/{len(result)} frames to OSM roads")
-    else:
-        print("Skipping OSM enrichment (PBF file not available)")
-        result["osm_highway"] = None
-        result["osm_road_name"] = None
-        result["osm_surface"] = None
-        result["osm_distance_m"] = None
+    if not use_osm:
+        print("Skipping OSM enrichment")
+        return result
+
+    valid_coords = annotations[["gps_lat", "gps_lon"]].dropna()
+    if valid_coords.empty:
+        print("Skipping OSM enrichment (no GPS coordinates)")
+        return result
+
+    # Prefer the committed, route-clipped road index (small, offline, reproducible from a
+    # clone — built by build_osm_road_index.py). Fall back to the full local sampling
+    # network, then to an osmnx/Overpass download.
+    project_root = city_sampling_dir.parent.parent
+    road_index = project_root / "data" / city / "osm_roads.parquet"
+    roads = None
+    if HAS_GEO and road_index.exists():
+        roads = gpd.read_parquet(road_index)
+        print(f"  Using committed OSM road index: {road_index} ({len(roads)} roads)")
+    if roads is None:
+        network_geojson = city_sampling_dir / "network" / "streets.geojson"
+        roads = load_local_osm_roads(network_geojson)
+        if roads is not None:
+            print(f"  Using local OSM network: {network_geojson}")
+    if roads is None:
+        # Robust quantiles, not min/max: a few GPS glitches (wrong-continent fixes)
+        # would otherwise blow the bbox up to thousands of km and time out Overpass.
+        lat, lon = valid_coords["gps_lat"], valid_coords["gps_lon"]
+        bbox = (
+            lat.quantile(0.005) - 0.01,
+            lon.quantile(0.005) - 0.01,
+            lat.quantile(0.995) + 0.01,
+            lon.quantile(0.995) + 0.01,
+        )
+        print("Downloading OSM road network (osmnx)...")
+        roads = load_osm_roads(bbox)
+
+    if roads is not None:
+        print(f"  {len(roads)} road segments; matching frames to nearest road...")
+        result = match_to_nearest_road(result, roads)
+        n_osm = result["osm_highway"].notna().sum()
+        print(f"  Matched {n_osm}/{len(result)} frames to OSM roads")
 
     return result
 
@@ -286,8 +344,6 @@ def enrich_with_geo(
 if __name__ == "__main__":
     import argparse
     import importlib.util
-
-    import yaml
 
     def import_from_path(name: str, path: Path):
         spec = importlib.util.spec_from_file_location(name, path)
@@ -297,6 +353,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--city", required=True, help="City to process")
+    parser.add_argument("--osm", action="store_true", help="Download + match OSM road type")
     args = parser.parse_args()
 
     project_root = Path(__file__).parent.parent
@@ -311,20 +368,16 @@ if __name__ == "__main__":
     parse_all_annotations = parse_annotations_mod.parse_all_annotations
     assign_frame_gps = assign_frame_gps_mod.assign_frame_gps
 
-    with open(project_root / "cities.yaml") as f:
-        city_config = yaml.safe_load(f)[args.city]
-
     labelstudio_dir = project_root / "data" / args.city / "labelstudio"
-    gps_index_dir = project_root / "output" / args.city / "gps_index"
+    gps_index_dir = project_root / "data" / args.city / "gps_index"
     sampling_dir = project_root / "sampling" / args.city
-    osm_path = project_root / "data" / "osm" / city_config["osm_file"]
 
     annotations = parse_all_annotations(labelstudio_dir, args.city)
     video_meta = pd.read_parquet(gps_index_dir / "video_metadata.parquet")
     gps_df = pd.read_parquet(gps_index_dir / "gps_timeseries.parquet")
 
     with_gps = assign_frame_gps(annotations, video_meta, gps_df)
-    result = enrich_with_geo(with_gps, sampling_dir, args.city, osm_path)
+    result = enrich_with_geo(with_gps, sampling_dir, args.city, use_osm=args.osm)
 
     print("\n=== Summary ===")
     print(f"Total frames: {len(result)}")

@@ -230,23 +230,44 @@ def select_output_columns(df: pd.DataFrame) -> pd.DataFrame:
     return df[existing + extra]
 
 
+def keep_latest_annotation(df: pd.DataFrame) -> pd.DataFrame:
+    """Collapse to one row per (image, annotator), keeping the most recent annotation.
+
+    An image can carry more than one annotation by the same person — a genuine
+    re-annotation after review, or simply the same annotation appearing in overlapping
+    Label Studio exports. Keeping the latest by ``updated_at`` makes post-review edits win
+    and de-duplicates re-exported annotations. Falls back to a plain de-dup when the
+    timestamp is absent (older parses).
+    """
+    if "updated_at" not in df.columns:
+        return df.drop_duplicates(["image", "annotator"]).reset_index(drop=True)
+    ordered = df.sort_values("updated_at", na_position="first")
+    return ordered.drop_duplicates(["image", "annotator"], keep="last").reset_index(drop=True)
+
+
 def build_analysis_data(
     annotations: pd.DataFrame, output_dir: Path
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Build final analysis datasets and save to parquet.
 
-    Produces two outputs:
-    - analysis_data.parquet: Primary annotator only (for core analysis)
-    - analysis_data_long.parquet: All annotations (for inter-rater reliability)
+    Persists ``analysis_data.parquet`` (primary annotator only, deduped to one row per
+    image) for core analysis. The full multi-annotator frame is returned in memory but
+    not saved — it is trivially recreatable from the committed Label Studio JSON, and
+    ``13_interrater_reliability.py`` rebuilds it on demand.
 
     Args:
         annotations: DataFrame from pipeline step 07
         output_dir: Directory to save parquet files
 
     Returns:
-        Tuple of (primary_df, long_df)
+        Tuple of (primary_df, all_annotations_df)
     """
+    print("Keeping latest annotation per (image, annotator)...")
+    before = len(annotations)
+    annotations = keep_latest_annotation(annotations)
+    print(f"  {before} -> {len(annotations)} annotations after de-dup")
+
     print("Converting counts to numeric...")
     result = convert_counts(annotations)
 
@@ -267,10 +288,6 @@ def build_analysis_data(
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    long_path = output_dir / "analysis_data_long.parquet"
-    result.to_parquet(long_path, index=False)
-    print(f"\nSaved long format: {long_path} ({len(result)} rows)")
-
     primary_annotator = get_primary_annotator(result)
     print(f"Primary annotator: {primary_annotator}")
     primary = result[result["annotator"] == primary_annotator].copy()
@@ -287,8 +304,6 @@ if __name__ == "__main__":
     import argparse
     import importlib.util
 
-    import yaml
-
     def import_from_path(name: str, path: Path):
         spec = importlib.util.spec_from_file_location(name, path)
         module = importlib.util.module_from_spec(spec)
@@ -297,6 +312,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--city", required=True, help="City to process")
+    parser.add_argument("--osm", action="store_true", help="Download + match OSM road type")
     args = parser.parse_args()
 
     project_root = Path(__file__).parent.parent
@@ -313,13 +329,9 @@ if __name__ == "__main__":
     assign_frame_gps = assign_frame_gps_mod.assign_frame_gps
     enrich_with_geo = enrich_with_geo_mod.enrich_with_geo
 
-    with open(project_root / "cities.yaml") as f:
-        city_config = yaml.safe_load(f)[args.city]
-
     labelstudio_dir = project_root / "data" / args.city / "labelstudio"
     gps_index_dir = project_root / "data" / args.city / "gps_index"
     sampling_dir = project_root / "sampling" / args.city
-    osm_path = project_root / "data" / "osm" / city_config["osm_file"]
     output_dir = project_root / "data" / args.city
 
     annotations = parse_all_annotations(labelstudio_dir, args.city)
@@ -327,7 +339,7 @@ if __name__ == "__main__":
     gps_df = pd.read_parquet(gps_index_dir / "gps_timeseries.parquet")
 
     with_gps = assign_frame_gps(annotations, video_meta, gps_df)
-    with_geo = enrich_with_geo(with_gps, sampling_dir, args.city, osm_path)
+    with_geo = enrich_with_geo(with_gps, sampling_dir, args.city, use_osm=args.osm)
 
     primary, long = build_analysis_data(with_geo, output_dir)
 

@@ -4,14 +4,18 @@ Generate maps for the Streetscope project.
 
 Creates both interactive HTML maps (Folium) and static PDF maps (matplotlib + contextily).
 
-Outputs (in figs/):
-  - map_locations.html       Interactive map of data collection points
-  - map_locations.pdf        Static PDF with basemap tiles
-  - map_sex_ratio.html       Interactive map colored by proportion women
-  - map_sex_ratio.pdf        Static PDF colored by proportion women
+Maps are per-city (the cities span the whole country, so a single combined map is
+not legible), plus one all-India overview that anchors where data was collected.
+
+Outputs (in figs/), one set per city plus an overview:
+  - map_locations_{city}.html   Interactive map of that city's collection points
+  - map_locations_{city}.pdf    Static PDF with basemap tiles
+  - map_sexratio_{city}.html    Interactive map colored by proportion women
+  - map_sexratio_{city}.pdf     Static PDF colored by proportion women
+  - map_overview_india.pdf      All cities as labelled points on an India basemap
 
 Usage:
-    python scripts/11_make_maps.py --cities mumbai,navi_mumbai
+    python scripts/11_make_maps.py --cities mumbai,navi_mumbai,bangalore,delhi
 """
 
 from __future__ import annotations
@@ -39,18 +43,21 @@ COLORS = {
     "mumbai": "#2166ac",
     "navi_mumbai": "#b2182b",
     "bangalore": "#1b7837",
+    "delhi": "#762a83",
 }
 
 CITY_LABELS = {
     "mumbai": "Mumbai",
     "navi_mumbai": "Navi Mumbai",
     "bangalore": "Bangalore",
+    "delhi": "Delhi",
 }
 
 CITY_BOUNDS = {
     "mumbai": {"lat": (18.85, 19.30), "lon": (72.75, 73.05)},
     "navi_mumbai": {"lat": (18.90, 19.25), "lon": (72.80, 73.10)},
     "bangalore": {"lat": (12.85, 13.15), "lon": (77.45, 77.75)},
+    "delhi": {"lat": (28.40, 28.90), "lon": (76.70, 77.50)},
 }
 
 
@@ -94,52 +101,43 @@ def filter_valid_gps(df: pd.DataFrame) -> pd.DataFrame:
     return pd.concat(valid_rows, ignore_index=True)
 
 
-def make_locations_map(df: pd.DataFrame) -> None:
-    """Create map of all data collection locations, colored by city."""
-    geo = filter_valid_gps(df)
+def make_locations_map(geo: pd.DataFrame, city: str) -> None:
+    """Interactive map of one city's data collection points."""
     if len(geo) == 0:
-        print("WARNING: No valid GPS data for locations map")
+        print(f"  WARNING: no valid GPS for {city} locations map")
         return
 
-    center_lat = geo["gps_lat"].mean()
-    center_lon = geo["gps_lon"].mean()
+    color = COLORS.get(city, "#666666")
+    label = CITY_LABELS.get(city, city)
 
     m = folium.Map(
-        location=[center_lat, center_lon],
-        zoom_start=11,
+        location=[geo["gps_lat"].mean(), geo["gps_lon"].mean()],
+        zoom_start=12,
         tiles="OpenStreetMap",
     )
 
-    for city in geo["city"].unique():
-        city_data = geo[geo["city"] == city]
-        color = COLORS.get(city, "#666666")
-        label = CITY_LABELS.get(city, city)
-
-        cluster = MarkerCluster(name=f"{label} (n={len(city_data):,})")
-
-        for _, row in city_data.iterrows():
-            popup_text = f"""
-            <b>{label}</b><br>
-            Video: {row.get("base_video_id", "N/A")}<br>
-            Frame: {row.get("frame_number", "N/A")}<br>
-            People: {row.get("total_people", "N/A")}<br>
-            Prop women: {row.get("prop_women", 0):.2f}
-            """
-            folium.CircleMarker(
-                location=[row["gps_lat"], row["gps_lon"]],
-                radius=5,
-                color=color,
-                fill=True,
-                fillColor=color,
-                fillOpacity=0.6,
-                popup=folium.Popup(popup_text, max_width=200),
-            ).add_to(cluster)
-
-        cluster.add_to(m)
-
+    cluster = MarkerCluster(name=f"{label} (n={len(geo):,})")
+    for _, row in geo.iterrows():
+        popup_text = f"""
+        <b>{label}</b><br>
+        Video: {row.get("base_video_id", "N/A")}<br>
+        Frame: {row.get("frame_number", "N/A")}<br>
+        People: {row.get("total_people", "N/A")}<br>
+        Prop women: {row.get("prop_women", 0):.2f}
+        """
+        folium.CircleMarker(
+            location=[row["gps_lat"], row["gps_lon"]],
+            radius=5,
+            color=color,
+            fill=True,
+            fillColor=color,
+            fillOpacity=0.6,
+            popup=folium.Popup(popup_text, max_width=200),
+        ).add_to(cluster)
+    cluster.add_to(m)
     folium.LayerControl().add_to(m)
 
-    out_path = FIGS / "map_locations.html"
+    out_path = FIGS / f"map_locations_{city}.html"
     m.save(str(out_path))
     print(f"  -> {out_path.name} ({len(geo):,} points)")
 
@@ -155,37 +153,30 @@ def get_color_for_prop(prop: float) -> str:
     return f"#{r:02x}{g:02x}00"
 
 
-def make_sex_ratio_map(df: pd.DataFrame) -> None:
-    """Create map colored by proportion women."""
-    geo = filter_valid_gps(df)
+def make_sex_ratio_map(geo: pd.DataFrame, city: str) -> None:
+    """Interactive map of one city's points colored by proportion women."""
     geo = geo[geo["total_people"] > 0].copy()
-
     if len(geo) == 0:
-        print("WARNING: No valid GPS data for sex ratio map")
+        print(f"  WARNING: no valid GPS for {city} sex ratio map")
         return
 
-    center_lat = geo["gps_lat"].mean()
-    center_lon = geo["gps_lon"].mean()
-
+    label = CITY_LABELS.get(city, city)
     m = folium.Map(
-        location=[center_lat, center_lon],
-        zoom_start=11,
+        location=[geo["gps_lat"].mean(), geo["gps_lon"].mean()],
+        zoom_start=12,
         tiles="OpenStreetMap",
     )
 
     for _, row in geo.iterrows():
         prop = row.get("prop_women", 0)
         color = get_color_for_prop(prop)
-        city_label = CITY_LABELS.get(row["city"], row["city"])
-
         popup_text = f"""
-        <b>{city_label}</b><br>
+        <b>{label}</b><br>
         Video: {row.get("base_video_id", "N/A")}<br>
         People: {row.get("total_people", "N/A")}<br>
         Women: {row.get("total_women", "N/A")}<br>
         <b>Prop women: {prop:.2f}</b>
         """
-
         folium.CircleMarker(
             location=[row["gps_lat"], row["gps_lon"]],
             radius=6,
@@ -208,72 +199,56 @@ def make_sex_ratio_map(df: pd.DataFrame) -> None:
     """
     m.get_root().html.add_child(folium.Element(legend_html))
 
-    out_path = FIGS / "map_sex_ratio.html"
+    out_path = FIGS / f"map_sexratio_{city}.html"
     m.save(str(out_path))
     print(f"  -> {out_path.name} ({len(geo):,} points)")
 
 
-def make_locations_pdf(df: pd.DataFrame) -> None:
-    """Create PDF map of data collection locations with basemap tiles."""
-    geo = filter_valid_gps(df)
+def make_locations_pdf(geo: pd.DataFrame, city: str) -> None:
+    """PDF map of one city's collection points with basemap tiles."""
     if len(geo) == 0:
-        print("WARNING: No valid GPS data for locations PDF")
+        print(f"  WARNING: no valid GPS for {city} locations PDF")
         return
 
+    color = COLORS.get(city, "#666666")
+    label = CITY_LABELS.get(city, city)
     gdf = gpd.GeoDataFrame(
         geo,
         geometry=gpd.points_from_xy(geo["gps_lon"], geo["gps_lat"]),
         crs="EPSG:4326",
-    )
-    gdf = gdf.to_crs(epsg=3857)
+    ).to_crs(epsg=3857)
 
     fig, ax = plt.subplots(figsize=(10, 10))
-
-    for city in gdf["city"].unique():
-        city_gdf = gdf[gdf["city"] == city]
-        color = COLORS.get(city, "#666666")
-        label = CITY_LABELS.get(city, city)
-        city_gdf.plot(
-            ax=ax,
-            color=color,
-            markersize=8,
-            alpha=0.5,
-            label=f"{label} (n={len(city_gdf):,})",
-        )
-
+    gdf.plot(ax=ax, color=color, markersize=8, alpha=0.5, label=f"{label} (n={len(gdf):,})")
     cx.add_basemap(ax, source=cx.providers.OpenStreetMap.Mapnik)
-
     ax.set_axis_off()
     ax.legend(loc="lower left", fontsize=9, frameon=True, facecolor="white")
-    ax.set_title("Data Collection Locations", fontsize=12, fontweight="bold")
+    ax.set_title(f"{label}: Data Collection Locations", fontsize=12, fontweight="bold")
 
     fig.tight_layout()
-    out_path = FIGS / "map_locations.pdf"
+    out_path = FIGS / f"map_locations_{city}.pdf"
     fig.savefig(out_path, dpi=150, bbox_inches="tight")
     plt.close(fig)
     print(f"  -> {out_path.name} ({len(geo):,} points)")
 
 
-def make_sex_ratio_pdf(df: pd.DataFrame) -> None:
-    """Create PDF map colored by proportion women with basemap tiles."""
-    geo = filter_valid_gps(df)
+def make_sex_ratio_pdf(geo: pd.DataFrame, city: str) -> None:
+    """PDF map of one city's points colored by proportion women."""
     geo = geo[geo["total_people"] > 0].copy()
-
     if len(geo) == 0:
-        print("WARNING: No valid GPS data for sex ratio PDF")
+        print(f"  WARNING: no valid GPS for {city} sex ratio PDF")
         return
 
+    label = CITY_LABELS.get(city, city)
     gdf = gpd.GeoDataFrame(
         geo,
         geometry=gpd.points_from_xy(geo["gps_lon"], geo["gps_lat"]),
         crs="EPSG:4326",
-    )
-    gdf = gdf.to_crs(epsg=3857)
+    ).to_crs(epsg=3857)
 
     cmap = LinearSegmentedColormap.from_list("sex_ratio", ["#d73027", "#fee08b", "#1a9850"])
 
     fig, ax = plt.subplots(figsize=(10, 10))
-
     sc = ax.scatter(
         gdf.geometry.x,
         gdf.geometry.y,
@@ -285,7 +260,6 @@ def make_sex_ratio_pdf(df: pd.DataFrame) -> None:
         alpha=0.7,
         edgecolors="none",
     )
-
     cx.add_basemap(ax, source=cx.providers.OpenStreetMap.Mapnik)
 
     cbar = fig.colorbar(sc, ax=ax, shrink=0.6, pad=0.02)
@@ -294,13 +268,68 @@ def make_sex_ratio_pdf(df: pd.DataFrame) -> None:
     cbar.set_ticklabels(["0.00", "0.12", "0.25", "0.38", "0.50+"])
 
     ax.set_axis_off()
-    ax.set_title("Proportion Women by Location", fontsize=12, fontweight="bold")
+    ax.set_title(f"{label}: Proportion Women by Location", fontsize=12, fontweight="bold")
 
     fig.tight_layout()
-    out_path = FIGS / "map_sex_ratio.pdf"
+    out_path = FIGS / f"map_sexratio_{city}.pdf"
     fig.savefig(out_path, dpi=150, bbox_inches="tight")
     plt.close(fig)
     print(f"  -> {out_path.name} ({len(geo):,} points)")
+
+
+def make_overview_pdf(df: pd.DataFrame) -> None:
+    """All-India overview: one labelled point per city, sized by sample count."""
+    geo = filter_valid_gps(df)
+    if len(geo) == 0:
+        print("  WARNING: no valid GPS for overview map")
+        return
+
+    agg = (
+        geo.groupby("city")
+        .agg(lat=("gps_lat", "mean"), lon=("gps_lon", "mean"), n=("gps_lat", "size"))
+        .reset_index()
+    )
+    gdf = gpd.GeoDataFrame(
+        agg,
+        geometry=gpd.points_from_xy(agg["lon"], agg["lat"]),
+        crs="EPSG:4326",
+    ).to_crs(epsg=3857)
+
+    fig, ax = plt.subplots(figsize=(8, 10))
+    for _, r in gdf.iterrows():
+        color = COLORS.get(r["city"], "#666666")
+        label = CITY_LABELS.get(r["city"], r["city"])
+        ax.scatter(
+            r.geometry.x,
+            r.geometry.y,
+            s=140,
+            color=color,
+            edgecolors="black",
+            linewidths=0.8,
+            zorder=3,
+            label=f"{label} (n={int(r['n']):,})",
+        )
+        ax.annotate(
+            label,
+            (r.geometry.x, r.geometry.y),
+            xytext=(7, 7),
+            textcoords="offset points",
+            fontsize=9,
+            fontweight="bold",
+        )
+
+    # Pad the extent so the surrounding country provides geographic context.
+    ax.margins(0.25)
+    cx.add_basemap(ax, source=cx.providers.OpenStreetMap.Mapnik)
+    ax.set_axis_off()
+    ax.legend(loc="lower left", fontsize=9, frameon=True, facecolor="white")
+    ax.set_title("Streetscope data collection — city overview", fontsize=12, fontweight="bold")
+
+    fig.tight_layout()
+    out_path = FIGS / "map_overview_india.pdf"
+    fig.savefig(out_path, dpi=150, bbox_inches="tight")
+    plt.close(fig)
+    print(f"  -> {out_path.name} ({len(gdf)} cities)")
 
 
 def main():
@@ -308,7 +337,7 @@ def main():
     parser.add_argument(
         "--cities",
         type=str,
-        default="mumbai,navi_mumbai",
+        default="mumbai,navi_mumbai,bangalore,delhi",
         help="Comma-separated list of cities",
     )
     args = parser.parse_args()
@@ -323,13 +352,16 @@ def main():
     df = load_city_data(cities)
     print(f"Loaded {len(df):,} rows")
 
-    print("\nCreating HTML maps...")
-    make_locations_map(df)
-    make_sex_ratio_map(df)
+    for city in cities:
+        geo = filter_valid_gps(df[df["city"] == city])
+        print(f"\n{CITY_LABELS.get(city, city)} ({len(geo):,} valid-GPS points):")
+        make_locations_map(geo, city)
+        make_sex_ratio_map(geo, city)
+        make_locations_pdf(geo, city)
+        make_sex_ratio_pdf(geo, city)
 
-    print("\nCreating PDF maps...")
-    make_locations_pdf(df)
-    make_sex_ratio_pdf(df)
+    print("\nOverview:")
+    make_overview_pdf(df)
 
     print("\n" + "=" * 60)
     print(f"Done. Maps saved to: {FIGS}")

@@ -9,8 +9,9 @@ Outputs:
     - fig2_distribution.pdf        Side-by-side histograms of prop_women
     - fig3_multipanel.pdf          4-panel: mode, road type, POI, time of day
     - fig4_weekday_weekend.pdf     Weekday vs weekend bar chart
-    - map_locations.pdf            GPS scatter colored by city
-    - map_sexratio.pdf             Heatmap of prop_women by location
+    - fig5_pedestrian_loess.pdf    Female share vs crowd size (LOESS) per city
+
+  (Maps are produced separately by 11_make_maps.py.)
 
   tabs/
     - table1_city_summary.tex      City-level summary
@@ -19,7 +20,7 @@ Outputs:
     - tableS3_poi_infrastructure.tex  POI effects, infrastructure counts
 
 Usage:
-    python scripts/10_analysis.py --cities mumbai,navi_mumbai
+    python scripts/10_analysis.py --cities mumbai,navi_mumbai,bangalore,delhi
 """
 
 from __future__ import annotations
@@ -34,7 +35,6 @@ import inference
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.gridspec import GridSpec
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -48,6 +48,7 @@ COLORS = {
     "mumbai": "#2166ac",
     "navi_mumbai": "#b2182b",
     "bangalore": "#1b7837",
+    "delhi": "#762a83",
 }
 PARITY_C = "#999999"
 
@@ -55,6 +56,7 @@ CITY_LABELS = {
     "mumbai": "Mumbai",
     "navi_mumbai": "Navi Mumbai",
     "bangalore": "Bangalore",
+    "delhi": "Delhi",
 }
 
 # Map raw OSM highway tags onto the four design road-type buckets so the
@@ -115,7 +117,13 @@ def load_all_cities(cities: list[str]) -> pd.DataFrame:
         dfs.append(df)
     if not dfs:
         raise FileNotFoundError("No data found for any city")
-    return pd.concat(dfs, ignore_index=True)
+    combined = pd.concat(dfs, ignore_index=True)
+    # Canonical road type is the OSM ground truth: the nearest mapped road's highway
+    # tag, bucketed into the four design classes. It is populated for ~90%+ of GPS
+    # frames in every city once the pipeline runs OSM enrichment. The itinerary proxy
+    # (itinerary_road_type) is too sparse outside Mumbai/Navi Mumbai to report.
+    combined["road_class"] = combined["osm_highway"].map(osm_road_class)
+    return combined
 
 
 def pct(x: float) -> str:
@@ -260,7 +268,7 @@ def make_table1_city_summary(df: pd.DataFrame, cities: list[str]) -> None:
 
 
 def make_tableS1_road_type(df: pd.DataFrame, cities: list[str]) -> None:
-    """Prop women by itinerary_road_type per city with cluster-robust CIs."""
+    """Prop women by road type (OSM ground truth) per city with cluster-robust CIs."""
     road_types = ["primary", "secondary", "tertiary", "residential"]
 
     lines = [
@@ -280,7 +288,7 @@ def make_tableS1_road_type(df: pd.DataFrame, cities: list[str]) -> None:
         city_label = CITY_LABELS.get(city, city)
         first = True
         for rt in road_types:
-            rt_sub = sub[sub["itinerary_road_type"] == rt]
+            rt_sub = sub[sub["road_class"] == rt]
             valid = rt_sub[rt_sub["total_people"] > 0]
             if len(valid) == 0:
                 continue
@@ -299,46 +307,12 @@ def make_tableS1_road_type(df: pd.DataFrame, cities: list[str]) -> None:
             first = False
         lines.append(r"\addlinespace")
 
-    has_osm = "osm_highway" in df.columns and df["osm_highway"].notna().any()
-    if has_osm:
-        osm = df.copy()
-        osm["osm_road_class"] = osm["osm_highway"].map(osm_road_class)
-        lines.append(r"\midrule")
-        lines.append(r"\multicolumn{5}{l}{\textit{OSM ground truth (nearest mapped road)}} \\")
-        lines.append(r"\midrule")
-        for city in cities:
-            sub = osm[osm["city"] == city]
-            city_label = CITY_LABELS.get(city, city)
-            first = True
-            for rt in road_types:
-                rt_sub = sub[sub["osm_road_class"] == rt]
-                valid = rt_sub[rt_sub["total_people"] > 0]
-                if len(valid) == 0:
-                    continue
-                total_women = rt_sub["total_women"].sum()
-                total_men = rt_sub["total_men"].sum()
-                s = inference.summarize(valid)
-                sr = (total_women / total_men * 1000) if total_men > 0 else 0
-                city_col = city_label if first else ""
-                prop_ci = f"{s['weighted']:.3f} [{s['weighted_ci_lower']:.3f}, {s['weighted_ci_upper']:.3f}]"
-                lines.append(
-                    f"{city_col} & {rt.title()} & {prop_ci} & {sr:.0f} & {s['n_obs']} ({s['n_clusters']}) \\\\"
-                )
-                first = False
-            lines.append(r"\addlinespace")
-
-    itin_note = r"\item Road type assigned from itinerary classification."
-    if has_osm:
-        itin_note = (
-            r"\item Itinerary road type is the sampling design's intended class; "
-            r"OSM ground truth is the nearest mapped road's highway tag."
-        )
-
     lines += [
         r"\bottomrule",
         r"\end{tabular}",
         r"\begin{tablenotes}[flushleft]",
-        itin_note,
+        r"\item Road type is the OSM highway class of the nearest mapped road to each "
+        r"frame's GPS fix, bucketed into the four design classes.",
         r"\item 95\% CIs use cluster-robust standard errors (clustered by video session).",
         r"\item Person-weighted estimates.",
         r"\end{tablenotes}",
@@ -592,7 +566,7 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
         c = df[df["city"] == city]
         road_data[city] = {}
         for rt in road_types:
-            rt_sub = c[c["itinerary_road_type"] == rt]
+            rt_sub = c[c["road_class"] == rt]
             if len(rt_sub) > 0 and rt_sub["total_people"].sum() > 0:
                 road_data[city][rt] = rt_sub["total_women"].sum() / rt_sub["total_people"].sum()
             else:
@@ -808,110 +782,12 @@ def make_fig5_pedestrian_loess(df: pd.DataFrame, cities: list[str]) -> None:
     print("  -> fig5_pedestrian_loess.pdf")
 
 
-def make_map_locations(df: pd.DataFrame, cities: list[str]) -> None:
-    """GPS scatter colored by city."""
-    geo = df.dropna(subset=["gps_lat", "gps_lon"]).copy()
-
-    if len(geo) == 0:
-        print("  WARNING: No GPS data available for map")
-        return
-
-    fig, ax = plt.subplots(figsize=(6, 5.5))
-
-    for city in cities:
-        color = COLORS.get(city, "#666666")
-        sub = geo[geo["city"] == city]
-        ax.scatter(
-            sub["gps_lon"],
-            sub["gps_lat"],
-            c=color,
-            s=4,
-            alpha=0.35,
-            linewidths=0,
-            label=f"{CITY_LABELS.get(city, city)} (n={len(sub):,})",
-        )
-
-    ax.legend(
-        fontsize=7,
-        loc="lower left",
-        frameon=True,
-        facecolor="white",
-        framealpha=0.9,
-        edgecolor="none",
-    )
-    ax.set_title("Data collection locations", fontsize=10, fontweight="bold")
-    ax.set_xlabel("Longitude")
-    ax.set_ylabel("Latitude")
-    ax.set_aspect("equal", adjustable="box")
-
-    for spine in ["top", "right"]:
-        ax.spines[spine].set_visible(False)
-
-    fig.tight_layout()
-    fig.savefig(FIGS / "map_locations.pdf")
-    plt.close(fig)
-    print("  -> map_locations.pdf")
-
-
-def make_map_sexratio(df: pd.DataFrame) -> None:
-    """Heatmap of prop_women by location."""
-    geo = df[(df["total_people"] > 0) & df["gps_lat"].notna() & df["gps_lon"].notna()].copy()
-
-    if len(geo) == 0:
-        print("  WARNING: No GPS data available for sex ratio map")
-        return
-
-    fig, ax = plt.subplots(figsize=(6, 5.5))
-
-    cmap = LinearSegmentedColormap.from_list(
-        "sexratio", ["#d73027", "#fc8d59", "#fee08b", "#d9ef8b", "#1a9850"]
-    )
-
-    sizes = np.clip(geo["total_people"].values ** 0.5 * 4, 5, 50)
-    sc = ax.scatter(
-        geo["gps_lon"],
-        geo["gps_lat"],
-        c=geo["prop_women"].clip(0, 0.5),
-        cmap=cmap,
-        vmin=0,
-        vmax=0.5,
-        s=sizes,
-        alpha=0.55,
-        linewidths=0.2,
-        edgecolors="grey",
-    )
-
-    cbar = fig.colorbar(sc, ax=ax, shrink=0.4, pad=0.02, aspect=25)
-    cbar.set_label("Proportion female", fontsize=7)
-    cbar.set_ticks([0, 0.1, 0.2, 0.3, 0.4, 0.5])
-    cbar.set_ticklabels(["0%", "10%", "20%", "30%", "40%", "50%"])
-    cbar.ax.tick_params(labelsize=6)
-
-    n_zero = (geo["prop_women"] == 0).sum()
-    ax.set_title(
-        f"Female share by location (n={len(geo):,}; {100 * n_zero / len(geo):.0f}% with zero women)",
-        fontsize=9,
-        fontweight="bold",
-    )
-    ax.set_xlabel("Longitude")
-    ax.set_ylabel("Latitude")
-    ax.set_aspect("equal", adjustable="box")
-
-    for spine in ["top", "right"]:
-        ax.spines[spine].set_visible(False)
-
-    fig.tight_layout()
-    fig.savefig(FIGS / "map_sexratio.pdf")
-    plt.close(fig)
-    print("  -> map_sexratio.pdf")
-
-
 def main():
     parser = argparse.ArgumentParser(description="Publication figures and tables")
     parser.add_argument(
         "--cities",
         type=str,
-        default="mumbai,navi_mumbai",
+        default="mumbai,navi_mumbai,bangalore,delhi",
         help="Comma-separated list of cities (default: mumbai,navi_mumbai)",
     )
     args = parser.parse_args()
