@@ -198,7 +198,9 @@ def write_table(pooled_cont: dict, pooled_bin: dict, overlap_counts: dict, prima
     for col, label in BINARY:
         m = pooled_bin[col]
         agree_pct = "--" if np.isnan(m["agree"]) else f"{100 * m['agree']:.1f}\\%"
-        lines.append(f"{label} & {m['n']} & {agree_pct} & \\multicolumn{{2}}{{c}}{{{_f(m['kappa'])}}} \\\\")
+        lines.append(
+            f"{label} & {m['n']} & {agree_pct} & \\multicolumn{{2}}{{c}}{{{_f(m['kappa'])}}} \\\\"
+        )
     lines += [
         r"\bottomrule",
         r"\end{tabular}",
@@ -221,7 +223,9 @@ def write_table(pooled_cont: dict, pooled_bin: dict, overlap_counts: dict, prima
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--cities", type=str, default="mumbai,navi_mumbai,bangalore,delhi",
+        "--cities",
+        type=str,
+        default="mumbai,navi_mumbai,bangalore,delhi",
         help="Comma-separated list of cities",
     )
     args = parser.parse_args()
@@ -238,13 +242,17 @@ def main() -> None:
         pairs, primary = build_pairs(df)
         overlap_counts[city] = len(pairs)
         all_pairs.append(pairs)
-        print(f"\n{CITY_LABELS.get(city, city)}  (primary={primary}, {len(pairs)} overlapping images)")
+        print(
+            f"\n{CITY_LABELS.get(city, city)}  (primary={primary}, {len(pairs)} overlapping images)"
+        )
         if len(pairs) == 0:
             print("  no doubly-annotated images")
             continue
         for col, label in CONTINUOUS:
             m = continuous_metrics(pairs, col)
-            print(f"  {label:<18} n={m['n']:<5} ICC={_f(m['icc'])}  r={_f(m['r'])}  mean|Δ|={_f(m['mad'])}")
+            print(
+                f"  {label:<18} n={m['n']:<5} ICC={_f(m['icc'])}  r={_f(m['r'])}  mean|Δ|={_f(m['mad'])}"
+            )
         for col, label in BINARY:
             m = binary_metrics(pairs, col)
             ap = "--" if np.isnan(m["agree"]) else f"{100 * m['agree']:.1f}%"
@@ -260,7 +268,9 @@ def main() -> None:
     for col, label in CONTINUOUS:
         m = continuous_metrics(pooled, col)
         pooled_cont[col] = m
-        print(f"  {label:<18} n={m['n']:<5} ICC={_f(m['icc'])}  r={_f(m['r'])}  mean|Δ|={_f(m['mad'])}")
+        print(
+            f"  {label:<18} n={m['n']:<5} ICC={_f(m['icc'])}  r={_f(m['r'])}  mean|Δ|={_f(m['mad'])}"
+        )
     pooled_bin = {}
     for col, label in BINARY:
         m = binary_metrics(pooled, col)

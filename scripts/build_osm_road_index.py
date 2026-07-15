@@ -37,7 +37,7 @@ DATA = PROJECT_ROOT / "data"
 
 # UTM 43N: metric CRS covering all four cities, so buffers/distances are in metres.
 METRIC_CRS = "EPSG:32643"
-BUFFER_M = 100.0          # keep roads within 100 m of the track (07 matches within 50 m)
+BUFFER_M = 100.0  # keep roads within 100 m of the track (07 matches within 50 m)
 MAX_TRACK_POINTS = 20000  # downsample the GPS track for an efficient spatial join
 
 spec = importlib.util.spec_from_file_location("enrich_with_geo", SCRIPTS / "07_enrich_with_geo.py")
@@ -56,14 +56,18 @@ def load_track_points(city: str) -> pd.DataFrame:
 
 def source_roads(city: str, track: pd.DataFrame) -> "gpd.GeoDataFrame | None":
     """Full road network for a city: local sampling network, else osmnx download."""
-    local = enrich.load_local_osm_roads(PROJECT_ROOT / "sampling" / city / "network" / "streets.geojson")
+    local = enrich.load_local_osm_roads(
+        PROJECT_ROOT / "sampling" / city / "network" / "streets.geojson"
+    )
     if local is not None:
         print(f"  source: local sampling network ({len(local)} roads)")
         return local
     lat, lon = track["lat"], track["lon"]
     bbox = (
-        lat.quantile(0.005) - 0.01, lon.quantile(0.005) - 0.01,
-        lat.quantile(0.995) + 0.01, lon.quantile(0.995) + 0.01,
+        lat.quantile(0.005) - 0.01,
+        lon.quantile(0.005) - 0.01,
+        lat.quantile(0.995) + 0.01,
+        lon.quantile(0.995) + 0.01,
     )
     print("  source: osmnx download (no local network)...")
     return enrich.load_osm_roads(bbox)
@@ -97,13 +101,17 @@ def build_city(city: str) -> None:
     out.parent.mkdir(parents=True, exist_ok=True)
     clipped.to_parquet(out, index=False)
     size_mb = out.stat().st_size / 1e6
-    print(f"  -> {out}  ({len(clipped)} roads, {size_mb:.1f} MB; {100 * len(clipped) / len(roads):.1f}% of full)")
+    print(
+        f"  -> {out}  ({len(clipped)} roads, {size_mb:.1f} MB; {100 * len(clipped) / len(roads):.1f}% of full)"
+    )
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--city", type=str, default="mumbai,navi_mumbai,bangalore,delhi",
+        "--city",
+        type=str,
+        default="mumbai,navi_mumbai,bangalore,delhi",
         help="Comma-separated list of cities",
     )
     args = parser.parse_args()

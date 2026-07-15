@@ -217,45 +217,50 @@ def plot_temporal_coverage(df: pd.DataFrame, out_dir: Path) -> None:
     fig, axes = plt.subplots(1, 2, figsize=(8, 3.5))
 
     ax = axes[0]
+    with_hour = df[df["frame_hour"].notna()]
     for city in df["city"].unique():
-        sub = df[(df["city"] == city) & df["frame_hour"].notna()]
+        sub = with_hour[with_hour["city"] == city]
         if len(sub) == 0:
             continue
         hours = sub["frame_hour"].values
         ax.hist(
             hours,
             bins=np.arange(-0.5, 24.5, 1),
-            alpha=0.5,
+            histtype="step",
+            linewidth=1.5,
             label=city.replace("_", " ").title(),
             color=COLORS.get(city, "#666666"),
         )
     ax.set_xlabel("Hour of day (IST)")
     ax.set_ylabel("Number of images")
     ax.set_title("Distribution by hour")
-    ax.set_xlim(-0.5, 23.5)
+    if len(with_hour) > 0:
+        ax.set_xlim(with_hour["frame_hour"].min() - 0.5, with_hour["frame_hour"].max() + 0.5)
     ax.legend(fontsize=7, frameon=False)
 
     ax = axes[1]
     day_names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    width = 0.35
+    cities = list(df["city"].unique())
+    n = len(cities)
+    width = 0.8 / n
     x = np.arange(7)
-    for i, city in enumerate(df["city"].unique()):
+    for i, city in enumerate(cities):
         sub = df[(df["city"] == city) & df["frame_dayofweek"].notna()]
         if len(sub) == 0:
             continue
         counts = sub["frame_dayofweek"].value_counts().reindex(range(7), fill_value=0)
         ax.bar(
-            x + i * width,
+            x + (i - (n - 1) / 2) * width,
             counts.values,
             width,
-            alpha=0.7,
+            alpha=0.85,
             label=city.replace("_", " ").title(),
             color=COLORS.get(city, "#666666"),
         )
     ax.set_xlabel("Day of week")
     ax.set_ylabel("Number of images")
     ax.set_title("Distribution by day")
-    ax.set_xticks(x + width / 2)
+    ax.set_xticks(x)
     ax.set_xticklabels(day_names)
     ax.legend(fontsize=7, frameon=False)
 
@@ -275,11 +280,17 @@ def plot_crowd_size_distribution(df: pd.DataFrame, out_dir: Path) -> None:
 
     for city in df["city"].unique():
         sub = df[df["city"] == city]
+        people = sub["total_people"]
+        label = (
+            f"{city.replace('_', ' ').title()} "
+            f"(mean {people.mean():.1f}, median {people.median():.0f})"
+        )
         ax.hist(
-            sub["total_people"].clip(upper=max_people),
+            people.clip(upper=max_people),
             bins=bins,
-            alpha=0.5,
-            label=city.replace("_", " ").title(),
+            histtype="step",
+            linewidth=1.5,
+            label=label,
             color=COLORS.get(city, "#666666"),
         )
 
@@ -287,10 +298,6 @@ def plot_crowd_size_distribution(df: pd.DataFrame, out_dir: Path) -> None:
     ax.set_ylabel("Number of images")
     ax.set_title("Crowd size distribution")
     ax.legend(fontsize=7, frameon=False)
-
-    mean_all = df["total_people"].mean()
-    ax.axvline(mean_all, color="black", linestyle="--", linewidth=1, alpha=0.7)
-    ax.text(mean_all + 0.5, ax.get_ylim()[1] * 0.9, f"Mean: {mean_all:.1f}", fontsize=7)
 
     fig.tight_layout()
     out_path = out_dir / "eda_crowd_size_distribution.pdf"

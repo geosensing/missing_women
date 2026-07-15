@@ -241,14 +241,14 @@ def match_to_nearest_road(
     # Project to a metric CRS (UTM 43N covers all four cities) so distances are metres.
     pts = gpd.GeoDataFrame(
         {"_idx": df.index[valid_mask]},
-        geometry=gpd.points_from_xy(
-            df.loc[valid_mask, "gps_lon"], df.loc[valid_mask, "gps_lat"]
-        ),
+        geometry=gpd.points_from_xy(df.loc[valid_mask, "gps_lon"], df.loc[valid_mask, "gps_lat"]),
         crs="EPSG:4326",
     ).to_crs("EPSG:32643")
     roads = roads_gdf.to_crs("EPSG:32643")
 
-    joined = gpd.sjoin_nearest(pts, roads, max_distance=max_distance_m, distance_col="osm_distance_m")
+    joined = gpd.sjoin_nearest(
+        pts, roads, max_distance=max_distance_m, distance_col="osm_distance_m"
+    )
     # Ties can yield multiple rows per point; keep the nearest.
     joined = joined.sort_values("osm_distance_m").drop_duplicates("_idx")
 

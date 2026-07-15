@@ -9,7 +9,7 @@ Outputs:
     - fig2_distribution.pdf        Side-by-side histograms of prop_women
     - fig3_multipanel.pdf          4-panel: mode, road type, POI, time of day
     - fig4_weekday_weekend.pdf     Weekday vs weekend bar chart
-    - fig5_pedestrian_loess.pdf    Female share vs crowd size (LOESS) per city
+    - fig5_pedestrian_crowdsize.pdf  Female share by pedestrian crowd size per city
 
   (Maps are produced separately by 11_make_maps.py.)
 
@@ -141,20 +141,8 @@ def write_tex(path: Path, lines: list[str]) -> None:
 # =============================================================================
 
 
-def make_table1_city_summary(df: pd.DataFrame, cities: list[str]) -> None:
-    """City-level summary table with images, people, prop_women, sex ratio, and cluster-robust CIs."""
-    lines = [
-        r"\begin{table}[t]",
-        r"\centering",
-        r"\caption{Women's share of the visible street population by city.}",
-        r"\label{tab:city_summary}",
-        r"\begin{threeparttable}",
-        r"\begin{tabular}{l" + "r" * len(cities) + "}",
-        r"\toprule",
-        " & " + " & ".join(CITY_LABELS.get(c, c) for c in cities) + r" \\",
-        r"\midrule",
-    ]
-
+def compute_city_summary(df: pd.DataFrame, cities: list[str]) -> dict:
+    """Per-city summary stats (counts, prop female with CIs, sex ratios, clustering)."""
     row_data = {}
     for city in cities:
         sub = df[df["city"] == city]
@@ -190,6 +178,58 @@ def make_table1_city_summary(df: pd.DataFrame, cities: list[str]) -> None:
             "icc": s["icc"],
             "design_effect": s["design_effect"],
         }
+    return row_data
+
+
+def compute_mode_props(df: pd.DataFrame, cities: list[str]) -> dict:
+    """Per-city proportion female among pedestrians and two-wheeler riders."""
+    mode_data = {}
+    for city in cities:
+        c = df[df["city"] == city]
+        tw_women = c["women_twowheeler"].sum()
+        tw_men = c["men_twowheeler"].sum()
+        ped_women = c["women_count"].sum()
+        ped_men = c["men_count"].sum()
+        mode_data[city] = {
+            "Pedestrian": (ped_women / (ped_women + ped_men) if (ped_women + ped_men) > 0 else 0),
+            "Two-wheeler": (tw_women / (tw_women + tw_men) if (tw_women + tw_men) > 0 else 0),
+        }
+    return mode_data
+
+
+ROAD_TYPES = ["primary", "secondary", "tertiary", "residential"]
+
+
+def compute_road_props(df: pd.DataFrame, cities: list[str]) -> dict:
+    """Per-city proportion female by road class."""
+    road_data = {}
+    for city in cities:
+        c = df[df["city"] == city]
+        road_data[city] = {}
+        for rt in ROAD_TYPES:
+            rt_sub = c[c["road_class"] == rt]
+            if len(rt_sub) > 0 and rt_sub["total_people"].sum() > 0:
+                road_data[city][rt] = rt_sub["total_women"].sum() / rt_sub["total_people"].sum()
+            else:
+                road_data[city][rt] = 0
+    return road_data
+
+
+def make_table1_city_summary(df: pd.DataFrame, cities: list[str]) -> None:
+    """City-level summary table with images, people, prop_women, sex ratio, and cluster-robust CIs."""
+    lines = [
+        r"\begin{table}[t]",
+        r"\centering",
+        r"\caption{Women's share of the visible street population by city.}",
+        r"\label{tab:city_summary}",
+        r"\begin{threeparttable}",
+        r"\begin{tabular}{l" + "r" * len(cities) + "}",
+        r"\toprule",
+        " & " + " & ".join(CITY_LABELS.get(c, c) for c in cities) + r" \\",
+        r"\midrule",
+    ]
+
+    row_data = compute_city_summary(df, cities)
 
     def fmt_ci(d: dict, key: str) -> str:
         return f"{d[key]:.3f} [{d[key + '_ci_lower']:.3f}, {d[key + '_ci_upper']:.3f}]"
@@ -510,28 +550,19 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
 
     fig = plt.figure(figsize=(6.5, 6))
     gs = GridSpec(2, 2, figure=fig, hspace=0.45, wspace=0.35)
-    w = 0.32
+    n = len(cities)
+    w = 0.8 / n
 
     # --- Panel A: Pedestrian vs Two-wheeler ---
     ax = fig.add_subplot(gs[0, 0])
-    mode_data = {}
-    for city in cities:
-        c = df[df["city"] == city]
-        tw_women = c["women_twowheeler"].sum()
-        tw_men = c["men_twowheeler"].sum()
-        ped_women = c["women_count"].sum()
-        ped_men = c["men_count"].sum()
-        mode_data[city] = {
-            "Pedestrian": (ped_women / (ped_women + ped_men) if (ped_women + ped_men) > 0 else 0),
-            "Two-wheeler": (tw_women / (tw_women + tw_men) if (tw_women + tw_men) > 0 else 0),
-        }
+    mode_data = compute_mode_props(df, cities)
 
     x = np.arange(2)
     for i, city in enumerate(cities):
         color = COLORS.get(city, "#666666")
         vals = [mode_data[city]["Pedestrian"], mode_data[city]["Two-wheeler"]]
         bars = ax.bar(
-            x + i * w,
+            x + (i - (n - 1) / 2) * w,
             vals,
             w,
             color=color,
@@ -545,10 +576,10 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
                 f"{val:.1%}",
                 ha="center",
                 va="bottom",
-                fontsize=6.5,
+                fontsize=5.5,
             )
 
-    ax.set_xticks(x + w * (len(cities) - 1) / 2)
+    ax.set_xticks(x)
     ax.set_xticklabels(["Pedestrian", "Two-wheeler"])
     ax.set_ylabel("Proportion female")
     ax.set_ylim(0, 0.50)
@@ -558,26 +589,16 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
 
     # --- Panel B: Road type ---
     ax = fig.add_subplot(gs[0, 1])
-    road_types = ["primary", "secondary", "tertiary", "residential"]
     road_labels = ["Primary", "Secondary", "Tertiary", "Residential"]
 
-    road_data = {}
-    for city in cities:
-        c = df[df["city"] == city]
-        road_data[city] = {}
-        for rt in road_types:
-            rt_sub = c[c["road_class"] == rt]
-            if len(rt_sub) > 0 and rt_sub["total_people"].sum() > 0:
-                road_data[city][rt] = rt_sub["total_women"].sum() / rt_sub["total_people"].sum()
-            else:
-                road_data[city][rt] = 0
+    road_data = compute_road_props(df, cities)
 
-    x = np.arange(len(road_types))
+    x = np.arange(len(ROAD_TYPES))
     for i, city in enumerate(cities):
         color = COLORS.get(city, "#666666")
-        vals = [road_data[city][rt] for rt in road_types]
+        vals = [road_data[city][rt] for rt in ROAD_TYPES]
         bars = ax.bar(
-            x + i * w,
+            x + (i - (n - 1) / 2) * w,
             vals,
             w,
             color=color,
@@ -592,10 +613,11 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
                     f"{val:.0%}",
                     ha="center",
                     va="bottom",
-                    fontsize=6,
+                    fontsize=5.5,
+                    rotation=90,
                 )
 
-    ax.set_xticks(x + w * (len(cities) - 1) / 2)
+    ax.set_xticks(x)
     ax.set_xticklabels(road_labels, fontsize=7)
     ax.set_ylabel("Proportion female")
     ax.set_ylim(0, 0.35)
@@ -617,12 +639,13 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
 
     pois = [("bus_station", "Bus\nstation"), ("street_vendor", "Street\nvendor")]
     x = np.arange(len(pois))
+    w_poi = 0.8 / 2
     for i, (pres, pres_label, color) in enumerate(
         [(False, "Absent", "#bdbdbd"), (True, "Present", "#e6550d")]
     ):
         vals = [poi_data.get((p[0], pres), {}).get("pf", 0) for p in pois]
         ns = [poi_data.get((p[0], pres), {}).get("n", 0) for p in pois]
-        bars = ax.bar(x + i * w, vals, w, color=color, alpha=0.85, label=pres_label)
+        bars = ax.bar(x + (i - 0.5) * w_poi, vals, w_poi, color=color, alpha=0.85, label=pres_label)
         for bar, val, n in zip(bars, vals, ns):
             ax.text(
                 bar.get_x() + bar.get_width() / 2,
@@ -633,7 +656,7 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
                 fontsize=6,
             )
 
-    ax.set_xticks(x + w / 2)
+    ax.set_xticks(x)
     ax.set_xticklabels([p[1] for p in pois], fontsize=7)
     ax.set_ylabel("Proportion female")
     ax.set_ylim(0, 0.35)
@@ -693,7 +716,8 @@ def make_fig4_weekday_weekend(df: pd.DataFrame, cities: list[str]) -> None:
     valid = df[(df["total_people"] > 0) & df["is_weekend"].notna()]
 
     fig, ax = plt.subplots(figsize=(3.5, 2.5))
-    w = 0.32
+    n = len(cities)
+    w = 0.8 / n
 
     items = []
     for city in cities:
@@ -716,24 +740,24 @@ def make_fig4_weekday_weekend(df: pd.DataFrame, cities: list[str]) -> None:
         vals = [it["pf"] for it in items if it["city"] == city]
         ns = [it["n"] for it in items if it["city"] == city]
         bars = ax.bar(
-            x + i * w,
+            x + (i - (n - 1) / 2) * w,
             vals,
             w,
             color=color,
             alpha=0.85,
             label=CITY_LABELS.get(city, city),
         )
-        for bar, val, n in zip(bars, vals, ns):
+        for bar, val, n_frames in zip(bars, vals, ns):
             ax.text(
                 bar.get_x() + bar.get_width() / 2,
                 bar.get_height() + 0.005,
-                f"{val:.1%}\n(n={n})",
+                f"{val:.1%}\n(n={n_frames})",
                 ha="center",
                 va="bottom",
-                fontsize=6.5,
+                fontsize=5.5,
             )
 
-    ax.set_xticks(x + w * (len(cities) - 1) / 2)
+    ax.set_xticks(x)
     ax.set_xticklabels(["Weekday", "Weekend"])
     ax.set_ylabel("Proportion female")
     ax.set_ylim(0, 0.35)
@@ -745,9 +769,14 @@ def make_fig4_weekday_weekend(df: pd.DataFrame, cities: list[str]) -> None:
     print("  -> fig4_weekday_weekend.pdf")
 
 
-def make_fig5_pedestrian_loess(df: pd.DataFrame, cities: list[str]) -> None:
-    """LOESS of prop pedestrian women vs total pedestrians, by city."""
-    from statsmodels.nonparametric.smoothers_lowess import lowess
+def make_fig5_pedestrian_crowdsize(df: pd.DataFrame, cities: list[str]) -> None:
+    """Person-weighted female share by pedestrian crowd size, per city.
+
+    LOESS is unusable here: x is heavily tied small integers (in Delhi 36% of
+    frames have exactly 1 pedestrian, more than the smoothing window), which
+    degenerates the local fit at the boundary.
+    """
+    min_frames = 10
 
     valid = df[df["men_count"].notna() & df["women_count"].notna()].copy()
     valid["total_pedestrians"] = valid["men_count"] + valid["women_count"]
@@ -757,29 +786,102 @@ def make_fig5_pedestrian_loess(df: pd.DataFrame, cities: list[str]) -> None:
     fig, ax = plt.subplots(figsize=(5, 3.5))
 
     for city in cities:
-        sub = valid[valid["city"] == city].copy()
+        sub = valid[valid["city"] == city]
         color = COLORS.get(city, "#666666")
         label = CITY_LABELS.get(city, city)
 
-        x = sub["total_pedestrians"].values
-        y = sub["prop_ped_women"].values
+        ax.scatter(
+            sub["total_pedestrians"],
+            sub["prop_ped_women"],
+            c=color,
+            s=8,
+            alpha=0.15,
+            edgecolors="none",
+        )
 
-        ax.scatter(x, y, c=color, s=8, alpha=0.25, edgecolors="none")
-
-        smoothed = lowess(y, x, frac=0.3, return_sorted=True)
-        ax.plot(smoothed[:, 0], smoothed[:, 1], color=color, linewidth=2, label=label)
+        by_size = sub.groupby(sub["total_pedestrians"].astype(int)).agg(
+            women=("women_count", "sum"),
+            pedestrians=("total_pedestrians", "sum"),
+            n_frames=("total_pedestrians", "size"),
+        )
+        by_size = by_size[by_size["n_frames"] >= min_frames]
+        ax.plot(
+            by_size.index,
+            by_size["women"] / by_size["pedestrians"],
+            "o-",
+            color=color,
+            markersize=3.5,
+            linewidth=1.5,
+            label=label,
+        )
 
     ax.axhline(y=0.5, color=PARITY_C, linestyle="--", linewidth=0.8)
-    ax.set_xlabel("Total pedestrians")
+    ax.set_xlabel("Total pedestrians in frame")
     ax.set_ylabel("Prop. pedestrian women")
     ax.set_ylim(0, 0.6)
     ax.set_xlim(0, valid["total_pedestrians"].quantile(0.99))
     ax.legend(fontsize=7, frameon=False)
 
     fig.tight_layout()
-    fig.savefig(FIGS / "fig5_pedestrian_loess.pdf")
+    fig.savefig(FIGS / "fig5_pedestrian_crowdsize.pdf")
     plt.close(fig)
-    print("  -> fig5_pedestrian_loess.pdf")
+    print("  -> fig5_pedestrian_crowdsize.pdf")
+
+
+README = ROOT / "README.md"
+KEY_FINDINGS_START = "<!-- key-findings:start -->"
+KEY_FINDINGS_END = "<!-- key-findings:end -->"
+
+
+def update_readme_key_findings(df: pd.DataFrame, cities: list[str]) -> None:
+    """Regenerate the Key Findings tables in README.md between marker comments."""
+    summary = compute_city_summary(df, cities)
+    mode = compute_mode_props(df, cities)
+    road = compute_road_props(df, cities)
+
+    city_names = [CITY_LABELS.get(c, c) for c in cities]
+
+    lines = [
+        "### Summary",
+        "",
+        "| City | Images | People | Prop. Female [95% CI] | Sex Ratio (F/1000 M) |",
+        "|------|--------|--------|-----------------------|----------------------|",
+    ]
+    for c, name in zip(cities, city_names):
+        d = summary[c]
+        lines.append(
+            f"| {name} | {d['n_images']:,} | {d['n_people']:,} "
+            f"| {d['weighted']:.1%} [{d['weighted_ci_lower']:.1%}, {d['weighted_ci_upper']:.1%}] "
+            f"| {d['sex_ratio']:.0f} |"
+        )
+
+    lines += [
+        "",
+        "### By Mode",
+        "",
+        "| Mode | " + " | ".join(city_names) + " |",
+        "|------|" + "------|" * len(cities),
+    ]
+    for m in ["Pedestrian", "Two-wheeler"]:
+        lines.append(f"| {m}s | " + " | ".join(f"{mode[c][m]:.1%}" for c in cities) + " |")
+
+    lines += [
+        "",
+        "### By Road Type",
+        "",
+        "| City | Primary | Secondary | Tertiary | Residential |",
+        "|------|---------|-----------|----------|-------------|",
+    ]
+    for c, name in zip(cities, city_names):
+        lines.append(f"| {name} | " + " | ".join(f"{road[c][rt]:.1%}" for rt in ROAD_TYPES) + " |")
+
+    text = README.read_text()
+    if KEY_FINDINGS_START not in text or KEY_FINDINGS_END not in text:
+        raise ValueError(f"README.md is missing {KEY_FINDINGS_START} / {KEY_FINDINGS_END} markers")
+    start = text.index(KEY_FINDINGS_START) + len(KEY_FINDINGS_START)
+    end = text.index(KEY_FINDINGS_END)
+    README.write_text(text[:start] + "\n" + "\n".join(lines) + "\n" + text[end:])
+    print("  -> README.md key findings")
 
 
 def main():
@@ -816,7 +918,12 @@ def main():
     make_fig2_distribution(df, cities)
     make_fig3_multipanel(df, cities)
     make_fig4_weekday_weekend(df, cities)
-    make_fig5_pedestrian_loess(df, cities)
+    make_fig5_pedestrian_crowdsize(df, cities)
+
+    print("\n" + "-" * 40)
+    print("README")
+    print("-" * 40)
+    update_readme_key_findings(df, cities)
 
     print("\n" + "=" * 60)
     print("COMPLETE.")
