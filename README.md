@@ -68,6 +68,7 @@ into the published dataset and outputs and can be re-run freely.
 | EDA / publication figures+tables / maps | `09_eda.py`, `10_analysis.py`, `11_make_maps.py` | fair game |
 | Design-based inference (geoinference) | `inference.py` | fair game |
 | LLM annotation validation | `12_validate_annotations.py` | fair game |
+| Descriptive pattern mining | `14_descriptive_patterns.py` | fair game |
 
 ### Run the analysis half
 
@@ -186,6 +187,7 @@ Makefile                     Analysis-half workflow targets
 - `tableS1_road_type.tex` - By road type (itinerary + optional OSM ground truth)
 - `tableS2_temporal.tex` - Temporal patterns
 - `tableS3_poi_infrastructure.tex` - POI and infrastructure
+- `descriptive_patterns.md` - Accompaniment, place rankings, joint regression
 
 ## Data Coverage
 

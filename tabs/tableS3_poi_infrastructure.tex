@@ -17,21 +17,33 @@ Street vendor & Yes & 0.188 [0.168, 0.209] & 508 (283) \\
 Street vendor & No & 0.143 [0.136, 0.150] & 6,665 (865) \\
 \addlinespace
 \midrule
-\multicolumn{4}{l}{\textit{Infrastructure coverage (all cities pooled)}} \\
+\multicolumn{4}{l}{\textit{Streetscape disorder (all cities pooled)}} \\
 \midrule
-Footpath & No & -- & 9,372 (100\%) \\
+Potholes & Yes & 0.136 [0.111, 0.162] & 236 (178) \\
+Potholes & No & 0.148 [0.141, 0.156] & 6,941 (863) \\
 \addlinespace
-Potholes & Yes & -- & 306 (3\%) \\
-Potholes & No & -- & 9,066 (97\%) \\
+Litter & Yes & 0.157 [0.139, 0.175] & 926 (353) \\
+Litter & No & 0.147 [0.140, 0.154] & 6,251 (861) \\
 \addlinespace
-Litter & Yes & -- & 1,195 (13\%) \\
-Litter & No & -- & 8,177 (87\%) \\
+\midrule
+\multicolumn{4}{l}{\textit{Points of interest by city}} \\
+\midrule
+Bangalore: Bus station & Yes/No & 0.257 (n=36) & 0.156 (n=1,278) \\
+Delhi: Bus station & Yes/No & 0.225 (n=25) & 0.118 (n=1,721) \\
+Mumbai: Bus station & Yes/No & 0.167 (n=88) & 0.160 (n=2,439) \\
+Navi Mumbai: Bus station & Yes/No & 0.163 (n=64) & 0.135 (n=1,526) \\
+\addlinespace
+Bangalore: Street vendor & Yes/No & 0.222 (n=72) & 0.155 (n=1,241) \\
+Delhi: Street vendor & Yes/No & 0.140 (n=175) & 0.116 (n=1,569) \\
+Mumbai: Street vendor & Yes/No & 0.219 (n=181) & 0.152 (n=2,345) \\
+Navi Mumbai: Street vendor & Yes/No & 0.143 (n=80) & 0.136 (n=1,510) \\
 \addlinespace
 \bottomrule
 \end{tabular}
 \begin{tablenotes}[flushleft]
 \item 95\% CIs use cluster-robust standard errors (clustered by video session).
-\item Infrastructure fields are sparse; not all images have all fields coded.
+\item Footpath was never coded present and is omitted.
+\item Per-city POI rows report point estimates with frame counts; cells with no frames are dashed.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}

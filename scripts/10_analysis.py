@@ -395,15 +395,36 @@ def make_tableS2_temporal(df: pd.DataFrame, cities: list[str]) -> None:
                 f"{city_label} & {label} & {prop_ci} & {len(we_sub):,} ({s['n_clusters']}) \\\\"
             )
 
-    lines.append(r"\midrule")
-    lines.append(r"\multicolumn{4}{l}{\textit{Share of images by time window}} \\")
-    lines.append(r"\midrule")
-
     time_bins = [
         (7, 11, "Morning (7-11)"),
         (11, 15, "Midday (11-15)"),
         (15, 19, "Evening (15-19)"),
     ]
+
+    lines.append(r"\midrule")
+    lines.append(r"\multicolumn{4}{l}{\textit{Prop.\ female by time window}} \\")
+    lines.append(r"\midrule")
+
+    for city in cities:
+        sub = df[(df["city"] == city) & df["frame_hour"].notna()]
+        city_label = CITY_LABELS.get(city, city)
+
+        for start, end, label in time_bins:
+            bin_sub = sub[(sub["frame_hour"] >= start) & (sub["frame_hour"] < end)]
+            valid = bin_sub[bin_sub["total_people"] > 0]
+            if len(valid) == 0:
+                continue
+            s = inference.summarize(valid)
+            prop_ci = (
+                f"{s['weighted']:.3f} [{s['weighted_ci_lower']:.3f}, {s['weighted_ci_upper']:.3f}]"
+            )
+            lines.append(
+                f"{city_label} & {label} & {prop_ci} & {len(bin_sub):,} ({s['n_clusters']}) \\\\"
+            )
+
+    lines.append(r"\midrule")
+    lines.append(r"\multicolumn{4}{l}{\textit{Share of images by time window}} \\")
+    lines.append(r"\midrule")
 
     for city in cities:
         sub = df[(df["city"] == city) & df["frame_hour"].notna()]
@@ -467,22 +488,45 @@ def make_tableS3_poi_infrastructure(df: pd.DataFrame) -> None:
         lines.append(r"\addlinespace")
 
     lines.append(r"\midrule")
-    lines.append(r"\multicolumn{4}{l}{\textit{Infrastructure coverage (all cities pooled)}} \\")
+    lines.append(r"\multicolumn{4}{l}{\textit{Streetscape disorder (all cities pooled)}} \\")
     lines.append(r"\midrule")
 
     infra_fields = [
-        ("footpath", "Footpath"),
         ("potholes", "Potholes"),
         ("litter", "Litter"),
     ]
 
     for field, label in infra_fields:
         for val, val_label in [(True, "Yes"), (False, "No")]:
-            sub = df[df[field] == val]
+            sub = valid[valid[field] == val]
             if len(sub) == 0:
                 continue
-            pct_all = len(sub) / len(df) * 100
-            lines.append(f"{label} & {val_label} & -- & {len(sub):,} ({pct_all:.0f}\\%) \\\\")
+            s = inference.summarize(sub)
+            prop_ci = (
+                f"{s['weighted']:.3f} [{s['weighted_ci_lower']:.3f}, {s['weighted_ci_upper']:.3f}]"
+            )
+            lines.append(
+                f"{label} & {val_label} & {prop_ci} & {len(sub):,} ({s['n_clusters']}) \\\\"
+            )
+        lines.append(r"\addlinespace")
+
+    lines.append(r"\midrule")
+    lines.append(r"\multicolumn{4}{l}{\textit{Points of interest by city}} \\")
+    lines.append(r"\midrule")
+
+    for field, label in [("bus_station", "Bus station"), ("street_vendor", "Street vendor")]:
+        for city in sorted(valid["city"].unique()):
+            csub = valid[valid["city"] == city]
+            row = [f"{CITY_LABELS.get(city, city)}: {label}"]
+            cells = []
+            for val in [True, False]:
+                sub = csub[csub[field] == val]
+                if len(sub) == 0:
+                    cells.append("--")
+                    continue
+                s = inference.summarize(sub)
+                cells.append(f"{s['weighted']:.3f} (n={len(sub):,})")
+            lines.append(f"{row[0]} & Yes/No & {cells[0]} & {cells[1]} \\\\")
         lines.append(r"\addlinespace")
 
     lines += [
@@ -490,7 +534,9 @@ def make_tableS3_poi_infrastructure(df: pd.DataFrame) -> None:
         r"\end{tabular}",
         r"\begin{tablenotes}[flushleft]",
         r"\item 95\% CIs use cluster-robust standard errors (clustered by video session).",
-        r"\item Infrastructure fields are sparse; not all images have all fields coded.",
+        r"\item Footpath was never coded present and is omitted.",
+        r"\item Per-city POI rows report point estimates with frame counts;"
+        r" cells with no frames are dashed.",
         r"\end{tablenotes}",
         r"\end{threeparttable}",
         r"\end{table}",
@@ -665,6 +711,7 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
 
     # --- Panel D: Time of day ---
     ax = fig.add_subplot(gs[1, 1])
+    plotted_hours = []
     for city in cities:
         color = COLORS.get(city, "#666666")
         ct = valid[(valid["city"] == city) & valid["frame_hour"].notna()].copy()
@@ -687,6 +734,7 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
             .reset_index()
         )
         hourly = hourly[hourly["n"] >= 5]
+        plotted_hours.extend(hourly["hour_bin"].tolist())
         ax.plot(
             hourly["hour_bin"],
             hourly["pf"],
@@ -702,7 +750,8 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
     ax.set_xlabel("Hour of day (IST)")
     ax.set_ylabel("Proportion female")
     ax.set_ylim(0, 0.50)
-    ax.set_xlim(6.5, 19.5)
+    if plotted_hours:
+        ax.set_xlim(min(plotted_hours) - 0.5, max(plotted_hours) + 0.5)
     ax.legend(fontsize=6.5, frameon=False)
     ax.set_title("D  Time of day", fontsize=8.5, fontweight="bold", loc="left")
 
@@ -783,10 +832,21 @@ def make_fig5_pedestrian_crowdsize(df: pd.DataFrame, cities: list[str]) -> None:
     valid = valid[valid["total_pedestrians"] > 0]
     valid["prop_ped_women"] = valid["women_count"] / valid["total_pedestrians"]
 
+    binned = {}
+    for city in cities:
+        sub = valid[valid["city"] == city]
+        by_size = sub.groupby(sub["total_pedestrians"].astype(int)).agg(
+            women=("women_count", "sum"),
+            pedestrians=("total_pedestrians", "sum"),
+            n_frames=("total_pedestrians", "size"),
+        )
+        binned[city] = by_size[by_size["n_frames"] >= min_frames]
+    max_bin = max(b.index.max() for b in binned.values() if len(b) > 0)
+
     fig, ax = plt.subplots(figsize=(5, 3.5))
 
     for city in cities:
-        sub = valid[valid["city"] == city]
+        sub = valid[(valid["city"] == city) & (valid["total_pedestrians"] <= max_bin)]
         color = COLORS.get(city, "#666666")
         label = CITY_LABELS.get(city, city)
 
@@ -799,12 +859,7 @@ def make_fig5_pedestrian_crowdsize(df: pd.DataFrame, cities: list[str]) -> None:
             edgecolors="none",
         )
 
-        by_size = sub.groupby(sub["total_pedestrians"].astype(int)).agg(
-            women=("women_count", "sum"),
-            pedestrians=("total_pedestrians", "sum"),
-            n_frames=("total_pedestrians", "size"),
-        )
-        by_size = by_size[by_size["n_frames"] >= min_frames]
+        by_size = binned[city]
         ax.plot(
             by_size.index,
             by_size["women"] / by_size["pedestrians"],
@@ -818,8 +873,8 @@ def make_fig5_pedestrian_crowdsize(df: pd.DataFrame, cities: list[str]) -> None:
     ax.axhline(y=0.5, color=PARITY_C, linestyle="--", linewidth=0.8)
     ax.set_xlabel("Total pedestrians in frame")
     ax.set_ylabel("Prop. pedestrian women")
-    ax.set_ylim(0, 0.6)
-    ax.set_xlim(0, valid["total_pedestrians"].quantile(0.99))
+    ax.set_ylim(0, 1.02)
+    ax.set_xlim(0.5, max_bin + 0.5)
     ax.legend(fontsize=7, frameon=False)
 
     fig.tight_layout()

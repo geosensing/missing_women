@@ -217,26 +217,45 @@ def plot_temporal_coverage(df: pd.DataFrame, out_dir: Path) -> None:
     fig, axes = plt.subplots(1, 2, figsize=(8, 3.5))
 
     ax = axes[0]
-    with_hour = df[df["frame_hour"].notna()]
-    for city in df["city"].unique():
-        sub = with_hour[with_hour["city"] == city]
-        if len(sub) == 0:
-            continue
-        hours = sub["frame_hour"].values
-        ax.hist(
-            hours,
-            bins=np.arange(-0.5, 24.5, 1),
-            histtype="step",
-            linewidth=1.5,
-            label=city.replace("_", " ").title(),
-            color=COLORS.get(city, "#666666"),
-        )
+    with_hour = df[df["frame_hour"].notna()].copy()
+    with_hour["hour_bin"] = with_hour["frame_hour"].astype(int)
+    cities = list(with_hour["city"].unique())
+    hours = list(range(with_hour["hour_bin"].min(), with_hour["hour_bin"].max() + 1))
+    counts = (
+        with_hour.groupby(["city", "hour_bin"])
+        .size()
+        .unstack(fill_value=0)
+        .reindex(index=cities, columns=hours, fill_value=0)
+    )
+
+    masked = np.ma.masked_equal(counts.values, 0)
+    cmap = plt.get_cmap("Blues").copy()
+    cmap.set_bad("#f5f5f5")
+    ax.imshow(masked, cmap=cmap, aspect="auto", vmin=0)
+    for i in range(len(cities)):
+        for j in range(len(hours)):
+            n = counts.values[i, j]
+            if n == 0:
+                continue
+            dark = n > 0.55 * counts.values.max()
+            ax.text(
+                j,
+                i,
+                str(n),
+                ha="center",
+                va="center",
+                fontsize=5.5,
+                color="white" if dark else "#333333",
+            )
+    ax.set_xticks(range(len(hours)))
+    ax.set_xticklabels(hours, fontsize=6)
+    ax.set_yticks(range(len(cities)))
+    ax.set_yticklabels([c.replace("_", " ").title() for c in cities], fontsize=7)
     ax.set_xlabel("Hour of day (IST)")
-    ax.set_ylabel("Number of images")
-    ax.set_title("Distribution by hour")
-    if len(with_hour) > 0:
-        ax.set_xlim(with_hour["frame_hour"].min() - 0.5, with_hour["frame_hour"].max() + 0.5)
-    ax.legend(fontsize=7, frameon=False)
+    ax.set_title("Images by hour")
+    ax.tick_params(length=0)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
 
     ax = axes[1]
     day_names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]

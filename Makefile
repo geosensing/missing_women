@@ -38,6 +38,7 @@ figures:
 	$(PY) scripts/09_eda.py --cities $(CITIES)
 	$(PY) scripts/10_analysis.py --cities $(CITIES)
 	$(PY) scripts/11_make_maps.py --cities $(CITIES)
+	$(PY) scripts/14_descriptive_patterns.py --cities $(CITIES)
 
 tables:
 	$(PY) scripts/10_analysis.py --cities $(CITIES)
