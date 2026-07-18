@@ -210,6 +210,10 @@ def parse_all_annotations(labelstudio_dir: Path, city: str) -> pd.DataFrame:
     n_after = len(combined)
     print(f"  Removed {n_before - n_after} incomplete rows")
 
+    n_before = len(combined)
+    combined = filter_test_videos(combined)
+    print(f"  Removed {n_before - len(combined)} test-drive rows")
+
     return combined
 
 

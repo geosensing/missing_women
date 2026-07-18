@@ -1,22 +1,24 @@
-# frame_interval_sec: seconds of video time per annotation frame_number unit.
-#   1/30 = 0.0333  -> frame_number is a 30 fps video-frame index (mumbai, navi_mumbai)
-#   120            -> frames sampled every 2 min (bangalore, delhi; 60 fps recordings)
+# frame_interval_sec: seconds of real time per annotation frame_number unit, i.e. the
+#   sampling cadence for index-named frames (frame000000, frame000001, ...).
+#   10  -> frames sampled every 10 s (mumbai, navi_mumbai)
+#   120 -> frames sampled every 2 min (bangalore, delhi)
 #   (frames whose filename carries an explicit _t timestamp use that instead.)
 # frame_time_anchor: wall-clock origin for the in-video offset.
-#   recording -> camera clock (use when GPS-aligned, e.g. mumbai)
-#   gps       -> first GPS timestamp (use when the camera clock is offset from GPS)
+#   gps       -> first GPS timestamp (all cities: frames align with the embedded GPS log)
+#   recording -> camera clock (unreliable here; its metadata timestamp can sit inside the
+#                GPS log or be minutes off, so it is not used)
 mumbai:
   video_dir: /Volumes/Samsung USB/streetscope/mumbai_vids
   osm_file: maharashtra-latest.osm.pbf
   timezone: Asia/Kolkata
-  frame_interval_sec: 0.0333333333
-  frame_time_anchor: recording
+  frame_interval_sec: 10.0
+  frame_time_anchor: gps
 
 navi_mumbai:
   video_dir: /Volumes/Samsung USB/streetscope/navi_mumbai_vids
   osm_file: maharashtra-latest.osm.pbf
   timezone: Asia/Kolkata
-  frame_interval_sec: 0.0333333333
+  frame_interval_sec: 10.0
   frame_time_anchor: gps
 
 bangalore:

@@ -27,7 +27,6 @@ import contextily as cx
 import folium
 import geopandas as gpd
 import matplotlib
-from folium.plugins import MarkerCluster
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -113,8 +112,64 @@ def filter_valid_gps(df: pd.DataFrame) -> pd.DataFrame:
     return pd.concat(valid_rows, ignore_index=True)
 
 
-def make_locations_map(geo: pd.DataFrame, city: str) -> None:
-    """Interactive map of one city's data collection points."""
+# Break a track line wherever consecutive fixes jump more than this (GPS glitch or a
+# gap between disjoint segments sharing a video_id), so no false straight-line diagonals
+# are drawn across the map.
+TRACK_JUMP_M = 300.0
+
+
+def load_tracks(city: str, sampled_base_ids: set[str], bounds: dict) -> list[pd.DataFrame]:
+    """Return the driven GPS track for each sampled itinerary, downsampled for plotting.
+
+    Restricts the full ``gps_index`` timeseries to the videos that actually appear in the
+    plotted sample (reconciling the ``13``/``day13`` prefix inconsistency), clips to the
+    city bounding box, and thins each track by rounding to ~11 m and dropping consecutive
+    duplicates. One DataFrame per video, ordered by time.
+    """
+    gps_dir = DATA / city / "gps_index"
+    ts_path, vm_path = gps_dir / "gps_timeseries.parquet", gps_dir / "video_metadata.parquet"
+    if not (ts_path.exists() and vm_path.exists()):
+        return []
+
+    vm = pd.read_parquet(vm_path)
+
+    def norm(v: str) -> str:
+        return str(v).removeprefix("day")
+
+    wanted = {norm(b) for b in sampled_base_ids}
+    keep_ids = set(vm.loc[vm["base_video_id"].map(lambda v: norm(v) in wanted), "video_id"])
+    if not keep_ids:
+        return []
+
+    ts = pd.read_parquet(ts_path, columns=["video_id", "gps_datetime", "lat", "lon"])
+    ts = ts[
+        ts["video_id"].isin(keep_ids)
+        & ts["lat"].between(*bounds["lat"])
+        & ts["lon"].between(*bounds["lon"])
+    ].sort_values(["video_id", "gps_datetime"])
+
+    tracks = []
+    for _, grp in ts.groupby("video_id", sort=False):
+        g = grp.copy()
+        g["rlat"], g["rlon"] = g["lat"].round(4), g["lon"].round(4)
+        keep = (g["rlat"] != g["rlat"].shift()) | (g["rlon"] != g["rlon"].shift())
+        g = g[keep]
+        if len(g) > 1:
+            tracks.append(g[["lat", "lon"]])
+    return tracks
+
+
+def _track_segments(track: pd.DataFrame) -> list[pd.DataFrame]:
+    """Split one track into contiguous segments, cutting where a jump exceeds TRACK_JUMP_M."""
+    dlat = track["lat"].diff().to_numpy() * 111_000
+    dlon = track["lon"].diff().to_numpy() * 105_000
+    jump = np.hypot(dlat, dlon) > TRACK_JUMP_M
+    seg_id = jump.cumsum()
+    return [track.iloc[np.where(seg_id == s)[0]] for s in np.unique(seg_id)]
+
+
+def make_locations_map(geo: pd.DataFrame, city: str, tracks: list[pd.DataFrame]) -> None:
+    """Interactive map of one city's collection points over its driven itineraries."""
     if len(geo) == 0:
         print(f"  WARNING: no valid GPS for {city} locations map")
         return
@@ -128,7 +183,19 @@ def make_locations_map(geo: pd.DataFrame, city: str) -> None:
         tiles="CartoDB positron",
     )
 
-    cluster = MarkerCluster(name=f"{label} (n={len(geo):,})")
+    track_group = folium.FeatureGroup(name=f"{label} itineraries")
+    for track in tracks:
+        for seg in _track_segments(track):
+            if len(seg) > 1:
+                folium.PolyLine(
+                    list(zip(seg["lat"], seg["lon"])),
+                    color=color,
+                    weight=1.5,
+                    opacity=0.35,
+                ).add_to(track_group)
+    track_group.add_to(m)
+
+    point_group = folium.FeatureGroup(name=f"Annotated frames (n={len(geo):,})")
     for _, row in geo.iterrows():
         pw = row.get("prop_women")
         pw_text = f"{pw:.0%}" if pd.notna(pw) else "--"
@@ -141,19 +208,24 @@ def make_locations_map(geo: pd.DataFrame, city: str) -> None:
         """
         folium.CircleMarker(
             location=[row["gps_lat"], row["gps_lon"]],
-            radius=5,
+            radius=3,
             color=color,
             fill=True,
             fillColor=color,
-            fillOpacity=0.6,
+            fillOpacity=0.5,
+            weight=0.5,
             popup=folium.Popup(popup_text, max_width=200),
-        ).add_to(cluster)
-    cluster.add_to(m)
+        ).add_to(point_group)
+    point_group.add_to(m)
+
+    m.fit_bounds(
+        [[geo["gps_lat"].min(), geo["gps_lon"].min()], [geo["gps_lat"].max(), geo["gps_lon"].max()]]
+    )
     folium.LayerControl().add_to(m)
 
     out_path = FIGS / f"map_locations_{city}.html"
     m.save(str(out_path))
-    print(f"  -> {out_path.name} ({len(geo):,} points)")
+    print(f"  -> {out_path.name} ({len(geo):,} points, {len(tracks)} tracks)")
 
 
 def get_color_for_prop(prop: float) -> str:
@@ -217,8 +289,18 @@ def make_sex_ratio_map(geo: pd.DataFrame, city: str) -> None:
     print(f"  -> {out_path.name} ({len(geo):,} points)")
 
 
-def make_locations_pdf(geo: pd.DataFrame, city: str, n_total: int | None = None) -> None:
-    """PDF map of one city's collection points with basemap tiles."""
+def _to_mercator(track: pd.DataFrame) -> pd.DataFrame:
+    """Project a lat/lon track to Web Mercator (x, y) columns."""
+    g = gpd.GeoDataFrame(
+        geometry=gpd.points_from_xy(track["lon"], track["lat"]), crs="EPSG:4326"
+    ).to_crs(epsg=3857)
+    return pd.DataFrame({"x": g.geometry.x.to_numpy(), "y": g.geometry.y.to_numpy()})
+
+
+def make_locations_pdf(
+    geo: pd.DataFrame, city: str, tracks: list[pd.DataFrame], n_total: int | None = None
+) -> None:
+    """PDF map of one city's collection points over its driven itineraries."""
     if len(geo) == 0:
         print(f"  WARNING: no valid GPS for {city} locations PDF")
         return
@@ -232,16 +314,34 @@ def make_locations_pdf(geo: pd.DataFrame, city: str, n_total: int | None = None)
     ).to_crs(epsg=3857)
 
     fig, ax = plt.subplots(figsize=(10, 10))
-    gdf.plot(ax=ax, color=color, markersize=8, alpha=0.5, label=f"{label} (n={len(gdf):,})")
+    for track in tracks:
+        for seg in _track_segments(track):
+            if len(seg) > 1:
+                m = _to_mercator(seg)
+                ax.plot(m["x"], m["y"], color=color, lw=0.7, alpha=0.3, solid_capstyle="round")
+    ax.scatter(
+        gdf.geometry.x,
+        gdf.geometry.y,
+        s=7,
+        color=color,
+        alpha=0.55,
+        edgecolors="none",
+        zorder=5,
+        label=f"{label} (n={len(gdf):,})",
+    )
+    ax.margins(0.05)
     cx.add_basemap(ax, source=cx.providers.CartoDB.Positron)
     ax.set_axis_off()
     ax.legend(loc="lower left", fontsize=9, frameon=True, facecolor="white")
-    ax.set_title(f"{label}: Data Collection Locations", fontsize=12, fontweight="bold")
+    ax.set_title(
+        f"{label}: Data Collection Locations & Itineraries", fontsize=12, fontweight="bold"
+    )
     if n_total is not None and n_total > len(geo):
         ax.annotate(
-            f"{n_total - len(geo):,} of {n_total:,} frames not shown (no GPS fix or garbage fix)",
-            xy=(0.01, 0.01),
+            f"{n_total - len(geo):,} of {n_total:,} frames not shown (no GPS fix)",
+            xy=(0.99, 0.01),
             xycoords="axes fraction",
+            ha="right",
             fontsize=8,
             color="#555555",
         )
@@ -250,7 +350,7 @@ def make_locations_pdf(geo: pd.DataFrame, city: str, n_total: int | None = None)
     out_path = FIGS / f"map_locations_{city}.pdf"
     fig.savefig(out_path, dpi=150, bbox_inches="tight")
     plt.close(fig)
-    print(f"  -> {out_path.name} ({len(geo):,} points)")
+    print(f"  -> {out_path.name} ({len(geo):,} points, {len(tracks)} tracks)")
 
 
 def make_sex_ratio_pdf(
@@ -406,10 +506,16 @@ def main():
         sub = df[df["city"] == city]
         geo = filter_valid_gps(sub)
         city_geos.append(geo)
-        print(f"\n{CITY_LABELS.get(city, city)} ({len(geo):,} valid-GPS points):")
-        make_locations_map(geo, city)
+        bounds = CITY_BOUNDS.get(city)
+        tracks = (
+            load_tracks(city, set(geo["base_video_id"].dropna().astype(str)), bounds)
+            if bounds is not None and len(geo)
+            else []
+        )
+        print(f"\n{CITY_LABELS.get(city, city)} ({len(geo):,} valid-GPS points, {len(tracks)} tracks):")
+        make_locations_map(geo, city, tracks)
         make_sex_ratio_map(geo, city)
-        make_locations_pdf(geo, city, n_total=len(sub))
+        make_locations_pdf(geo, city, tracks, n_total=len(sub))
         make_sex_ratio_pdf(geo, city)
 
     print("\nOverview:")

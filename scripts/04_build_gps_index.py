@@ -27,11 +27,6 @@ from pathlib import Path
 
 import pandas as pd
 
-# Camera clock this far *ahead* of GPS means the recording clock cannot place frames on
-# the GPS track. Kept in sync with MAX_CLOCK_OFFSET_SEC in 06_assign_frame_gps.py, which
-# acts on the same rule; here it only drives the diagnostic ``use_gps_time`` flag.
-MAX_CLOCK_OFFSET_SEC = 300.0
-
 
 def dms_to_decimal(dms_str: str) -> float | None:
     """
@@ -142,11 +137,7 @@ def detect_clock_offset(
     Detect GoPro clock drift by comparing recording_datetime to first GPS timestamp.
 
     GoPro cameras sometimes have incorrect system clocks. GPS time is accurate.
-    A video whose camera clock runs more than MAX_CLOCK_OFFSET_SEC *ahead* of GPS is
-    flagged: its recording clock cannot be used to place frames on the GPS track.
-
-    Only a positive offset means drift. A negative offset is the normal case -- the GPS
-    logger simply started before the camera did -- so the sign must not be discarded.
+    If the difference exceeds 1 hour, flag the video to use GPS time instead.
     """
     gps_first = (
         gps_df.groupby("video_id")["gps_datetime"].min().reset_index()
@@ -159,7 +150,7 @@ def detect_clock_offset(
         merged["gps_first_datetime"] - merged["recording_datetime"]
     ).dt.total_seconds()
 
-    merged["use_gps_time"] = merged["clock_offset_sec"] > MAX_CLOCK_OFFSET_SEC
+    merged["use_gps_time"] = merged["clock_offset_sec"].abs() > 3600
 
     return merged
 
