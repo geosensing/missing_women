@@ -25,6 +25,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from matplotlib.ticker import PercentFormatter
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "data"
@@ -345,9 +346,10 @@ def plot_prop_female_vs_crowd(df: pd.DataFrame, out_dir: Path) -> None:
     ax.axhline(0.5, color="#999999", linestyle="--", linewidth=0.7, label="Parity")
 
     ax.set_xlabel("Total people per image")
-    ax.set_ylabel("Proportion women")
-    ax.set_title("Proportion women vs. crowd size")
+    ax.set_ylabel("Percent women")
+    ax.set_title("Percent women vs. crowd size")
     ax.set_ylim(-0.05, 1.05)
+    ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
     ax.legend(fontsize=7, frameon=False)
 
     fig.tight_layout()

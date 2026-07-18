@@ -78,7 +78,9 @@ def add_temporal_fields(df: pd.DataFrame) -> pd.DataFrame:
 
     result["frame_hour"] = result["frame_datetime_ist"].dt.hour
     result["frame_dayofweek"] = result["frame_datetime_ist"].dt.dayofweek
-    result["is_weekend"] = result["frame_dayofweek"].isin([5, 6])
+    result["is_weekend"] = (
+        result["frame_dayofweek"].isin([5, 6]).where(result["frame_dayofweek"].notna())
+    ).astype("boolean")
     result["frame_date"] = result["frame_datetime_ist"].dt.date
 
     return result
@@ -134,7 +136,8 @@ def normalize_categorical(df: pd.DataFrame) -> pd.DataFrame:
         "street_vendor",
     ]
 
-    yes_values = {"Yes", "yes", "YES", "1", "True", "true"}
+    # "Paved" / "Paved - Blocked" are footpath taxonomy values meaning a footpath exists.
+    yes_values = {"Yes", "yes", "YES", "1", "True", "true", "Paved", "Paved - Blocked"}
     no_values = {"No", "no", "NO", "0", "False", "false", "No sidewalk"}
 
     for col in bool_cols:
@@ -166,9 +169,15 @@ def fill_infrastructure_columns(df: pd.DataFrame) -> pd.DataFrame:
     return result
 
 
+def annotator_order(df: pd.DataFrame) -> list[str]:
+    """Annotators ranked by annotation count (descending), name as deterministic tie-break."""
+    counts = df.groupby("annotator").size()
+    return sorted(counts.index, key=lambda a: (-counts[a], a))
+
+
 def get_primary_annotator(df: pd.DataFrame) -> str:
-    """Return the annotator with most annotations."""
-    return df["annotator"].value_counts().idxmax()
+    """Return the annotator with most annotations (deterministic tie-break)."""
+    return annotator_order(df)[0]
 
 
 def select_output_columns(df: pd.DataFrame) -> pd.DataFrame:
@@ -288,10 +297,22 @@ def build_analysis_data(
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    primary_annotator = get_primary_annotator(result)
+    # One row per image: the primary (most prolific) annotator's row when they covered
+    # the image, else fall back to the next-most-prolific annotator who did.
+    order = annotator_order(result)
+    primary_annotator = order[0]
     print(f"Primary annotator: {primary_annotator}")
-    primary = result[result["annotator"] == primary_annotator].copy()
-    primary = primary.drop_duplicates(subset=["image"])
+    rank = {a: i for i, a in enumerate(order)}
+    primary = (
+        result.assign(_rank=result["annotator"].map(rank))
+        .sort_values("_rank", kind="stable")
+        .drop_duplicates(subset=["image"])
+        .drop(columns="_rank")
+        .copy()
+    )
+    n_fallback = int((primary["annotator"] != primary_annotator).sum())
+    if n_fallback:
+        print(f"  {n_fallback} images covered only by reviewer annotators (fallback used)")
 
     primary_path = output_dir / "analysis_data.parquet"
     primary.to_parquet(primary_path, index=False)

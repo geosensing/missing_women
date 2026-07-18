@@ -7,109 +7,126 @@ Shares are person-weighted (`sum(women) / sum(people)`) unless noted.
 
 | City | Ped. female share | Solo pedestrians female | Frames with any woman | Women per such frame: 1 / 2 / 3 / 4+ |
 |---|---|---|---|---|
-| Mumbai | 19.3% | 17.3% (n=323) | 50.1% | 47% / 25% / 14% / 14% |
-| Navi Mumbai | 18.2% | 19.4% (n=309) | 41.8% | 56% / 26% / 11% / 7% |
-| Bangalore | 27.4% | 31.0% (n=274) | 48.8% | 62% / 24% / 6% / 8% |
-| Delhi | 19.8% | 17.8% (n=388) | 35.0% | 62% / 24% / 9% / 5% |
-| All cities | 19.9% | 20.9% (n=1,294) | 45.0% | 54% / 25% / 12% / 10% |
+| Mumbai | 19.3% | 17.5% (n=332) | 49.9% | 47% / 25% / 14% / 13% |
+| Navi Mumbai | 18.1% | 19.6% (n=322) | 41.9% | 57% / 26% / 11% / 6% |
+| Bangalore | 27.4% | 31.3% (n=275) | 48.8% | 62% / 24% / 6% / 8% |
+| Delhi | 19.8% | 17.7% (n=390) | 34.9% | 62% / 24% / 9% / 5% |
+| All cities | 19.9% | 20.9% (n=1,319) | 44.9% | 54% / 25% / 11% / 10% |
 
 ### P(frame contains a woman) by crowd size: observed vs binomial
 
-Expected under independent mixing: `1 - (1 - p_city)^n` averaged over frames
-in the bucket, with `p_city` the city's pedestrian female share. Observed below
-expected means women cluster together in fewer frames than chance.
+Two independent-mixing benchmarks, `1 - (1 - p)^n` averaged over frames in the
+bucket: `city` uses the city-wide pedestrian female share; `video` uses each
+video session's own share, so it conditions on place and time. Observed below
+the city benchmark but close to the video benchmark means women concentrate in
+particular places/times rather than clustering socially within a scene.
 
-| City | n=1 (obs vs exp) | n=2-3 (obs vs exp) | n=4-6 (obs vs exp) | n=7+ (obs vs exp) |
+| City | n=1 (obs vs city/video exp) | n=2-3 (obs vs city/video exp) | n=4-6 (obs vs city/video exp) | n=7+ (obs vs city/video exp) |
 |---|---|---|---|---|
-| Mumbai | 17% vs 19% | 34% vs 41% | 53% vs 64% | 75% vs 88% |
-| Navi Mumbai | 19% vs 18% | 35% vs 38% | 54% vs 61% | 67% vs 84% |
-| Bangalore | 31% vs 27% | 45% vs 52% | 70% vs 78% | 85% vs 93% |
-| Delhi | 18% vs 20% | 35% vs 41% | 56% vs 64% | 64% vs 84% |
+| Mumbai | 17% vs 19% / 19% | 34% vs 41% / 40% | 53% vs 64% / 61% | 75% vs 87% / 84% |
+| Navi Mumbai | 20% vs 18% / 20% | 36% vs 38% / 40% | 54% vs 61% / 60% | 67% vs 84% / 80% |
+| Bangalore | 31% vs 27% / 27% | 45% vs 52% / 48% | 69% vs 78% / 71% | 85% vs 93% / 87% |
+| Delhi | 18% vs 20% / 19% | 35% vs 40% / 34% | 56% vs 64% / 57% | 64% vs 84% / 67% |
 
 ## Place rankings
 
-### Named corridors (30+ frames): lowest female share
+### Named corridors (30+ frames, 2+ video sessions): lowest female share
 
-| Road | City | Female share | People | Frames |
-|---|---|---|---|---|
-| Allibhai Premji Marg (Foras Road) | Mumbai | 7.1% | 197 | 32 |
-| Mahatma Gandhi Marg | Delhi | 7.5% | 120 | 35 |
-| G D Ambedkar Marg (Parel Tank Road) | Mumbai | 8.2% | 147 | 31 |
-| Mama Paramanand Marg | Mumbai | 9.2% | 349 | 59 |
-| Thane Belapur Road | Navi Mumbai | 9.7% | 144 | 40 |
-| Dr Dadasaheb Bhadkamkar Marg | Mumbai | 9.8% | 346 | 34 |
-| Captain Prakash Pethe Marg | Mumbai | 10.0% | 190 | 30 |
-| Prabhadevi New Road | Mumbai | 10.2% | 527 | 77 |
-| South Central Road | Navi Mumbai | 11.6% | 241 | 65 |
-| Sarjapura Road | Bangalore | 12.4% | 121 | 35 |
+| Road | City | Female share | People | Frames | Videos |
+|---|---|---|---|---|---|
+| Allibhai Premji Marg (Foras Road) | Mumbai | 7.1% | 197 | 32 | 2 |
+| Mahatma Gandhi Marg | Delhi | 7.5% | 120 | 35 | 23 |
+| Captain Prakash Pethe Marg | Mumbai | 8.5% | 258 | 42 | 2 |
+| Thane Belapur Road | Navi Mumbai | 9.7% | 144 | 40 | 2 |
+| Dr Dadasaheb Bhadkamkar Marg | Mumbai | 9.8% | 346 | 34 | 2 |
+| South Central Road | Navi Mumbai | 11.6% | 241 | 65 | 2 |
+| Sarjapura Road | Bangalore | 12.4% | 121 | 35 | 14 |
+| Sector 15 Sanpada Road | Navi Mumbai | 12.5% | 208 | 54 | 2 |
 
-### Named corridors (30+ frames): highest female share
+### Named corridors (30+ frames, 2+ video sessions): highest female share
 
-| Road | City | Female share | People | Frames |
-|---|---|---|---|---|
-| LM Nadkarni Road | Mumbai | 29.7% | 492 | 74 |
-| Road Number 5 | Mumbai | 25.1% | 219 | 45 |
-| Outer Ring Road | Bangalore | 20.5% | 327 | 57 |
-| New Prabhadevi Marg | Mumbai | 18.8% | 287 | 32 |
-| Ring Road 5 | Navi Mumbai | 18.4% | 250 | 71 |
-| Jerbai Wadia Marg | Mumbai | 17.9% | 235 | 35 |
-| Lady Jamshedji Road | Mumbai | 17.4% | 1,661 | 205 |
-| Nanabhai Moos Marg (Upper Colaba Road) | Mumbai | 17.1% | 193 | 30 |
-| 90 Feet Road | Mumbai | 16.8% | 340 | 33 |
-| Jeejeebhoy Lane | Mumbai | 16.5% | 261 | 39 |
+| Road | City | Female share | People | Frames | Videos |
+|---|---|---|---|---|---|
+| Outer Ring Road | Bangalore | 20.5% | 327 | 57 | 27 |
+| New Prabhadevi Marg | Mumbai | 18.8% | 287 | 32 | 2 |
+| Ring Road 5 | Navi Mumbai | 18.4% | 250 | 71 | 3 |
+| Jerbai Wadia Marg | Mumbai | 17.9% | 235 | 35 | 2 |
+| Nanabhai Moos Marg (Upper Colaba Road) | Mumbai | 17.1% | 193 | 30 | 2 |
+| Jeejeebhoy Lane | Mumbai | 16.3% | 263 | 40 | 2 |
+| Sion Bandra Link Road | Mumbai | 13.3% | 308 | 43 | 2 |
+| 60 Feet Road | Mumbai | 12.9% | 342 | 47 | 2 |
+
+Corridors seen in a single video session are excluded: their shares reflect one
+walk's idiosyncrasy as much as the place.
 
 ### ~100m grid cells (20+ frames): lowest female share
 
-| Cell (lat, lon) | City | Nearest road | Female share | People |
-|---|---|---|---|---|
-| 18.967, 72.847 | Mumbai | Muzawar Pakhadi Road | 4.8% | 126 |
-| 18.964, 72.818 | Mumbai | Allibhai Premji Marg (Foras Road) | 7.5% | 573 |
-| 18.989, 72.841 | Mumbai | G D Ambedkar Marg (Parel Tank Road) | 8.2% | 147 |
-| 18.981, 72.826 | Mumbai | Sane Guruji Marg | 8.6% | 139 |
-| 18.953, 72.817 | Mumbai | Mama Paramanand Marg | 9.2% | 349 |
-| 19.086, 73.004 | Navi Mumbai | -- | 9.2% | 271 |
-| 19.012, 72.822 | Mumbai | Prabhadevi New Road | 10.2% | 527 |
-| 19.086, 73.003 | Navi Mumbai | -- | 10.5% | 685 |
-| 19.168, 72.999 | Navi Mumbai | Thane Belapur Road | 10.5% | 114 |
-| 18.941, 72.835 | Navi Mumbai | -- | 10.6% | 540 |
+| Cell (lat, lon) | City | Nearest road | Female share | People | Videos |
+|---|---|---|---|---|---|
+| 18.967, 72.847 | Mumbai | Muzawar Pakhadi Road | 4.8% | 126 | 2 |
+| 18.964, 72.818 | Mumbai | Allibhai Premji Marg (Foras Road) | 7.5% | 573 | 2 |
+| 18.989, 72.841 | Mumbai | G D Ambedkar Marg (Parel Tank Road) | 8.2% | 147 | 1 |
+| 18.981, 72.826 | Mumbai | Sane Guruji Marg | 8.6% | 139 | 1 |
+| 18.953, 72.817 | Mumbai | Mama Paramanand Marg | 8.9% | 361 | 1 |
+| 19.086, 73.004 | Navi Mumbai | -- | 9.2% | 271 | 2 |
+| 19.086, 73.003 | Navi Mumbai | -- | 10.5% | 685 | 2 |
+| 19.168, 72.999 | Navi Mumbai | Thane Belapur Road | 10.5% | 114 | 1 |
+| 19.012, 72.822 | Mumbai | Prabhadevi New Road | 10.5% | 531 | 1 |
+| 18.941, 72.835 | Navi Mumbai | -- | 10.6% | 540 | 1 |
 
 ### ~100m grid cells (20+ frames): highest female share
 
-| Cell (lat, lon) | City | Nearest road | Female share | People |
-|---|---|---|---|---|
-| 19.004, 72.820 | Mumbai | G M Bhosle Marg | 29.9% | 154 |
-| 19.017, 72.865 | Mumbai | LM Nadkarni Road | 29.7% | 492 |
-| 19.015, 72.862 | Mumbai | -- | 27.4% | 190 |
-| 19.033, 73.016 | Navi Mumbai | -- | 26.7% | 101 |
-| 19.031, 73.021 | Navi Mumbai | Ring Road 5 | 25.4% | 122 |
-| 19.038, 72.866 | Mumbai | Flank Road | 23.8% | 168 |
-| 18.946, 72.828 | Mumbai | -- | 21.2% | 386 |
-| 19.039, 72.843 | Mumbai | Road Number 5 | 20.9% | 378 |
-| 19.010, 72.830 | Mumbai | New Prabhadevi Marg | 20.4% | 206 |
-| 18.972, 72.815 | Mumbai | Pandit Madan Mohan Malviya Marg | 19.1% | 136 |
+| Cell (lat, lon) | City | Nearest road | Female share | People | Videos |
+|---|---|---|---|---|---|
+| 19.004, 72.820 | Mumbai | G M Bhosle Marg | 29.9% | 154 | 1 |
+| 19.017, 72.865 | Mumbai | LM Nadkarni Road | 29.7% | 492 | 1 |
+| 19.015, 72.862 | Mumbai | -- | 27.4% | 190 | 1 |
+| 19.033, 73.016 | Navi Mumbai | -- | 26.7% | 101 | 1 |
+| 19.031, 73.021 | Navi Mumbai | Ring Road 5 | 25.4% | 122 | 1 |
+| 19.038, 72.866 | Mumbai | Flank Road | 24.0% | 171 | 1 |
+| 18.946, 72.828 | Mumbai | -- | 21.2% | 386 | 1 |
+| 19.039, 72.843 | Mumbai | Road Number 5 | 20.9% | 378 | 1 |
+| 19.010, 72.830 | Mumbai | New Prabhadevi Marg | 20.4% | 206 | 1 |
+| 18.972, 72.815 | Mumbai | Pandit Madan Mohan Malviya Marg | 19.1% | 136 | 1 |
+
+Cells with Videos = 1 reflect a single walk; treat their shares as suggestive.
 
 ## Joint descriptive regression
 
-WLS of frame-level female share, weighted by people per frame (n=7,003 frames,
-814 video-session clusters); cluster-robust SEs.
-Coefficients in percentage points. Descriptive, not causal.
+WLS of frame-level female share, weighted by people per frame (n=7,235 frames,
+846 video-session clusters); cluster-robust SEs.
+Sample: all frames with at least one person and a known hour (the windows
+partition the full 06:00-22:00 collection span). Coefficients in percentage
+points. Descriptive, not causal.
 
 | Correlate | pp diff | 95% CI |
 |---|---|---|
 | Navi Mumbai (vs Mumbai) | -2.9* | [-4.9, -0.9] |
-| Bangalore (vs Mumbai) | +0.7 | [-1.1, +2.4] |
-| Delhi (vs Mumbai) | -3.2* | [-4.9, -1.4] |
+| Bangalore (vs Mumbai) | +1.0 | [-0.7, +2.8] |
+| Delhi (vs Mumbai) | -3.2* | [-5.0, -1.3] |
 | Primary road (vs residential) | -3.0* | [-4.9, -1.0] |
-| Secondary road (vs residential) | -4.1* | [-5.8, -2.4] |
-| Tertiary road (vs residential) | -1.8 | [-3.8, +0.3] |
-| Road unmatched (vs residential) | -1.9 | [-4.1, +0.3] |
-| Morning 7-11 (vs midday) | -0.9 | [-2.4, +0.6] |
-| Evening 15-19 (vs midday) | -0.7 | [-2.6, +1.2] |
-| Weekend | -1.4 | [-3.4, +0.6] |
-| Street vendor present | +3.9* | [+2.0, +5.7] |
-| Bus station present | +3.8* | [+1.3, +6.4] |
+| Secondary road (vs residential) | -4.2* | [-5.9, -2.5] |
+| Tertiary road (vs residential) | -1.9 | [-4.0, +0.1] |
+| Road unmatched (vs residential) | -1.8 | [-4.0, +0.4] |
+| Morning 6-11 (vs midday) | -1.0 | [-2.6, +0.5] |
+| Evening 15-22 (vs midday) | -0.7 | [-2.5, +1.1] |
+| Weekend | -1.2 | [-3.1, +0.8] |
+| Street vendor present | +3.7* | [+1.9, +5.6] |
+| Bus station present | +3.8* | [+1.3, +6.3] |
 | Litter present | +1.2 | [-0.4, +2.7] |
 | Potholes present | -1.6 | [-4.2, +1.0] |
+| Footpath present | -0.3 | [-1.3, +0.7] |
 | log(people in frame) | +1.9* | [+1.1, +2.7] |
 
 `*` p < 0.05. Base: Mumbai, residential road, midday, weekday, no POI/disorder.
+
+## Limitations
+
+- Per-frame counts are top-coded at 10 ("10+" recorded as 11), attenuating
+  shares toward 0.5 in the densest scenes.
+- Collection spans roughly 06:00-22:00 IST only; nothing here speaks to night.
+- Road class is measured with error: itinerary and OSM road types agree on
+  ~72% of frames where both exist.
+- The same individuals can appear in multiple frames of one video session;
+  the estimand is the visible street population, and clustering by session
+  handles the standard errors, not the repeated sightings themselves.

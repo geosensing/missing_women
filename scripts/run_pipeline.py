@@ -14,6 +14,9 @@ Pipeline steps:
 - 09: EDA (generates plots)
 - 10: Analysis (generates tables and figures)
 - 11: Maps (generates interactive and static maps)
+- 14: Descriptive patterns (generates tabs/descriptive_patterns.md)
+
+(13_interrater_reliability.py runs separately via `make irr`.)
 
 Usage:
     # Run full E2E pipeline for all cities:
@@ -355,6 +358,17 @@ def run_visualization_scripts(project_root: Path, cities: list[str]) -> None:
     print("STEP 11: Maps")
     print("=" * 60)
     cmd = [sys.executable, str(scripts_dir / "11_make_maps.py"), "--cities", cities_arg]
+    subprocess.run(cmd, check=True)
+
+    print("\n" + "=" * 60)
+    print("STEP 14: Descriptive patterns")
+    print("=" * 60)
+    cmd = [
+        sys.executable,
+        str(scripts_dir / "14_descriptive_patterns.py"),
+        "--cities",
+        cities_arg,
+    ]
     subprocess.run(cmd, check=True)
 
 

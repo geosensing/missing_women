@@ -51,4 +51,4 @@ lint:
 	uv run ruff check --fix scripts/
 
 clean:
-	rm -f figs/*.pdf figs/*.png figs/*.html tabs/*.tex
+	rm -f figs/*.pdf figs/*.png figs/*.html tabs/*.tex tabs/descriptive_patterns.md

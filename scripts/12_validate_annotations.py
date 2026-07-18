@@ -278,18 +278,20 @@ def compute_metrics(df: pd.DataFrame) -> None:
         print(f"  Sum human: {human_sum:.0f}, Sum AI: {ai_sum:.0f}")
         print(f"  Sum diff: {sum_diff_pct:+.1f}%")
 
-    total_human_men = df["men_count"].sum() + df["men_twowheeler"].sum()
-    total_human_women = df["women_count"].sum() + df["women_twowheeler"].sum()
-    total_ai_men = df["ai_men_count"].fillna(0).sum() + df["ai_men_twowheeler"].fillna(0).sum()
-    total_ai_women = (
-        df["ai_women_count"].fillna(0).sum() + df["ai_women_twowheeler"].fillna(0).sum()
-    )
+    # Compare ratios only on frames where the AI response parsed, so both
+    # totals cover the same sample.
+    ai_cols = ["ai_men_count", "ai_women_count", "ai_men_twowheeler", "ai_women_twowheeler"]
+    parsed = df.dropna(subset=ai_cols)
+    total_human_men = parsed["men_count"].sum() + parsed["men_twowheeler"].sum()
+    total_human_women = parsed["women_count"].sum() + parsed["women_twowheeler"].sum()
+    total_ai_men = parsed["ai_men_count"].sum() + parsed["ai_men_twowheeler"].sum()
+    total_ai_women = parsed["ai_women_count"].sum() + parsed["ai_women_twowheeler"].sum()
 
     human_ratio = total_human_women / total_human_men if total_human_men > 0 else 0
     ai_ratio = total_ai_women / total_ai_men if total_ai_men > 0 else 0
 
     print("\n" + "-" * 60)
-    print("GENDER RATIOS (women / men):")
+    print(f"GENDER RATIOS (women / men, {len(parsed)} frames with parsed AI output):")
     print(f"  Human annotations: {human_ratio:.3f}")
     print(f"  AI predictions:    {ai_ratio:.3f}")
     print("=" * 60)

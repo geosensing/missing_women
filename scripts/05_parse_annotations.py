@@ -165,6 +165,21 @@ def filter_skip_rows(df: pd.DataFrame) -> pd.DataFrame:
     return df[mask].copy()
 
 
+def filter_test_videos(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Remove calibration / test drives.
+
+    Videos whose ``base_video_id`` starts with ``test`` (mumbai's ``test_test_drive_*``,
+    ``test_gps_test_*``) were shot to check the rig, not to sample an itinerary, so they
+    are not part of the study sample. They are also the only source of mumbai's garbage
+    GPS fixes in the Indian Ocean. No other city has any.
+    """
+    if "base_video_id" not in df.columns:
+        return df
+    is_test = df["base_video_id"].astype(str).str.lower().str.startswith("test")
+    return df[~is_test].copy()
+
+
 def parse_all_annotations(labelstudio_dir: Path, city: str) -> pd.DataFrame:
     """
     Parse all Label Studio JSON exports in directory.

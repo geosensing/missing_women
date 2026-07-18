@@ -26,6 +26,13 @@ import pandas as pd
 
 MAX_GPS_GAP_SEC = 30.0
 
+# A camera clock this far *ahead* of GPS cannot land within MAX_GPS_GAP_SEC of any GPS
+# point, so the recording clock is untrustworthy and the GPS clock anchors the frame
+# instead. Sign matters: a negative offset (GPS logging started before recording) is the
+# normal case and recording-anchoring stays correct. Observed offsets separate cleanly --
+# healthy videos are <= 60s, broken ones >= 600s. Kept in sync with 04_build_gps_index.py.
+MAX_CLOCK_OFFSET_SEC = 300.0
+
 # Default frame-timing convention (seconds of video time per frame_number unit).
 # 1/30 means frame_number is a 30 fps video-frame index. Per-city values come from
 # cities.yaml (see compute_frame_datetime / assign_frame_gps).
@@ -53,6 +60,13 @@ def compute_frame_datetime(
     before the recording), ``"gps"`` uses the first GPS timestamp (when the camera
     clock is offset from GPS, e.g. navi_mumbai, bangalore, delhi). Each falls back
     to the other when its preferred field is missing.
+
+    The city-level ``anchor`` is only a default: a video whose own ``clock_offset_sec``
+    puts the camera clock more than MAX_CLOCK_OFFSET_SEC *ahead* of GPS is anchored to
+    GPS regardless. Two distinct defects need this -- a camera clock that was simply set
+    wrong (mumbai day 11, ~70 min out), and ``_2`` continuation segments that inherit the
+    ``_1`` segment's ``recording_datetime``. Both make the recording clock unusable while
+    the per-video GPS clock stays correct.
     """
     base_video_id = row.get("base_video_id")
     timestamp_sec = row.get("timestamp_sec")
@@ -73,6 +87,10 @@ def compute_frame_datetime(
 
     gps_first = video_row.get("gps_first_datetime")
     recording = video_row.get("recording_datetime")
+
+    clock_offset = video_row.get("clock_offset_sec")
+    if anchor == "recording" and pd.notna(clock_offset) and clock_offset > MAX_CLOCK_OFFSET_SEC:
+        anchor = "gps"
 
     if anchor == "recording":
         start_time = recording if pd.notna(recording) else gps_first

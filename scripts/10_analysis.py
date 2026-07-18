@@ -36,6 +36,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.gridspec import GridSpec
+from matplotlib.ticker import PercentFormatter
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "data"
@@ -199,6 +200,14 @@ def compute_mode_props(df: pd.DataFrame, cities: list[str]) -> dict:
 
 ROAD_TYPES = ["primary", "secondary", "tertiary", "residential"]
 
+# Partition of the observed collection hours (~06:00-22:00 IST); every frame with a
+# known hour falls in exactly one window.
+TIME_BINS = [
+    (6, 11, "Morning (6-11)"),
+    (11, 15, "Midday (11-15)"),
+    (15, 23, "Evening (15-22)"),
+]
+
 
 def compute_road_props(df: pd.DataFrame, cities: list[str]) -> dict:
     """Per-city proportion female by road class."""
@@ -297,6 +306,8 @@ def make_table1_city_summary(df: pd.DataFrame, cities: list[str]) -> None:
         r"\item 95\% confidence intervals in brackets use cluster-robust standard errors (clustered by video session).",
         r"\item Person-weighted estimates weight each individual equally; image-level means weight each frame equally.",
         r"\item Sex ratio is women per 1,000 men. Gender inferred from visible appearance.",
+        r"\item Per-frame counts are top-coded at 10 (``10+'' recorded as 11), which"
+        r" attenuates shares toward 0.5 in the densest scenes.",
         r"\item Design effect = $1 + (\bar{n}_k - 1) \times \text{ICC}$, where $\bar{n}_k$ is average cluster size.",
         r"\end{tablenotes}",
         r"\end{threeparttable}",
@@ -395,11 +406,7 @@ def make_tableS2_temporal(df: pd.DataFrame, cities: list[str]) -> None:
                 f"{city_label} & {label} & {prop_ci} & {len(we_sub):,} ({s['n_clusters']}) \\\\"
             )
 
-    time_bins = [
-        (7, 11, "Morning (7-11)"),
-        (11, 15, "Midday (11-15)"),
-        (15, 19, "Evening (15-19)"),
-    ]
+    time_bins = TIME_BINS
 
     lines.append(r"\midrule")
     lines.append(r"\multicolumn{4}{l}{\textit{Prop.\ female by time window}} \\")
@@ -441,7 +448,7 @@ def make_tableS2_temporal(df: pd.DataFrame, cities: list[str]) -> None:
         r"\end{tabular}",
         r"\begin{tablenotes}[flushleft]",
         r"\item 95\% CIs use cluster-robust standard errors (clustered by video session).",
-        r"\item Coverage spans daytime hours only.",
+        r"\item Collection spans roughly 06:00--22:00 IST; the three windows partition it.",
         r"\end{tablenotes}",
         r"\end{threeparttable}",
         r"\end{table}",
@@ -488,10 +495,11 @@ def make_tableS3_poi_infrastructure(df: pd.DataFrame) -> None:
         lines.append(r"\addlinespace")
 
     lines.append(r"\midrule")
-    lines.append(r"\multicolumn{4}{l}{\textit{Streetscape disorder (all cities pooled)}} \\")
+    lines.append(r"\multicolumn{4}{l}{\textit{Infrastructure and disorder (all cities pooled)}} \\")
     lines.append(r"\midrule")
 
     infra_fields = [
+        ("footpath", "Footpath"),
         ("potholes", "Potholes"),
         ("litter", "Litter"),
     ]
@@ -534,7 +542,8 @@ def make_tableS3_poi_infrastructure(df: pd.DataFrame) -> None:
         r"\end{tabular}",
         r"\begin{tablenotes}[flushleft]",
         r"\item 95\% CIs use cluster-robust standard errors (clustered by video session).",
-        r"\item Footpath was never coded present and is omitted.",
+        r"\item Footpath is coded present for paved (including blocked) sidewalks;"
+        r" unfilled fields count as absent.",
         r"\item Per-city POI rows report point estimates with frame counts;"
         r" cells with no frames are dashed.",
         r"\end{tablenotes}",
@@ -572,18 +581,19 @@ def make_fig2_distribution(df: pd.DataFrame, cities: list[str]) -> None:
         ax.axvline(x=0.5, color=PARITY_C, linestyle="--", linewidth=0.7, label="Parity")
         ax.axvline(
             x=s["weighted"],
-            color=color,
+            color="#222222",
             linestyle="-",
             linewidth=1.2,
-            label=f"Mean = {s['weighted']:.2f}",
+            label=f"Share = {s['weighted']:.1%}",
         )
         ax.axvspan(s["weighted_ci_lower"], s["weighted_ci_upper"], alpha=0.15, color=color)
-        ax.set_xlabel("Proportion female")
         ax.set_title(CITY_LABELS.get(city, city), fontsize=9, fontweight="bold")
         ax.legend(fontsize=6.5, frameon=False, loc="upper right")
         ax.set_xlim(-0.05, 1.05)
+        ax.xaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
 
     axes[0].set_ylabel("Number of images")
+    fig.supxlabel("Percent female (per image)", fontsize=8)
     fig.tight_layout()
     fig.savefig(FIGS / "fig2_distribution.pdf")
     plt.close(fig)
@@ -627,7 +637,8 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
 
     ax.set_xticks(x)
     ax.set_xticklabels(["Pedestrian", "Two-wheeler"])
-    ax.set_ylabel("Proportion female")
+    ax.set_ylabel("Percent female")
+    ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
     ax.set_ylim(0, 0.50)
     ax.axhline(y=0.5, color=PARITY_C, linestyle="--", linewidth=0.5)
     ax.legend(fontsize=6.5, frameon=False)
@@ -665,7 +676,8 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
 
     ax.set_xticks(x)
     ax.set_xticklabels(road_labels, fontsize=7)
-    ax.set_ylabel("Proportion female")
+    ax.set_ylabel("Percent female")
+    ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
     ax.set_ylim(0, 0.35)
     ax.axhline(y=0.5, color=PARITY_C, linestyle="--", linewidth=0.5)
     ax.legend(fontsize=6.5, frameon=False)
@@ -704,7 +716,8 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
 
     ax.set_xticks(x)
     ax.set_xticklabels([p[1] for p in pois], fontsize=7)
-    ax.set_ylabel("Proportion female")
+    ax.set_ylabel("Percent female")
+    ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
     ax.set_ylim(0, 0.35)
     ax.legend(title="POI", fontsize=6.5, title_fontsize=6.5, frameon=False)
     ax.set_title("C  Point of interest", fontsize=8.5, fontweight="bold", loc="left")
@@ -748,7 +761,8 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
 
     ax.axhline(y=0.5, color=PARITY_C, linestyle="--", linewidth=0.5)
     ax.set_xlabel("Hour of day (IST)")
-    ax.set_ylabel("Proportion female")
+    ax.set_ylabel("Percent female")
+    ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
     ax.set_ylim(0, 0.50)
     if plotted_hours:
         ax.set_xlim(min(plotted_hours) - 0.5, max(plotted_hours) + 0.5)
@@ -808,7 +822,8 @@ def make_fig4_weekday_weekend(df: pd.DataFrame, cities: list[str]) -> None:
 
     ax.set_xticks(x)
     ax.set_xticklabels(["Weekday", "Weekend"])
-    ax.set_ylabel("Proportion female")
+    ax.set_ylabel("Percent female")
+    ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
     ax.set_ylim(0, 0.35)
     ax.axhline(y=0.5, color=PARITY_C, linestyle="--", linewidth=0.5)
     ax.legend(fontsize=6.5, frameon=False)
@@ -845,35 +860,39 @@ def make_fig5_pedestrian_crowdsize(df: pd.DataFrame, cities: list[str]) -> None:
 
     fig, ax = plt.subplots(figsize=(5, 3.5))
 
+    z = 1.96  # Wilson 95% CI on the per-bin share (persons treated as independent)
+    y_top = 0.0
     for city in cities:
-        sub = valid[(valid["city"] == city) & (valid["total_pedestrians"] <= max_bin)]
         color = COLORS.get(city, "#666666")
         label = CITY_LABELS.get(city, city)
 
-        ax.scatter(
-            sub["total_pedestrians"],
-            sub["prop_ped_women"],
-            c=color,
-            s=8,
-            alpha=0.15,
-            edgecolors="none",
-        )
-
         by_size = binned[city]
-        ax.plot(
+        n = by_size["pedestrians"].astype(float)
+        p = by_size["women"] / n
+        denom = 1 + z**2 / n
+        center = (p + z**2 / (2 * n)) / denom
+        half = z * np.sqrt(p * (1 - p) / n + z**2 / (4 * n**2)) / denom
+        lo, hi = center - half, center + half
+        y_top = max(y_top, hi.max())
+
+        ax.errorbar(
             by_size.index,
-            by_size["women"] / by_size["pedestrians"],
-            "o-",
+            p,
+            yerr=[p - lo, hi - p],
+            fmt="o-",
             color=color,
             markersize=3.5,
             linewidth=1.5,
+            elinewidth=0.8,
+            capsize=1.5,
+            alpha=0.9,
             label=label,
         )
 
-    ax.axhline(y=0.5, color=PARITY_C, linestyle="--", linewidth=0.8)
     ax.set_xlabel("Total pedestrians in frame")
-    ax.set_ylabel("Prop. pedestrian women")
-    ax.set_ylim(0, 1.02)
+    ax.set_ylabel("Percent female (pedestrians)")
+    ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
+    ax.set_ylim(0, min(1.0, y_top + 0.03))
     ax.set_xlim(0.5, max_bin + 0.5)
     ax.legend(fontsize=7, frameon=False)
 

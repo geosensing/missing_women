@@ -89,6 +89,7 @@ def load_all_annotations(city: str) -> pd.DataFrame:
     df = parse_mod.parse_all_annotations(DATA / city / "labelstudio", city)
     df = build_mod.convert_counts(df)
     df = build_mod.add_computed_fields(df)
+    df = build_mod.normalize_categorical(df)
     df = build_mod.fill_infrastructure_columns(df)
     return df
 
@@ -115,7 +116,7 @@ def build_pairs(df: pd.DataFrame) -> tuple[pd.DataFrame, str]:
 
     One row per (image, reviewer) overlap; columns ``<measure>_p`` (primary) and
     ``<measure>_r`` (reviewer). A repeat annotation by the same person is collapsed to
-    its first record so only distinct-annotator pairs are compared.
+    its latest record so only distinct-annotator pairs are compared.
     """
     df = build_mod.keep_latest_annotation(df.dropna(subset=["annotator"]))
     primary = build_mod.get_primary_annotator(df)

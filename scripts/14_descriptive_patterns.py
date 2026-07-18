@@ -33,12 +33,9 @@ TABS.mkdir(parents=True, exist_ok=True)
 
 MIN_ROAD_FRAMES = 30
 MIN_CELL_FRAMES = 20
+MIN_PLACE_VIDEOS = 2
 
-TIME_BINS = [
-    (7, 11, "Morning (7-11)"),
-    (11, 15, "Midday (11-15)"),
-    (15, 19, "Evening (15-19)"),
-]
+TIME_BINS = analysis.TIME_BINS
 
 
 def city_label(city: str) -> str:
@@ -89,15 +86,21 @@ def accompaniment_section(df: pd.DataFrame, cities: list[str]) -> list[str]:
         "",
         "### P(frame contains a woman) by crowd size: observed vs binomial",
         "",
-        "Expected under independent mixing: `1 - (1 - p_city)^n` averaged over frames",
-        "in the bucket, with `p_city` the city's pedestrian female share. Observed below",
-        "expected means women cluster together in fewer frames than chance.",
+        "Two independent-mixing benchmarks, `1 - (1 - p)^n` averaged over frames in the",
+        "bucket: `city` uses the city-wide pedestrian female share; `video` uses each",
+        "video session's own share, so it conditions on place and time. Observed below",
+        "the city benchmark but close to the video benchmark means women concentrate in",
+        "particular places/times rather than clustering socially within a scene.",
         "",
     ]
     buckets = [(1, 1, "1"), (2, 3, "2-3"), (4, 6, "4-6"), (7, np.inf, "7+")]
     rows = []
     for city in cities:
         sub = ped[ped["city"] == city]
+        vid_p = sub.groupby("base_video_id").apply(
+            lambda g: g["women_count"].sum() / g["n_ped"].sum(), include_groups=False
+        )
+        sub = sub.join(vid_p.rename("p_vid"), on="base_video_id")
         p = sub["women_count"].sum() / sub["n_ped"].sum()
         cells = []
         for lo, hi, _ in buckets:
@@ -106,10 +109,11 @@ def accompaniment_section(df: pd.DataFrame, cities: list[str]) -> list[str]:
                 cells.append("--")
                 continue
             obs = (b["women_count"] > 0).mean()
-            exp = (1 - (1 - p) ** b["n_ped"]).mean()
-            cells.append(f"{obs:.0%} vs {exp:.0%}")
+            exp_city = (1 - (1 - p) ** b["n_ped"]).mean()
+            exp_vid = (1 - (1 - b["p_vid"]) ** b["n_ped"]).mean()
+            cells.append(f"{obs:.0%} vs {exp_city:.0%} / {exp_vid:.0%}")
         rows.append([city_label(city)] + cells)
-    lines += md_table(["City"] + [f"n={b[2]} (obs vs exp)" for b in buckets], rows)
+    lines += md_table(["City"] + [f"n={b[2]} (obs vs city/video exp)" for b in buckets], rows)
     return lines
 
 
@@ -122,25 +126,38 @@ def place_rankings_section(df: pd.DataFrame) -> list[str]:
         n=("total_people", "size"),
         people=("total_people", "sum"),
         women=("total_women", "sum"),
+        n_videos=("base_video_id", "nunique"),
     )
-    roads = roads[roads["n"] >= MIN_ROAD_FRAMES]
+    roads = roads[(roads["n"] >= MIN_ROAD_FRAMES) & (roads["n_videos"] >= MIN_PLACE_VIDEOS)]
     roads["pf"] = roads["women"] / roads["people"]
     roads = roads.sort_values("pf")
+    k_roads = min(10, len(roads) // 2)
 
     def road_rows(chunk: pd.DataFrame) -> list[list[str]]:
         return [
-            [name, city_label(city), f"{r.pf:.1%}", f"{int(r.people):,}", int(r.n)]
+            [name, city_label(city), f"{r.pf:.1%}", f"{int(r.people):,}", int(r.n), int(r.n_videos)]
             for (city, name), r in chunk.iterrows()
         ]
 
-    lines += [f"### Named corridors ({MIN_ROAD_FRAMES}+ frames): lowest female share", ""]
-    lines += md_table(
-        ["Road", "City", "Female share", "People", "Frames"], road_rows(roads.head(10))
-    )
-    lines += ["", f"### Named corridors ({MIN_ROAD_FRAMES}+ frames): highest female share", ""]
-    lines += md_table(
-        ["Road", "City", "Female share", "People", "Frames"], road_rows(roads.tail(10).iloc[::-1])
-    )
+    road_header = ["Road", "City", "Female share", "People", "Frames", "Videos"]
+    lines += [
+        f"### Named corridors ({MIN_ROAD_FRAMES}+ frames, {MIN_PLACE_VIDEOS}+ video sessions): "
+        "lowest female share",
+        "",
+    ]
+    lines += md_table(road_header, road_rows(roads.head(k_roads)))
+    lines += [
+        "",
+        f"### Named corridors ({MIN_ROAD_FRAMES}+ frames, {MIN_PLACE_VIDEOS}+ video sessions): "
+        "highest female share",
+        "",
+    ]
+    lines += md_table(road_header, road_rows(roads.tail(k_roads).iloc[::-1]))
+    lines += [
+        "",
+        "Corridors seen in a single video session are excluded: their shares reflect one",
+        "walk's idiosyncrasy as much as the place.",
+    ]
 
     gps = df[df["gps_lat"].notna()].copy()
     gps["cell_lat"] = gps["gps_lat"].round(3)
@@ -149,28 +166,46 @@ def place_rankings_section(df: pd.DataFrame) -> list[str]:
         n=("total_people", "size"),
         people=("total_people", "sum"),
         women=("total_women", "sum"),
+        n_videos=("base_video_id", "nunique"),
         road=("osm_road_name", lambda s: s.mode().iat[0] if s.notna().any() else "--"),
     )
+    # No multi-video requirement at ~100m granularity (few cells are revisited);
+    # the Videos column flags single-walk cells instead.
     cells = cells[cells["n"] >= MIN_CELL_FRAMES]
     cells["pf"] = cells["women"] / cells["people"]
     cells = cells.sort_values("pf")
+    k_cells = min(10, len(cells) // 2)
 
     def cell_rows(chunk: pd.DataFrame) -> list[list[str]]:
         return [
-            [f"{lat:.3f}, {lon:.3f}", city_label(city), r.road, f"{r.pf:.1%}", f"{int(r.people):,}"]
+            [
+                f"{lat:.3f}, {lon:.3f}",
+                city_label(city),
+                r.road,
+                f"{r.pf:.1%}",
+                f"{int(r.people):,}",
+                int(r.n_videos),
+            ]
             for (city, lat, lon), r in chunk.iterrows()
         ]
 
-    lines += ["", f"### ~100m grid cells ({MIN_CELL_FRAMES}+ frames): lowest female share", ""]
-    lines += md_table(
-        ["Cell (lat, lon)", "City", "Nearest road", "Female share", "People"],
-        cell_rows(cells.head(10)),
-    )
-    lines += ["", f"### ~100m grid cells ({MIN_CELL_FRAMES}+ frames): highest female share", ""]
-    lines += md_table(
-        ["Cell (lat, lon)", "City", "Nearest road", "Female share", "People"],
-        cell_rows(cells.tail(10).iloc[::-1]),
-    )
+    cell_header = ["Cell (lat, lon)", "City", "Nearest road", "Female share", "People", "Videos"]
+    lines += [
+        "",
+        f"### ~100m grid cells ({MIN_CELL_FRAMES}+ frames): lowest female share",
+        "",
+    ]
+    lines += md_table(cell_header, cell_rows(cells.head(k_cells)))
+    lines += [
+        "",
+        f"### ~100m grid cells ({MIN_CELL_FRAMES}+ frames): highest female share",
+        "",
+    ]
+    lines += md_table(cell_header, cell_rows(cells.tail(k_cells).iloc[::-1]))
+    lines += [
+        "",
+        "Cells with Videos = 1 reflect a single walk; treat their shares as suggestive.",
+    ]
     return lines
 
 
@@ -185,7 +220,7 @@ def regression_section(df: pd.DataFrame) -> list[str]:
         right=False,
     )
     d["road_class"] = d["road_class"].fillna("unmatched")
-    for col in ["street_vendor", "bus_station", "litter", "potholes", "is_weekend"]:
+    for col in ["street_vendor", "bus_station", "litter", "potholes", "footpath", "is_weekend"]:
         d[col] = (d[col] == True).astype(int)  # noqa: E712  (object columns with None)
     d["log_people"] = np.log(d["total_people"])
     d = d.dropna(subset=["window", "prop_female_all"])
@@ -194,7 +229,8 @@ def regression_section(df: pd.DataFrame) -> list[str]:
         "prop_female_all ~ C(city, Treatment('mumbai'))"
         " + C(road_class, Treatment('residential'))"
         " + C(window, Treatment('Midday (11-15)'))"
-        " + is_weekend + street_vendor + bus_station + litter + potholes + log_people",
+        " + is_weekend + street_vendor + bus_station + litter + potholes + footpath"
+        " + log_people",
         data=d,
         weights=d["total_people"],
     )
@@ -208,13 +244,14 @@ def regression_section(df: pd.DataFrame) -> list[str]:
         "C(road_class, Treatment('residential'))[T.secondary]": "Secondary road (vs residential)",
         "C(road_class, Treatment('residential'))[T.tertiary]": "Tertiary road (vs residential)",
         "C(road_class, Treatment('residential'))[T.unmatched]": "Road unmatched (vs residential)",
-        "C(window, Treatment('Midday (11-15)'))[T.Morning (7-11)]": "Morning 7-11 (vs midday)",
-        "C(window, Treatment('Midday (11-15)'))[T.Evening (15-19)]": "Evening 15-19 (vs midday)",
+        "C(window, Treatment('Midday (11-15)'))[T.Morning (6-11)]": "Morning 6-11 (vs midday)",
+        "C(window, Treatment('Midday (11-15)'))[T.Evening (15-22)]": "Evening 15-22 (vs midday)",
         "is_weekend": "Weekend",
         "street_vendor": "Street vendor present",
         "bus_station": "Bus station present",
         "litter": "Litter present",
         "potholes": "Potholes present",
+        "footpath": "Footpath present",
         "log_people": "log(people in frame)",
     }
 
@@ -223,7 +260,9 @@ def regression_section(df: pd.DataFrame) -> list[str]:
         "",
         f"WLS of frame-level female share, weighted by people per frame (n={len(d):,} frames,",
         f"{d['base_video_id'].nunique()} video-session clusters); cluster-robust SEs.",
-        "Coefficients in percentage points. Descriptive, not causal.",
+        "Sample: all frames with at least one person and a known hour (the windows",
+        "partition the full 06:00-22:00 collection span). Coefficients in percentage",
+        "points. Descriptive, not causal.",
         "",
     ]
     rows = []
@@ -234,6 +273,19 @@ def regression_section(df: pd.DataFrame) -> list[str]:
         rows.append([label, f"{b:+.1f}{star}", f"[{lo:+.1f}, {hi:+.1f}]"])
     lines += md_table(["Correlate", "pp diff", "95% CI"], rows)
     lines += ["", "`*` p < 0.05. Base: Mumbai, residential road, midday, weekday, no POI/disorder."]
+    lines += [
+        "",
+        "## Limitations",
+        "",
+        '- Per-frame counts are top-coded at 10 ("10+" recorded as 11), attenuating',
+        "  shares toward 0.5 in the densest scenes.",
+        "- Collection spans roughly 06:00-22:00 IST only; nothing here speaks to night.",
+        "- Road class is measured with error: itinerary and OSM road types agree on",
+        "  ~72% of frames where both exist.",
+        "- The same individuals can appear in multiple frames of one video session;",
+        "  the estimand is the visible street population, and clustering by session",
+        "  handles the standard errors, not the repeated sightings themselves.",
+    ]
     return lines
 
 

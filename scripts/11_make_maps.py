@@ -56,7 +56,7 @@ CITY_LABELS = {
 
 CITY_BOUNDS = {
     "mumbai": {"lat": (18.85, 19.30), "lon": (72.75, 73.05)},
-    "navi_mumbai": {"lat": (18.90, 19.25), "lon": (72.80, 73.10)},
+    "navi_mumbai": {"lat": (18.90, 19.25), "lon": (72.80, 73.15)},
     "bangalore": {"lat": (12.60, 13.30), "lon": (77.30, 77.90)},
     "delhi": {"lat": (28.40, 28.90), "lon": (76.70, 77.50)},
 }
@@ -130,12 +130,14 @@ def make_locations_map(geo: pd.DataFrame, city: str) -> None:
 
     cluster = MarkerCluster(name=f"{label} (n={len(geo):,})")
     for _, row in geo.iterrows():
+        pw = row.get("prop_women")
+        pw_text = f"{pw:.0%}" if pd.notna(pw) else "--"
         popup_text = f"""
         <b>{label}</b><br>
         Video: {row.get("base_video_id", "N/A")}<br>
         Frame: {row.get("frame_number", "N/A")}<br>
         People: {row.get("total_people", "N/A")}<br>
-        Prop women: {row.get("prop_women", 0):.2f}
+        Percent women: {pw_text}
         """
         folium.CircleMarker(
             location=[row["gps_lat"], row["gps_lon"]],
@@ -200,10 +202,10 @@ def make_sex_ratio_map(geo: pd.DataFrame, city: str) -> None:
     <div style="position: fixed; bottom: 50px; left: 50px; z-index: 1000;
                 background-color: white; padding: 10px; border-radius: 5px;
                 border: 2px solid grey; font-size: 12px;">
-        <b>Proportion Women</b><br>
-        <i style="background: {c0}; width: 12px; height: 12px; display: inline-block; border-radius: 50%;"></i> 0.00<br>
-        <i style="background: {c25}; width: 12px; height: 12px; display: inline-block; border-radius: 50%;"></i> 0.25<br>
-        <i style="background: {c50}; width: 12px; height: 12px; display: inline-block; border-radius: 50%;"></i> 0.50+
+        <b>Percent Women</b><br>
+        <i style="background: {c0}; width: 12px; height: 12px; display: inline-block; border-radius: 50%;"></i> 0%<br>
+        <i style="background: {c25}; width: 12px; height: 12px; display: inline-block; border-radius: 50%;"></i> 25%<br>
+        <i style="background: {c50}; width: 12px; height: 12px; display: inline-block; border-radius: 50%;"></i> 50%+
     </div>
     """.format(
         c0=get_color_for_prop(0.0), c25=get_color_for_prop(0.25), c50=get_color_for_prop(0.5)
@@ -302,9 +304,9 @@ def make_sex_ratio_pdf(
     cx.add_basemap(ax, source=cx.providers.CartoDB.Positron)
 
     cbar = fig.colorbar(sc, ax=ax, shrink=0.6, pad=0.02)
-    cbar.set_label("Share female (person-weighted)", fontsize=10)
+    cbar.set_label("Percent female (person-weighted)", fontsize=10)
     cbar.set_ticks([0, 0.125, 0.25, 0.375, 0.5])
-    cbar.set_ticklabels(["0.00", "0.12", "0.25", "0.38", "0.50+"])
+    cbar.set_ticklabels(["0%", "12%", "25%", "38%", "50%+"])
 
     ax.set_axis_off()
     ax.set_title(f"{label}: Share Female by Location", fontsize=12, fontweight="bold")

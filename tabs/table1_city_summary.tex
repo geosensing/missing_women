@@ -7,27 +7,28 @@
 \toprule
  & Mumbai & Navi Mumbai & Bangalore & Delhi \\
 \midrule
-Images annotated & 2,836 & 2,112 & 2,013 & 2,411 \\
+Images annotated & 2,883 & 2,189 & 2,015 & 2,417 \\
 Video sessions (clusters) & 119 & 54 & 259 & 445 \\
-Total people classified & 17,709 & 7,619 & 5,883 & 6,870 \\
+Total people classified & 17,925 & 7,977 & 5,907 & 6,892 \\
 \addlinespace
-Prop.\ female (person-weighted) & 0.160 [0.147, 0.173] & 0.137 [0.123, 0.150] & 0.161 [0.149, 0.172] & 0.120 [0.109, 0.130] \\
-Prop.\ female (image-level mean) & 0.146 [0.133, 0.160] & 0.129 [0.112, 0.146] & 0.145 [0.132, 0.159] & 0.112 [0.101, 0.123] \\
+Prop.\ female (person-weighted) & 0.159 [0.147, 0.172] & 0.136 [0.123, 0.149] & 0.160 [0.149, 0.172] & 0.120 [0.109, 0.130] \\
+Prop.\ female (image-level mean) & 0.146 [0.133, 0.160] & 0.130 [0.113, 0.146] & 0.145 [0.132, 0.159] & 0.112 [0.100, 0.123] \\
 \addlinespace
 Sex ratio (F/1000 M) & 190 & 158 & 191 & 136 \\
 \addlinespace
-Pedestrian prop.\ female & 0.193 & 0.182 & 0.274 & 0.198 \\
-Pedestrian sex ratio (F/1000 M) & 239 & 222 & 378 & 247 \\
+Pedestrian prop.\ female & 0.193 & 0.181 & 0.274 & 0.198 \\
+Pedestrian sex ratio (F/1000 M) & 238 & 221 & 377 & 246 \\
 \addlinespace
 \multicolumn{5}{l}{\textit{Clustering diagnostics}} \\
-ICC (prop.\ female by video) & 0.055 & 0.050 & 0.084 & 0.060 \\
-Design effect & 2.11 & 2.42 & 1.34 & 1.18 \\
+ICC (prop.\ female by video) & 0.055 & 0.048 & 0.084 & 0.060 \\
+Design effect & 2.14 & 2.44 & 1.34 & 1.17 \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}[flushleft]
 \item 95\% confidence intervals in brackets use cluster-robust standard errors (clustered by video session).
 \item Person-weighted estimates weight each individual equally; image-level means weight each frame equally.
 \item Sex ratio is women per 1,000 men. Gender inferred from visible appearance.
+\item Per-frame counts are top-coded at 10 (``10+'' recorded as 11), which attenuates shares toward 0.5 in the densest scenes.
 \item Design effect = $1 + (\bar{n}_k - 1) \times \text{ICC}$, where $\bar{n}_k$ is average cluster size.
 \end{tablenotes}
 \end{threeparttable}
