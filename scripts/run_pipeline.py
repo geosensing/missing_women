@@ -295,13 +295,13 @@ def print_summary(df: pd.DataFrame) -> None:
 
     print(f"\n1. Row count: {len(df):,}")
 
-    gps_rate = df["gps_lat"].notna().mean()
+    gps_rate = df["gps_valid"].mean()
     print(f"\n2. GPS coverage: {100 * gps_rate:.1f}%")
 
     if "region" in df.columns:
         for region in df["region"].unique():
             mask = df["region"] == region
-            region_gps = df.loc[mask, "gps_lat"].notna().mean()
+            region_gps = df.loc[mask, "gps_valid"].mean()
             print(f"   - {region}: {100 * region_gps:.1f}%")
 
     if "gps_time_diff_sec" in df.columns:

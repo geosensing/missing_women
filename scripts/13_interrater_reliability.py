@@ -158,8 +158,11 @@ def continuous_metrics(pairs: pd.DataFrame, col: str) -> dict:
 
 
 def binary_metrics(pairs: pd.DataFrame, col: str) -> dict:
-    a = pairs.get(f"{col}_p").map(lambda x: False if pd.isna(x) else bool(x))
-    b = pairs.get(f"{col}_r").map(lambda x: False if pd.isna(x) else bool(x))
+    a = pairs.get(f"{col}_p")
+    b = pairs.get(f"{col}_r")
+    ok = a.notna() & b.notna()
+    a = a[ok].astype(bool)
+    b = b[ok].astype(bool)
     n = len(a)
     agree = float((a.to_numpy() == b.to_numpy()).mean()) if n else np.nan
     if n < 2 or a.nunique() < 2 or b.nunique() < 2:

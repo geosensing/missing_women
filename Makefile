@@ -9,16 +9,18 @@ PY ?= .venv/bin/python
 CITY ?= mumbai                       # single city for run_pipeline
 CITIES ?= mumbai,navi_mumbai,bangalore,delhi  # comma-separated for figure/table scripts
 
-.PHONY: help install data analyze figures tables irr lint clean
+.PHONY: help install data analyze figures tables irr test lint ci clean
 
 help:
-	@echo "make install              uv sync all deps (incl. editable ../geoinference) into .venv"
+	@echo "make install              sync the locked analysis environment"
 	@echo "make data                 (re)build analysis_data.parquet for all cities (gitignored, derived)"
 	@echo "make analyze CITY=mumbai  run the analysis half for one city (uses cached GPS index)"
 	@echo "make figures CITIES=...    regenerate EDA + publication figures/tables + maps"
 	@echo "make tables  CITIES=...    regenerate publication tables only"
 	@echo "make irr     CITIES=...    inter-rater reliability table + console summary"
+	@echo "make test                 run the analysis regression tests"
 	@echo "make lint                 ruff format + ruff check --fix over scripts/"
+	@echo "make ci                   run formatting, lint, and tests without modifying files"
 	@echo "make clean                remove generated figures and tables"
 
 install:
@@ -46,9 +48,17 @@ tables:
 irr:
 	$(PY) scripts/13_interrater_reliability.py --cities $(CITIES)
 
+test:
+	uv run pytest
+
 lint:
 	uv run ruff format scripts/
 	uv run ruff check --fix scripts/
+
+ci:
+	uv run ruff format --check scripts/ tests/
+	uv run ruff check scripts/ tests/
+	uv run pytest
 
 clean:
 	rm -f figs/*.pdf figs/*.png figs/*.html tabs/*.tex tabs/descriptive_patterns.md

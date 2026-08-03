@@ -7,29 +7,29 @@
 \toprule
 City & Period & Prop.\ female [95\% CI] & Images (clusters) \\
 \midrule
-Mumbai & Weekday & 0.162 [0.147, 0.176] & 2,326 (88) \\
-Mumbai & Weekend & 0.143 [0.116, 0.171] & 483 (25) \\
-Navi Mumbai & Weekday & 0.135 [0.121, 0.149] & 1,952 (47) \\
-Navi Mumbai & Weekend & 0.146 [0.098, 0.194] & 237 (7) \\
-Bangalore & Weekday & 0.157 [0.146, 0.169] & 1,929 (237) \\
-Bangalore & Weekend & 0.215 [0.156, 0.273] & 86 (22) \\
-Delhi & Weekday & 0.123 [0.111, 0.134] & 1,956 (364) \\
-Delhi & Weekend & 0.105 [0.077, 0.134] & 334 (50) \\
+Mumbai & Weekday & 0.197 [0.178, 0.215] & 2,326 (8) \\
+Mumbai & Weekend & 0.166 [0.135, 0.197] & 483 (4) \\
+Navi Mumbai & Weekday & 0.181 [0.158, 0.204] & 1,952 (7) \\
+Navi Mumbai & Weekend & 0.178 [0.000, 0.785] & 237 (2) \\
+Bangalore & Weekday & 0.274 [0.255, 0.292] & 1,929 (12) \\
+Bangalore & Weekend & 0.278 [nan, nan] & 86 (1) \\
+Delhi & Weekday & 0.203 [0.175, 0.231] & 1,956 (11) \\
+Delhi & Weekend & 0.181 [0.000, 0.653] & 334 (2) \\
 \midrule
 \multicolumn{4}{l}{\textit{Prop.\ female by time window}} \\
 \midrule
-Mumbai & Morning (6-11) & 0.160 [0.138, 0.182] & 612 (20) \\
-Mumbai & Midday (11-15) & 0.168 [0.145, 0.191] & 1,147 (49) \\
-Mumbai & Evening (15-22) & 0.146 [0.131, 0.161] & 1,050 (55) \\
-Navi Mumbai & Morning (6-11) & 0.132 [0.116, 0.148] & 1,025 (20) \\
-Navi Mumbai & Midday (11-15) & 0.138 [0.114, 0.162] & 904 (28) \\
-Navi Mumbai & Evening (15-22) & 0.162 [0.094, 0.231] & 260 (7) \\
-Bangalore & Morning (6-11) & 0.161 [0.144, 0.177] & 776 (95) \\
-Bangalore & Midday (11-15) & 0.142 [0.122, 0.161] & 738 (96) \\
-Bangalore & Evening (15-22) & 0.178 [0.156, 0.200] & 501 (75) \\
-Delhi & Morning (6-11) & 0.097 [0.081, 0.112] & 627 (119) \\
-Delhi & Midday (11-15) & 0.140 [0.122, 0.158] & 952 (186) \\
-Delhi & Evening (15-22) & 0.114 [0.096, 0.133] & 711 (117) \\
+Mumbai & Morning (6-11) & 0.197 [0.139, 0.255] & 612 (5) \\
+Mumbai & Midday (11-15) & 0.207 [0.175, 0.238] & 1,147 (11) \\
+Mumbai & Evening (15-22) & 0.169 [0.136, 0.201] & 1,050 (11) \\
+Navi Mumbai & Morning (6-11) & 0.178 [0.156, 0.200] & 1,025 (6) \\
+Navi Mumbai & Midday (11-15) & 0.177 [0.134, 0.220] & 904 (7) \\
+Navi Mumbai & Evening (15-22) & 0.223 [nan, nan] & 260 (1) \\
+Bangalore & Morning (6-11) & 0.277 [0.240, 0.313] & 776 (11) \\
+Bangalore & Midday (11-15) & 0.253 [0.212, 0.294] & 738 (12) \\
+Bangalore & Evening (15-22) & 0.287 [0.258, 0.315] & 501 (8) \\
+Delhi & Morning (6-11) & 0.174 [0.140, 0.208] & 627 (12) \\
+Delhi & Midday (11-15) & 0.222 [0.191, 0.253] & 952 (13) \\
+Delhi & Evening (15-22) & 0.186 [0.141, 0.232] & 711 (11) \\
 \midrule
 \multicolumn{4}{l}{\textit{Share of images by time window}} \\
 \midrule
@@ -48,7 +48,7 @@ Delhi & Evening (15-22) & 31.0\% & 711 \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}[flushleft]
-\item 95\% CIs use cluster-robust standard errors (clustered by video session).
+\item 95\% CIs use collection-day cluster-robust standard errors.
 \item Collection spans roughly 06:00--22:00 IST; the three windows partition it.
 \end{tablenotes}
 \end{threeparttable}

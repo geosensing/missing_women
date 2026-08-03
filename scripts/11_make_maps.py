@@ -32,6 +32,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from analysis_config import CITY_BOUNDS
 from matplotlib.colors import ListedColormap, to_hex
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -51,13 +52,6 @@ CITY_LABELS = {
     "navi_mumbai": "Navi Mumbai",
     "bangalore": "Bangalore",
     "delhi": "Delhi",
-}
-
-CITY_BOUNDS = {
-    "mumbai": {"lat": (18.85, 19.30), "lon": (72.75, 73.05)},
-    "navi_mumbai": {"lat": (18.90, 19.25), "lon": (72.80, 73.15)},
-    "bangalore": {"lat": (12.60, 13.30), "lon": (77.30, 77.90)},
-    "delhi": {"lat": (28.40, 28.90), "lon": (76.70, 77.50)},
 }
 
 
@@ -98,11 +92,12 @@ def filter_valid_gps(df: pd.DataFrame) -> pd.DataFrame:
             & (geo["gps_lon"] <= bounds["lon"][1])
         )
         n_total = (df["city"] == city).sum()
-        n_gps = (geo["city"] == city).sum()
         n_kept = mask.sum()
+        n_out_of_bounds = int(df.loc[df["city"] == city, "gps_out_of_bounds"].fillna(False).sum())
+        n_missing = n_total - n_kept - n_out_of_bounds
         print(
-            f"  {city}: {n_total:,} frames -> {n_total - n_gps:,} no GPS, "
-            f"{n_gps - n_kept:,} outside bounds (garbage fix), {n_kept:,} mapped"
+            f"  {city}: {n_total:,} frames -> {n_missing:,} no GPS, "
+            f"{n_out_of_bounds:,} outside bounds (garbage fix), {n_kept:,} mapped"
         )
         valid_rows.append(geo[mask])
 
@@ -512,7 +507,9 @@ def main():
             if bounds is not None and len(geo)
             else []
         )
-        print(f"\n{CITY_LABELS.get(city, city)} ({len(geo):,} valid-GPS points, {len(tracks)} tracks):")
+        print(
+            f"\n{CITY_LABELS.get(city, city)} ({len(geo):,} valid-GPS points, {len(tracks)} tracks):"
+        )
         make_locations_map(geo, city, tracks)
         make_sex_ratio_map(geo, city)
         make_locations_pdf(geo, city, tracks, n_total=len(sub))

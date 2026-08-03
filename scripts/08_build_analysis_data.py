@@ -18,6 +18,12 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from analysis_config import (
+    TOPCODE_MINIMUM,
+    canonical_video_id,
+    collection_day_id,
+    valid_gps_mask,
+)
 
 IST_OFFSET = timedelta(hours=5, minutes=30)
 
@@ -27,7 +33,8 @@ def convert_count(value) -> int | None:
     Convert count string to integer.
 
     Handles: "5", ">10", "10+", None, etc.
-    ">10" and "10+" are mapped to 11.
+    ">10" and "10+" are mapped to their known minimum, 11. Separate indicator
+    columns preserve which values are interval-censored for sensitivity analysis.
     """
     if pd.isna(value):
         return None
@@ -35,7 +42,7 @@ def convert_count(value) -> int | None:
     s = str(value).strip()
 
     if s in (">10", "10+", ">10 ", " >10"):
-        return 11
+        return TOPCODE_MINIMUM
 
     try:
         return int(float(s))
@@ -56,8 +63,26 @@ def convert_counts(df: pd.DataFrame) -> pd.DataFrame:
 
     for col in count_cols:
         if col in result.columns:
+            raw = result[col].astype("string").str.strip()
+            result[f"{col}_topcoded"] = raw.isin({">10", "10+"})
             result[col] = result[col].apply(convert_count).fillna(0).astype(int)
 
+    return result
+
+
+def add_analysis_identifiers(df: pd.DataFrame, city: str) -> pd.DataFrame:
+    """Add stable video aliases, fieldwork-day clusters, and GPS QA flags."""
+    result = df.copy()
+    result["canonical_video_id"] = result["base_video_id"].map(canonical_video_id)
+    result["collection_day"] = result["base_video_id"].map(
+        lambda value: collection_day_id(value, city)
+    )
+    if result["collection_day"].isna().any():
+        examples = result.loc[result["collection_day"].isna(), "base_video_id"].drop_duplicates()
+        raise ValueError(
+            f"Could not derive collection day from video IDs: {examples.head().tolist()}"
+        )
+    result["gps_valid"] = valid_gps_mask(result, city).astype(bool)
     return result
 
 
@@ -123,7 +148,7 @@ def add_computed_fields(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def normalize_categorical(df: pd.DataFrame) -> pd.DataFrame:
-    """Normalize categorical fields for consistency."""
+    """Normalize categorical fields while retaining explicit unknown responses."""
     result = df.copy()
 
     bool_cols = [
@@ -136,9 +161,19 @@ def normalize_categorical(df: pd.DataFrame) -> pd.DataFrame:
         "street_vendor",
     ]
 
-    # "Paved" / "Paved - Blocked" are footpath taxonomy values meaning a footpath exists.
     yes_values = {"Yes", "yes", "YES", "1", "True", "true", "Paved", "Paved - Blocked"}
     no_values = {"No", "no", "NO", "0", "False", "false", "No sidewalk"}
+
+    infrastructure_maps = {
+        "footpath": {
+            "Paved": True,
+            "Paved - Blocked": True,
+            "No sidewalk": False,
+            "Not visible": pd.NA,
+        },
+        "potholes": {"Yes": True, "No": False, "N/A": pd.NA},
+        "litter": {"Yes": True, "Construction debris": True, "No": False},
+    }
 
     for col in bool_cols:
         if col not in result.columns:
@@ -146,26 +181,28 @@ def normalize_categorical(df: pd.DataFrame) -> pd.DataFrame:
 
         def normalize_bool(val):
             if pd.isna(val):
-                return None
+                return False if col in infrastructure_maps else pd.NA
             s = str(val).strip()
+            if col in infrastructure_maps:
+                return infrastructure_maps[col].get(s, pd.NA)
             if s in yes_values:
                 return True
             if s in no_values:
                 return False
-            return None
+            return pd.NA
 
-        result[col] = result[col].apply(normalize_bool)
+        result[col] = result[col].apply(normalize_bool).astype("boolean")
 
     return result
 
 
 def fill_infrastructure_columns(df: pd.DataFrame) -> pd.DataFrame:
-    """Fill infrastructure observation columns with False (not observed = absent)."""
+    """Enforce nullable booleans after taxonomy-aware normalization."""
     result = df.copy()
     infra_cols = ["potholes", "litter", "footpath"]
     for col in infra_cols:
         if col in result.columns:
-            result[col] = result[col].map(lambda x: False if pd.isna(x) else x).astype(bool)
+            result[col] = result[col].astype("boolean")
     return result
 
 
@@ -192,6 +229,8 @@ def select_output_columns(df: pd.DataFrame) -> pd.DataFrame:
         "image",
         "region",
         "base_video_id",
+        "canonical_video_id",
+        "collection_day",
         "frame_number",
         "frame_datetime",
         "frame_datetime_ist",
@@ -203,6 +242,8 @@ def select_output_columns(df: pd.DataFrame) -> pd.DataFrame:
         "gps_lon",
         "gps_alt",
         "gps_time_diff_sec",
+        "gps_valid",
+        "gps_out_of_bounds",
         "osm_highway",
         "osm_road_name",
         "osm_surface",
@@ -210,9 +251,13 @@ def select_output_columns(df: pd.DataFrame) -> pd.DataFrame:
         "itinerary_road_type",
         "itinerary_distance_m",
         "men_count",
+        "men_count_topcoded",
         "women_count",
+        "women_count_topcoded",
         "men_twowheeler",
+        "men_twowheeler_topcoded",
         "women_twowheeler",
+        "women_twowheeler_topcoded",
         "total_pedestrians",
         "total_twowheeler",
         "total_people",
@@ -283,13 +328,17 @@ def build_analysis_data(
     print("Adding temporal fields...")
     result = add_temporal_fields(result)
 
+    city = output_dir.name
+    print("Adding analysis identifiers and GPS QA flags...")
+    result = add_analysis_identifiers(result, city)
+
     print("Adding computed fields...")
     result = add_computed_fields(result)
 
     print("Normalizing categorical fields...")
     result = normalize_categorical(result)
 
-    print("Filling infrastructure columns with 0...")
+    print("Finalizing infrastructure columns...")
     result = fill_infrastructure_columns(result)
 
     print("Selecting output columns...")

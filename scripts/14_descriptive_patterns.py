@@ -87,9 +87,9 @@ def accompaniment_section(df: pd.DataFrame, cities: list[str]) -> list[str]:
         "### P(frame contains a woman) by crowd size: observed vs binomial",
         "",
         "Two independent-mixing benchmarks, `1 - (1 - p)^n` averaged over frames in the",
-        "bucket: `city` uses the city-wide pedestrian female share; `video` uses each",
-        "video session's own share, so it conditions on place and time. Observed below",
-        "the city benchmark but close to the video benchmark means women concentrate in",
+        "bucket: `city` uses the city-wide pedestrian female share; `day` uses each",
+        "collection day's own share, so it conditions on fieldwork date. Observed below",
+        "the city benchmark but close to the day benchmark means women concentrate in",
         "particular places/times rather than clustering socially within a scene.",
         "",
     ]
@@ -97,10 +97,10 @@ def accompaniment_section(df: pd.DataFrame, cities: list[str]) -> list[str]:
     rows = []
     for city in cities:
         sub = ped[ped["city"] == city]
-        vid_p = sub.groupby("base_video_id").apply(
+        day_p = sub.groupby("collection_day").apply(
             lambda g: g["women_count"].sum() / g["n_ped"].sum(), include_groups=False
         )
-        sub = sub.join(vid_p.rename("p_vid"), on="base_video_id")
+        sub = sub.join(day_p.rename("p_day"), on="collection_day")
         p = sub["women_count"].sum() / sub["n_ped"].sum()
         cells = []
         for lo, hi, _ in buckets:
@@ -110,10 +110,10 @@ def accompaniment_section(df: pd.DataFrame, cities: list[str]) -> list[str]:
                 continue
             obs = (b["women_count"] > 0).mean()
             exp_city = (1 - (1 - p) ** b["n_ped"]).mean()
-            exp_vid = (1 - (1 - b["p_vid"]) ** b["n_ped"]).mean()
-            cells.append(f"{obs:.0%} vs {exp_city:.0%} / {exp_vid:.0%}")
+            exp_day = (1 - (1 - b["p_day"]) ** b["n_ped"]).mean()
+            cells.append(f"{obs:.0%} vs {exp_city:.0%} / {exp_day:.0%}")
         rows.append([city_label(city)] + cells)
-    lines += md_table(["City"] + [f"n={b[2]} (obs vs city/video exp)" for b in buckets], rows)
+    lines += md_table(["City"] + [f"n={b[2]} (obs vs city/day exp)" for b in buckets], rows)
     return lines
 
 
@@ -123,9 +123,9 @@ def place_rankings_section(df: pd.DataFrame) -> list[str]:
 
     named = df[df["osm_road_name"].notna()]
     roads = named.groupby(["city", "osm_road_name"]).agg(
-        n=("total_people", "size"),
-        people=("total_people", "sum"),
-        women=("total_women", "sum"),
+        n=("total_pedestrians", "size"),
+        people=("total_pedestrians", "sum"),
+        women=("women_count", "sum"),
         n_videos=("base_video_id", "nunique"),
     )
     roads = roads[(roads["n"] >= MIN_ROAD_FRAMES) & (roads["n_videos"] >= MIN_PLACE_VIDEOS)]
@@ -159,13 +159,13 @@ def place_rankings_section(df: pd.DataFrame) -> list[str]:
         "walk's idiosyncrasy as much as the place.",
     ]
 
-    gps = df[df["gps_lat"].notna()].copy()
+    gps = df[df["gps_valid"]].copy()
     gps["cell_lat"] = gps["gps_lat"].round(3)
     gps["cell_lon"] = gps["gps_lon"].round(3)
     cells = gps.groupby(["city", "cell_lat", "cell_lon"]).agg(
-        n=("total_people", "size"),
-        people=("total_people", "sum"),
-        women=("total_women", "sum"),
+        n=("total_pedestrians", "size"),
+        people=("total_pedestrians", "sum"),
+        women=("women_count", "sum"),
         n_videos=("base_video_id", "nunique"),
         road=("osm_road_name", lambda s: s.mode().iat[0] if s.notna().any() else "--"),
     )
@@ -211,8 +211,8 @@ def place_rankings_section(df: pd.DataFrame) -> list[str]:
 
 def regression_section(df: pd.DataFrame) -> list[str]:
     """Joint descriptive WLS of frame-level female share on all correlates."""
-    d = df[(df["total_people"] > 0) & df["frame_hour"].notna()].copy()
-    d["prop_female_all"] = d["total_women"] / d["total_people"]
+    d = df[(df["total_pedestrians"] > 0) & df["frame_hour"].notna()].copy()
+    d["prop_female_ped"] = d["women_count"] / d["total_pedestrians"]
     d["window"] = pd.cut(
         d["frame_hour"],
         bins=[b[0] for b in TIME_BINS] + [TIME_BINS[-1][1]],
@@ -220,21 +220,26 @@ def regression_section(df: pd.DataFrame) -> list[str]:
         right=False,
     )
     d["road_class"] = d["road_class"].fillna("unmatched")
-    for col in ["street_vendor", "bus_station", "litter", "potholes", "footpath", "is_weekend"]:
-        d[col] = (d[col] == True).astype(int)  # noqa: E712  (object columns with None)
-    d["log_people"] = np.log(d["total_people"])
-    d = d.dropna(subset=["window", "prop_female_all"])
+    binary_cols = ["street_vendor", "bus_station", "litter", "potholes", "footpath", "is_weekend"]
+    d = d.dropna(subset=["window", "prop_female_ped", "collection_day", *binary_cols])
+    for col in binary_cols:
+        d[col] = d[col].astype(int)
+    d["log_people"] = np.log(d["total_pedestrians"])
 
     model = smf.wls(
-        "prop_female_all ~ C(city, Treatment('mumbai'))"
+        "prop_female_ped ~ C(city, Treatment('mumbai'))"
         " + C(road_class, Treatment('residential'))"
         " + C(window, Treatment('Midday (11-15)'))"
         " + is_weekend + street_vendor + bus_station + litter + potholes + footpath"
         " + log_people",
         data=d,
-        weights=d["total_people"],
+        weights=d["total_pedestrians"],
     )
-    fit = model.fit(cov_type="cluster", cov_kwds={"groups": d["base_video_id"]})
+    fit = model.fit(
+        cov_type="cluster",
+        cov_kwds={"groups": d["collection_day"], "use_correction": True},
+        use_t=True,
+    )
 
     pretty = {
         "C(city, Treatment('mumbai'))[T.navi_mumbai]": "Navi Mumbai (vs Mumbai)",
@@ -258,8 +263,8 @@ def regression_section(df: pd.DataFrame) -> list[str]:
     lines = [
         "## Joint descriptive regression",
         "",
-        f"WLS of frame-level female share, weighted by people per frame (n={len(d):,} frames,",
-        f"{d['base_video_id'].nunique()} video-session clusters); cluster-robust SEs.",
+        f"WLS of frame-level pedestrian female share, weighted by pedestrians (n={len(d):,} frames,",
+        f"{d['collection_day'].nunique()} collection-day clusters); cluster-robust SEs.",
         "Sample: all frames with at least one person and a known hour (the windows",
         "partition the full 06:00-22:00 collection span). Coefficients in percentage",
         "points. Descriptive, not causal.",
@@ -277,14 +282,15 @@ def regression_section(df: pd.DataFrame) -> list[str]:
         "",
         "## Limitations",
         "",
-        '- Per-frame counts are top-coded at 10 ("10+" recorded as 11), attenuating',
-        "  shares toward 0.5 in the densest scenes.",
+        "- Per-frame counts are top-coded at 10; the primary analysis uses the known",
+        "  minimum of 11 and the publication tables report replacement-value sensitivity.",
         "- Collection spans roughly 06:00-22:00 IST only; nothing here speaks to night.",
         "- Road class is measured with error: itinerary and OSM road types agree on",
         "  ~72% of frames where both exist.",
-        "- The same individuals can appear in multiple frames of one video session;",
-        "  the estimand is the visible street population, and clustering by session",
-        "  handles the standard errors, not the repeated sightings themselves.",
+        "- The same individuals can appear in multiple face-triggered frames. Collection-day",
+        "  clustering allows dependent errors but does not remove repeated-sighting bias.",
+        "- Results describe classified sightings on collected routes, not city residents",
+        "  or a probability sample of streets.",
     ]
     return lines
 
@@ -296,15 +302,15 @@ def main():
     cities = [c.strip() for c in args.cities.split(",")]
 
     df = analysis.load_all_cities(cities)
-    valid = df[df["total_people"] > 0]
-    print(f"Loaded {len(df):,} rows ({len(valid):,} with people)")
+    valid = df[df["total_pedestrians"] > 0]
+    print(f"Loaded {len(df):,} rows ({len(valid):,} with pedestrians)")
 
     lines = [
         "# Descriptive patterns: where do we see more women?",
         "",
         f"Generated by `scripts/14_descriptive_patterns.py` for cities: "
         f"{', '.join(city_label(c) for c in cities)}.",
-        "Shares are person-weighted (`sum(women) / sum(people)`) unless noted.",
+        "Shares are pedestrian-weighted (`sum(women pedestrians) / sum(pedestrians)`) unless noted.",
         "",
     ]
     lines += accompaniment_section(valid, cities)

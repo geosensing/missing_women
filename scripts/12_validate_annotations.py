@@ -1,5 +1,5 @@
 """
-Validate human annotations against OpenAI vision model predictions.
+Compare human annotations with OpenAI vision model predictions.
 
 Samples 100 images from Mumbai, gets AI labels via batch API, and compares
 with MSE and summary statistics.
@@ -9,21 +9,19 @@ Usage:
     python scripts/12_validate_annotations.py --check    # Check status / get results
 """
 
+from __future__ import annotations
+
 import argparse
 import base64
 import json
 import re
-import sys
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pandas as pd
 
-try:
+if TYPE_CHECKING:
     from openai import OpenAI
-except ImportError:
-    print("Error: openai package not installed. Run: pip install openai")
-    sys.exit(1)
-
 
 PROJECT_ROOT = Path(__file__).parent.parent
 DATA_DIR = PROJECT_ROOT / "data" / "mumbai"
@@ -32,7 +30,7 @@ FRAMES_NEW_DIR = PROJECT_ROOT / "data" / "annotation_task" / "frames_new"
 
 SAMPLE_SIZE = 100
 RANDOM_SEED = 42
-MODEL = "gpt-4o"
+MODEL = "gpt-4o-2024-11-20"
 
 PROMPT = """Count the people visible in this street scene image:
 - Number of men walking (pedestrians, not on vehicles)
@@ -85,7 +83,7 @@ def sample_images(df: pd.DataFrame, lookup: dict) -> pd.DataFrame:
     return sample
 
 
-def create_batch_input(sample: pd.DataFrame, output_path: Path) -> None:
+def create_batch_input(sample: pd.DataFrame, output_path: Path, model: str) -> None:
     """Create JSONL file for OpenAI batch API."""
     requests = []
 
@@ -98,7 +96,7 @@ def create_batch_input(sample: pd.DataFrame, output_path: Path) -> None:
             "method": "POST",
             "url": "/v1/chat/completions",
             "body": {
-                "model": MODEL,
+                "model": model,
                 "messages": [
                     {
                         "role": "user",
@@ -298,14 +296,17 @@ def compute_metrics(df: pd.DataFrame) -> None:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Validate annotations with OpenAI")
+    parser = argparse.ArgumentParser(description="Compare annotations with OpenAI")
     parser.add_argument("--submit", action="store_true", help="Submit batch job to OpenAI")
     parser.add_argument("--check", action="store_true", help="Check batch status and get results")
+    parser.add_argument("--model", default=MODEL, help="Pinned image-capable model ID")
     args = parser.parse_args()
 
     if not args.submit and not args.check:
         parser.print_help()
-        sys.exit(1)
+        parser.error("one of --submit or --check is required")
+
+    from openai import OpenAI
 
     client = OpenAI()
 
@@ -326,14 +327,14 @@ def main():
         sample.to_csv(sample_path, index=True)
         print(f"Saved sample to: {sample_path}")
 
-        create_batch_input(sample, batch_input_path)
+        create_batch_input(sample, batch_input_path, args.model)
         submit_batch(client, batch_input_path)
 
     elif args.check:
         if not sample_path.exists():
             print(f"Sample file not found: {sample_path}")
             print("Run with --submit first.")
-            sys.exit(1)
+            parser.error("run with --submit before --check")
 
         sample = pd.read_csv(sample_path, index_col=0)
         sample["resolved_path"] = sample.apply(lambda r: resolve_image_path(r, lookup), axis=1)

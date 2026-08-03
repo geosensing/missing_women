@@ -35,6 +35,7 @@ import inference
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from analysis_config import TOPCODE_SENSITIVITY_VALUES
 from matplotlib.gridspec import GridSpec
 from matplotlib.ticker import PercentFormatter
 
@@ -143,17 +144,23 @@ def write_tex(path: Path, lines: list[str]) -> None:
 
 
 def compute_city_summary(df: pd.DataFrame, cities: list[str]) -> dict:
-    """Per-city summary stats (counts, prop female with CIs, sex ratios, clustering)."""
+    """Per-city primary pedestrian estimates and secondary combined-mode estimates."""
     row_data = {}
     for city in cities:
         sub = df[df["city"] == city]
-        valid = sub[sub["total_people"] > 0]
+        valid = sub[sub["total_pedestrians"] > 0]
 
         s = inference.summarize(valid)
+        combined = inference.summarize(
+            sub,
+            women_col="total_women",
+            people_col="total_people",
+        )
 
         row_data[city] = {
             "n_images": len(sub),
             "n_clusters": s["n_clusters"],
+            "n_pedestrians": sub["total_pedestrians"].sum(),
             "n_people": sub["total_people"].sum(),
             "weighted": s["weighted"],
             "weighted_ci_lower": s["weighted_ci_lower"],
@@ -162,22 +169,13 @@ def compute_city_summary(df: pd.DataFrame, cities: list[str]) -> dict:
             "unweighted_ci_lower": s["unweighted_ci_lower"],
             "unweighted_ci_upper": s["unweighted_ci_upper"],
             "sex_ratio": (
-                (sub["total_women"].sum() / sub["total_men"].sum() * 1000)
-                if sub["total_men"].sum() > 0
-                else 0
-            ),
-            "ped_prop": (
-                sub["women_count"].sum() / (sub["women_count"].sum() + sub["men_count"].sum())
-                if (sub["women_count"].sum() + sub["men_count"].sum()) > 0
-                else 0
-            ),
-            "ped_sex_ratio": (
                 (sub["women_count"].sum() / sub["men_count"].sum() * 1000)
                 if sub["men_count"].sum() > 0
                 else 0
             ),
-            "icc": s["icc"],
-            "design_effect": s["design_effect"],
+            "combined": combined["weighted"],
+            "combined_ci_lower": combined["weighted_ci_lower"],
+            "combined_ci_upper": combined["weighted_ci_upper"],
         }
     return row_data
 
@@ -217,19 +215,21 @@ def compute_road_props(df: pd.DataFrame, cities: list[str]) -> dict:
         road_data[city] = {}
         for rt in ROAD_TYPES:
             rt_sub = c[c["road_class"] == rt]
-            if len(rt_sub) > 0 and rt_sub["total_people"].sum() > 0:
-                road_data[city][rt] = rt_sub["total_women"].sum() / rt_sub["total_people"].sum()
+            if len(rt_sub) > 0 and rt_sub["total_pedestrians"].sum() > 0:
+                road_data[city][rt] = (
+                    rt_sub["women_count"].sum() / rt_sub["total_pedestrians"].sum()
+                )
             else:
                 road_data[city][rt] = 0
     return road_data
 
 
 def make_table1_city_summary(df: pd.DataFrame, cities: list[str]) -> None:
-    """City-level summary table with images, people, prop_women, sex ratio, and cluster-robust CIs."""
+    """City-level primary pedestrian summary with collection-day clustered CIs."""
     lines = [
         r"\begin{table}[t]",
         r"\centering",
-        r"\caption{Women's share of the visible street population by city.}",
+        r"\caption{Women's share among classified sightings in collected street imagery by city.}",
         r"\label{tab:city_summary}",
         r"\begin{threeparttable}",
         r"\begin{tabular}{l" + "r" * len(cities) + "}",
@@ -247,55 +247,36 @@ def make_table1_city_summary(df: pd.DataFrame, cities: list[str]) -> None:
         "Images annotated & " + " & ".join(f"{row_data[c]['n_images']:,}" for c in cities) + r" \\"
     )
     lines.append(
-        "Video sessions (clusters) & "
+        "Collection days (clusters) & "
         + " & ".join(f"{row_data[c]['n_clusters']:,}" for c in cities)
         + r" \\"
     )
     lines.append(
-        "Total people classified & "
-        + " & ".join(f"{row_data[c]['n_people']:,}" for c in cities)
+        "Pedestrians classified & "
+        + " & ".join(f"{row_data[c]['n_pedestrians']:,}" for c in cities)
         + r" \\"
     )
     lines.append(r"\addlinespace")
     lines.append(
-        "Prop.\\ female (person-weighted) & "
+        "Pedestrian female share (person-weighted) & "
         + " & ".join(fmt_ci(row_data[c], "weighted") for c in cities)
         + r" \\"
     )
     lines.append(
-        "Prop.\\ female (image-level mean) & "
+        "Pedestrian female share (image-level mean) & "
         + " & ".join(fmt_ci(row_data[c], "unweighted") for c in cities)
         + r" \\"
     )
     lines.append(r"\addlinespace")
     lines.append(
-        "Sex ratio (F/1000 M) & "
+        "Pedestrian sex ratio (F/1000 M) & "
         + " & ".join(f"{row_data[c]['sex_ratio']:.0f}" for c in cities)
         + r" \\"
     )
     lines.append(r"\addlinespace")
     lines.append(
-        "Pedestrian prop.\\ female & "
-        + " & ".join(f"{row_data[c]['ped_prop']:.3f}" for c in cities)
-        + r" \\"
-    )
-    lines.append(
-        "Pedestrian sex ratio (F/1000 M) & "
-        + " & ".join(f"{row_data[c]['ped_sex_ratio']:.0f}" for c in cities)
-        + r" \\"
-    )
-    lines.append(r"\addlinespace")
-    lines.append(
-        r"\multicolumn{" + str(len(cities) + 1) + r"}{l}{\textit{Clustering diagnostics}} \\"
-    )
-    lines.append(
-        "ICC (prop.\\ female by video) & "
-        + " & ".join(f"{row_data[c]['icc']:.3f}" for c in cities)
-        + r" \\"
-    )
-    lines.append(
-        "Design effect & "
-        + " & ".join(f"{row_data[c]['design_effect']:.2f}" for c in cities)
+        "All-mode female share (secondary) & "
+        + " & ".join(fmt_ci(row_data[c], "combined") for c in cities)
         + r" \\"
     )
 
@@ -303,12 +284,13 @@ def make_table1_city_summary(df: pd.DataFrame, cities: list[str]) -> None:
         r"\bottomrule",
         r"\end{tabular}",
         r"\begin{tablenotes}[flushleft]",
-        r"\item 95\% confidence intervals in brackets use cluster-robust standard errors (clustered by video session).",
-        r"\item Person-weighted estimates weight each individual equally; image-level means weight each frame equally.",
+        r"\item The primary estimand is the share of classified pedestrian sightings coded as women."
+        r" The all-mode row additionally includes two-wheeler riders.",
+        r"\item 95\% confidence intervals use collection-day cluster-robust standard errors"
+        r" and quantify variability across observed fieldwork days; the route imagery is not a population sample.",
+        r"\item Person-weighted estimates weight each classified sighting equally; image-level means weight each frame equally.",
         r"\item Sex ratio is women per 1,000 men. Gender inferred from visible appearance.",
-        r"\item Per-frame counts are top-coded at 10 (``10+'' recorded as 11), which"
-        r" attenuates shares toward 0.5 in the densest scenes.",
-        r"\item Design effect = $1 + (\bar{n}_k - 1) \times \text{ICC}$, where $\bar{n}_k$ is average cluster size.",
+        r"\item ``10+'' is represented by its known minimum, 11; Table~\ref{tab:topcode} reports sensitivity.",
         r"\end{tablenotes}",
         r"\end{threeparttable}",
         r"\end{table}",
@@ -340,11 +322,11 @@ def make_tableS1_road_type(df: pd.DataFrame, cities: list[str]) -> None:
         first = True
         for rt in road_types:
             rt_sub = sub[sub["road_class"] == rt]
-            valid = rt_sub[rt_sub["total_people"] > 0]
+            valid = rt_sub[rt_sub["total_pedestrians"] > 0]
             if len(valid) == 0:
                 continue
-            total_women = rt_sub["total_women"].sum()
-            total_men = rt_sub["total_men"].sum()
+            total_women = rt_sub["women_count"].sum()
+            total_men = rt_sub["men_count"].sum()
 
             s = inference.summarize(valid)
             sr = (total_women / total_men * 1000) if total_men > 0 else 0
@@ -364,7 +346,7 @@ def make_tableS1_road_type(df: pd.DataFrame, cities: list[str]) -> None:
         r"\begin{tablenotes}[flushleft]",
         r"\item Road type is the OSM highway class of the nearest mapped road to each "
         r"frame's GPS fix, bucketed into the four design classes.",
-        r"\item 95\% CIs use cluster-robust standard errors (clustered by video session).",
+        r"\item 95\% CIs use collection-day cluster-robust standard errors.",
         r"\item Person-weighted estimates.",
         r"\end{tablenotes}",
         r"\end{threeparttable}",
@@ -395,7 +377,7 @@ def make_tableS2_temporal(df: pd.DataFrame, cities: list[str]) -> None:
 
         for is_we, label in [(False, "Weekday"), (True, "Weekend")]:
             we_sub = sub[sub["is_weekend"] == is_we]
-            valid = we_sub[we_sub["total_people"] > 0]
+            valid = we_sub[we_sub["total_pedestrians"] > 0]
             if len(valid) == 0:
                 continue
             s = inference.summarize(valid)
@@ -418,7 +400,7 @@ def make_tableS2_temporal(df: pd.DataFrame, cities: list[str]) -> None:
 
         for start, end, label in time_bins:
             bin_sub = sub[(sub["frame_hour"] >= start) & (sub["frame_hour"] < end)]
-            valid = bin_sub[bin_sub["total_people"] > 0]
+            valid = bin_sub[bin_sub["total_pedestrians"] > 0]
             if len(valid) == 0:
                 continue
             s = inference.summarize(valid)
@@ -447,7 +429,7 @@ def make_tableS2_temporal(df: pd.DataFrame, cities: list[str]) -> None:
         r"\bottomrule",
         r"\end{tabular}",
         r"\begin{tablenotes}[flushleft]",
-        r"\item 95\% CIs use cluster-robust standard errors (clustered by video session).",
+        r"\item 95\% CIs use collection-day cluster-robust standard errors.",
         r"\item Collection spans roughly 06:00--22:00 IST; the three windows partition it.",
         r"\end{tablenotes}",
         r"\end{threeparttable}",
@@ -478,7 +460,7 @@ def make_tableS3_poi_infrastructure(df: pd.DataFrame) -> None:
         ("street_vendor", "Street vendor"),
     ]
 
-    valid = df[df["total_people"] > 0]
+    valid = df[df["total_pedestrians"] > 0]
 
     for field, label in pois:
         for val, val_label in [(True, "Yes"), (False, "No")]:
@@ -541,9 +523,9 @@ def make_tableS3_poi_infrastructure(df: pd.DataFrame) -> None:
         r"\bottomrule",
         r"\end{tabular}",
         r"\begin{tablenotes}[flushleft]",
-        r"\item 95\% CIs use cluster-robust standard errors (clustered by video session).",
-        r"\item Footpath is coded present for paved (including blocked) sidewalks;"
-        r" unfilled fields count as absent.",
+        r"\item 95\% CIs use collection-day cluster-robust standard errors.",
+        r"\item Unfilled infrastructure fields count as absent. Explicit ``Not visible''"
+        r" and ``N/A'' responses remain missing; construction debris counts as litter/disorder.",
         r"\item Per-city POI rows report point estimates with frame counts;"
         r" cells with no frames are dashed.",
         r"\end{tablenotes}",
@@ -555,14 +537,61 @@ def make_tableS3_poi_infrastructure(df: pd.DataFrame) -> None:
     print("  -> tableS3_poi_infrastructure.tex")
 
 
+def make_tableS5_topcode_sensitivity(df: pd.DataFrame, cities: list[str]) -> None:
+    """Report how interval-censored ``10+`` counts affect the primary estimate."""
+    lines = [
+        r"\begin{table}[t]",
+        r"\centering",
+        r"\caption{Sensitivity of pedestrian female share to ``10+'' count replacement.}",
+        r"\label{tab:topcode}",
+        r"\begin{threeparttable}",
+        r"\begin{tabular}{l" + "r" * len(cities) + "}",
+        r"\toprule",
+        "Replacement & " + " & ".join(CITY_LABELS.get(c, c) for c in cities) + r" \\",
+        r"\midrule",
+    ]
+    for replacement in TOPCODE_SENSITIVITY_VALUES:
+        values = []
+        for city in cities:
+            city_data = df[df["city"] == city].copy()
+            for count_col in ["women_count", "men_count"]:
+                flag_col = f"{count_col}_topcoded"
+                city_data.loc[city_data[flag_col], count_col] = replacement
+            city_data["total_pedestrians"] = city_data["women_count"] + city_data["men_count"]
+            values.append(inference.summarize(city_data)["weighted"])
+        label = f"{replacement}" + (" (known minimum; primary)" if replacement == 11 else "")
+        lines.append(label + " & " + " & ".join(f"{value:.3f}" for value in values) + r" \\")
+    affected = {
+        city: int(
+            df.loc[df["city"] == city, ["women_count_topcoded", "men_count_topcoded"]]
+            .any(axis=1)
+            .sum()
+        )
+        for city in cities
+    }
+    affected_note = ", ".join(f"{CITY_LABELS.get(c, c)} {n}" for c, n in affected.items())
+    lines += [
+        r"\bottomrule",
+        r"\end{tabular}",
+        r"\begin{tablenotes}[flushleft]",
+        r"\item ``10+'' is interval-censored: 11 is its known minimum, not an exact count.",
+        rf"\item Frames affected in pedestrian counts: {affected_note}.",
+        r"\end{tablenotes}",
+        r"\end{threeparttable}",
+        r"\end{table}",
+    ]
+    write_tex(TABS / "tableS5_topcode_sensitivity.tex", lines)
+    print("  -> tableS5_topcode_sensitivity.tex")
+
+
 # =============================================================================
 # FIGURE FUNCTIONS
 # =============================================================================
 
 
 def make_fig2_distribution(df: pd.DataFrame, cities: list[str]) -> None:
-    """Side-by-side histograms of prop_women with cluster-robust CIs."""
-    valid = df[df["total_people"] > 0]
+    """Side-by-side histograms of pedestrian female share with clustered CIs."""
+    valid = df[df["total_pedestrians"] > 0]
 
     fig, axes = plt.subplots(1, len(cities), figsize=(5.5, 2.2), sharey=True)
     if len(cities) == 1:
@@ -573,7 +602,7 @@ def make_fig2_distribution(df: pd.DataFrame, cities: list[str]) -> None:
     for ax, city in zip(axes, cities):
         color = COLORS.get(city, "#666666")
         city_data = valid[valid["city"] == city]
-        vals = city_data["prop_women"].dropna()
+        vals = city_data["prop_female"].dropna()
 
         s = inference.summarize(city_data)
 
@@ -602,7 +631,7 @@ def make_fig2_distribution(df: pd.DataFrame, cities: list[str]) -> None:
 
 def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
     """4-panel: mode, road type, POI, time of day."""
-    valid = df[df["total_people"] > 0]
+    valid = df[df["total_pedestrians"] > 0]
 
     fig = plt.figure(figsize=(6.5, 6))
     gs = GridSpec(2, 2, figure=fig, hspace=0.45, wspace=0.35)
@@ -691,7 +720,7 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
             sub = valid[valid[poi] == val]
             if len(sub) > 0:
                 poi_data[(poi, val)] = {
-                    "pf": sub["total_women"].sum() / sub["total_people"].sum(),
+                    "pf": sub["women_count"].sum() / sub["total_pedestrians"].sum(),
                     "n": len(sub),
                 }
 
@@ -735,8 +764,8 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
                 lambda g: pd.Series(
                     {
                         "pf": (
-                            g["total_women"].sum() / g["total_people"].sum()
-                            if g["total_people"].sum() > 0
+                            g["women_count"].sum() / g["total_pedestrians"].sum()
+                            if g["total_pedestrians"].sum() > 0
                             else np.nan
                         ),
                         "n": len(g),
@@ -776,7 +805,7 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
 
 def make_fig4_weekday_weekend(df: pd.DataFrame, cities: list[str]) -> None:
     """Bar chart weekday vs weekend."""
-    valid = df[(df["total_people"] > 0) & df["is_weekend"].notna()]
+    valid = df[(df["total_pedestrians"] > 0) & df["is_weekend"].notna()]
 
     fig, ax = plt.subplots(figsize=(3.5, 2.5))
     n = len(cities)
@@ -792,7 +821,7 @@ def make_fig4_weekday_weekend(df: pd.DataFrame, cities: list[str]) -> None:
                     {
                         "city": city,
                         "day": label,
-                        "pf": sub["total_women"].sum() / sub["total_people"].sum(),
+                        "pf": sub["women_count"].sum() / sub["total_pedestrians"].sum(),
                         "n": len(sub),
                     }
                 )
@@ -850,29 +879,33 @@ def make_fig5_pedestrian_crowdsize(df: pd.DataFrame, cities: list[str]) -> None:
     binned = {}
     for city in cities:
         sub = valid[valid["city"] == city]
-        by_size = sub.groupby(sub["total_pedestrians"].astype(int)).agg(
-            women=("women_count", "sum"),
-            pedestrians=("total_pedestrians", "sum"),
-            n_frames=("total_pedestrians", "size"),
-        )
-        binned[city] = by_size[by_size["n_frames"] >= min_frames]
+        rows = []
+        for crowd_size, group in sub.groupby(sub["total_pedestrians"].astype(int)):
+            if len(group) < min_frames:
+                continue
+            summary = inference.summarize(group)
+            rows.append(
+                {
+                    "crowd_size": crowd_size,
+                    "share": summary["weighted"],
+                    "lower": summary["weighted_ci_lower"],
+                    "upper": summary["weighted_ci_upper"],
+                    "n_frames": len(group),
+                }
+            )
+        binned[city] = pd.DataFrame(rows).set_index("crowd_size")
     max_bin = max(b.index.max() for b in binned.values() if len(b) > 0)
 
     fig, ax = plt.subplots(figsize=(5, 3.5))
 
-    z = 1.96  # Wilson 95% CI on the per-bin share (persons treated as independent)
     y_top = 0.0
     for city in cities:
         color = COLORS.get(city, "#666666")
         label = CITY_LABELS.get(city, city)
 
         by_size = binned[city]
-        n = by_size["pedestrians"].astype(float)
-        p = by_size["women"] / n
-        denom = 1 + z**2 / n
-        center = (p + z**2 / (2 * n)) / denom
-        half = z * np.sqrt(p * (1 - p) / n + z**2 / (4 * n**2)) / denom
-        lo, hi = center - half, center + half
+        p = by_size["share"]
+        lo, hi = by_size["lower"], by_size["upper"]
         y_top = max(y_top, hi.max())
 
         ax.errorbar(
@@ -918,13 +951,13 @@ def update_readme_key_findings(df: pd.DataFrame, cities: list[str]) -> None:
     lines = [
         "### Summary",
         "",
-        "| City | Images | People | Prop. Female [95% CI] | Sex Ratio (F/1000 M) |",
-        "|------|--------|--------|-----------------------|----------------------|",
+        "| City | Images | Pedestrians | Female share [95% CI] | Sex Ratio (F/1000 M) |",
+        "|------|--------|-------------|-----------------------|----------------------|",
     ]
     for c, name in zip(cities, city_names):
         d = summary[c]
         lines.append(
-            f"| {name} | {d['n_images']:,} | {d['n_people']:,} "
+            f"| {name} | {d['n_images']:,} | {d['n_pedestrians']:,} "
             f"| {d['weighted']:.1%} [{d['weighted_ci_lower']:.1%}, {d['weighted_ci_upper']:.1%}] "
             f"| {d['sex_ratio']:.0f} |"
         )
@@ -985,6 +1018,7 @@ def main():
     make_tableS1_road_type(df, cities)
     make_tableS2_temporal(df, cities)
     make_tableS3_poi_infrastructure(df)
+    make_tableS5_topcode_sensitivity(df, cities)
 
     print("\n" + "-" * 40)
     print("FIGURES")

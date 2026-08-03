@@ -24,6 +24,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from analysis_config import valid_gps_mask
 
 try:
     import geopandas as gpd
@@ -285,6 +286,20 @@ def enrich_with_geo(
     print("Loading itineraries...")
     itineraries = load_itineraries(city_sampling_dir, city)
     print(f"  Found {len(itineraries)} itinerary points")
+
+    annotations = annotations.copy()
+    has_coordinates = annotations["gps_lat"].notna() & annotations["gps_lon"].notna()
+    valid_coordinates = valid_gps_mask(annotations, city)
+    annotations["gps_out_of_bounds"] = has_coordinates & ~valid_coordinates
+    invalid_columns = [
+        column
+        for column in ["gps_lat", "gps_lon", "gps_alt", "gps_datetime", "gps_time_diff_sec"]
+        if column in annotations
+    ]
+    annotations.loc[~valid_coordinates, invalid_columns] = np.nan
+    n_invalid = int(annotations["gps_out_of_bounds"].sum())
+    if n_invalid:
+        print(f"  Excluded {n_invalid} out-of-bounds GPS fixes from geographic matching")
 
     print("Matching to itinerary road types...")
     result = assign_itinerary_road_type(annotations, itineraries)

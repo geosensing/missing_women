@@ -155,6 +155,8 @@ def filter_skip_rows(df: pd.DataFrame) -> pd.DataFrame:
         "base_video_id",
         "frame_number",
         "timestamp_sec",
+        "created_at",
+        "updated_at",
     }
     annotation_cols = [c for c in df.columns if c not in meta_cols]
 

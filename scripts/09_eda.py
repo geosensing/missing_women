@@ -83,7 +83,7 @@ def print_data_summary(df: pd.DataFrame) -> None:
         sub = df[df["city"] == city]
         n_rows = len(sub)
         n_people = sub["total_people"].sum()
-        gps_coverage = sub["gps_lat"].notna().mean() * 100
+        gps_coverage = sub["gps_valid"].mean() * 100
 
         if "frame_datetime" in sub.columns and sub["frame_datetime"].notna().any():
             date_min = sub["frame_datetime"].min()
@@ -132,7 +132,7 @@ def print_field_completeness(df: pd.DataFrame) -> None:
 
 
 def print_headline_numbers(df: pd.DataFrame) -> None:
-    """Print person-weighted and image-level prop_women, sex ratios."""
+    """Print primary pedestrian and secondary combined-mode summaries."""
     print("\n" + "=" * 60)
     print("HEADLINE NUMBERS")
     print("=" * 60)
@@ -163,18 +163,16 @@ def print_headline_numbers(df: pd.DataFrame) -> None:
         print(f"\n{city}:")
         print(f"  Total people: {total_people:,}")
         print(f"  Total women: {total_women:,}")
-        print(f"  Person-weighted prop_women: {weighted_prop:.4f} ({weighted_prop * 100:.2f}%)")
-        print(
-            f"  Image-level mean prop_women: {image_level_mean:.4f} ({image_level_mean * 100:.2f}%)"
-        )
+        print(f"  Combined-mode female share: {weighted_prop:.4f} ({weighted_prop * 100:.2f}%)")
+        print(f"  Combined-mode image mean: {image_level_mean:.4f} ({image_level_mean * 100:.2f}%)")
         print(f"  Sex ratio (women per 1000 men): {sex_ratio:.1f}")
-        print(f"  Pedestrian prop_women: {ped_prop:.4f} ({ped_prop * 100:.2f}%)")
+        print(f"  Primary pedestrian female share: {ped_prop:.4f} ({ped_prop * 100:.2f}%)")
         print(f"  Pedestrian sex ratio: {ped_sex_ratio:.1f}")
 
 
 def plot_gps_coverage(df: pd.DataFrame, city: str, out_dir: Path) -> None:
     """Scatter plot of GPS points colored by prop_women. Output: eda_gps_coverage_{city}.pdf"""
-    sub = df[(df["city"] == city) & df["gps_lat"].notna() & df["gps_lon"].notna()].copy()
+    sub = df[(df["city"] == city) & df["gps_valid"]].copy()
 
     if len(sub) == 0:
         print(f"  WARNING: No GPS data for {city}, skipping GPS coverage plot")

@@ -4,7 +4,6 @@ version = "0.1.0"
 description = "Measuring gender representation in public spaces from GoPro footage"
 requires-python = ">=3.13"
 dependencies = [
-    "geoinference",
     "pandas",
     "numpy",
     "geopandas",
@@ -14,6 +13,7 @@ dependencies = [
     "matplotlib",
     "statsmodels",
     "scikit-learn",
+    "scipy",
     "pyarrow",
     "pyyaml",
     "tqdm",
@@ -22,13 +22,13 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["ruff"]
+dev = ["pytest", "ruff"]
+
+[project.optional-dependencies]
+validation = ["openai>=2.45.0"]
 
 [tool.uv]
 package = false                                       # scripts repo, not an installable package
-
-[tool.uv.sources]
-geoinference = { path = "../geoinference", editable = true }
 
 [tool.ruff]
 target-version = "py313"
