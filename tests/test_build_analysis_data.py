@@ -81,6 +81,25 @@ def test_keep_latest_annotation_uses_physical_frame_not_image_url(load_script):
     assert result["annotation_id"].tolist() == [2, 3]
 
 
+def test_keep_latest_annotation_falls_back_to_image_when_physical_key_is_missing(load_script):
+    config = load_script("analysis_config.py")
+    source = pd.DataFrame(
+        {
+            "region": ["mumbai", "mumbai", "mumbai"],
+            "canonical_video_id": [pd.NA, pd.NA, pd.NA],
+            "frame_number": [pd.NA, pd.NA, pd.NA],
+            "annotator": ["primary", "primary", pd.NA],
+            "image": ["unparsed.jpg", "unparsed.jpg", pd.NA],
+            "updated_at": ["2026-02-01", "2026-02-02", "2026-02-03"],
+            "annotation_id": [1, 2, 3],
+        }
+    )
+
+    result = config.keep_latest_annotation(source)
+
+    assert result["annotation_id"].tolist() == [2, 3]
+
+
 def test_primary_selection_uses_physical_frame_key(load_script, tmp_path):
     build = load_script("08_build_analysis_data.py")
     source = pd.DataFrame(

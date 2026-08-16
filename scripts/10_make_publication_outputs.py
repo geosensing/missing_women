@@ -320,13 +320,8 @@ def make_results_macros(df: pd.DataFrame, cities: list[str]) -> None:
     max_leave_one_day_shift = 0.0
     for city in cities:
         name = CITY_MACRO_NAMES[city]
-        baseline, results = leave_one_day_out(df[df["city"] == city])
-        dominant_day, dominant_share, _ = results[0]
-        day_name = DAY_FULL_NAMES[DAY_LABELS.index(dominant_day)]
-        max_leave_one_day_shift = max(
-            max_leave_one_day_shift,
-            max(abs(summary["weighted"] - baseline) for _, _, summary in results),
-        )
+        day_name, dominant_share, max_shift = temporal_sensitivity_summary(df[df["city"] == city])
+        max_leave_one_day_shift = max(max_leave_one_day_shift, max_shift)
         lines.extend(
             [
                 rf"\newcommand{{\{name}DominantDay}}{{{day_name}}}",
@@ -572,6 +567,25 @@ def leave_one_day_out(sub: pd.DataFrame) -> tuple[float, list[tuple[str, float, 
         share = float(dropped["total_pedestrians"].sum()) / total
         results.append((DAY_LABELS[int(day)], share, inference.summarize(kept)))
     return baseline, sorted(results, key=lambda r: -r[1])
+
+
+def temporal_sensitivity_summary(sub: pd.DataFrame) -> tuple[str, float, float]:
+    """Return dominant weekday, its sighting share, and the largest exclusion shift."""
+    valid = sub[(sub["total_pedestrians"] > 0) & sub["frame_dayofweek"].notna()]
+    by_day = valid.groupby("frame_dayofweek")["total_pedestrians"].sum()
+    if by_day.empty:
+        raise ValueError("temporal sensitivity requires at least one dated pedestrian sighting")
+
+    dominant_day_number = int(by_day.idxmax())
+    day_name = DAY_FULL_NAMES[dominant_day_number]
+    dominant_share = float(by_day.loc[dominant_day_number] / by_day.sum())
+
+    baseline, results = leave_one_day_out(valid)
+    max_shift = max(
+        (abs(summary["weighted"] - baseline) for _, _, summary in results),
+        default=0.0,
+    )
+    return day_name, dominant_share, max_shift
 
 
 def make_tableS2_temporal(df: pd.DataFrame, cities: list[str]) -> None:

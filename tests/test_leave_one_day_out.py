@@ -58,6 +58,22 @@ def test_no_usable_rows_yields_an_empty_result(load_script):
     assert results == []
 
 
+def test_temporal_macro_summary_handles_a_single_observed_weekday(load_script):
+    analysis = load_script("10_make_publication_outputs.py")
+    data = _frame(
+        [
+            [1, 2, "day-1", 0],
+            [2, 4, "day-2", 0],
+        ]
+    )
+
+    day, share, max_shift = analysis.temporal_sensitivity_summary(data)
+
+    assert day == "Monday"
+    assert share == 1.0
+    assert max_shift == 0.0
+
+
 def test_weekpart_summaries_share_the_table_and_macro_denominators(load_script):
     analysis = load_script("10_make_publication_outputs.py")
     data = pd.DataFrame.from_records(

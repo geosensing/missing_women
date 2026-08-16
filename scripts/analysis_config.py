@@ -37,14 +37,26 @@ def keep_latest_annotation(df: pd.DataFrame) -> pd.DataFrame:
         result["canonical_video_id"] = result["base_video_id"].map(canonical_video_id)
 
     physical_key = [*PHYSICAL_FRAME_COLUMNS, "annotator"]
-    key = physical_key if set(physical_key).issubset(result.columns) else ["image", "annotator"]
-    complete = result[key].notna().all(axis=1)
-    keyed = result.loc[complete]
-    unkeyed = result.loc[~complete]
-    if "updated_at" in keyed.columns:
-        keyed = keyed.sort_values("updated_at", na_position="first", kind="stable")
-    keyed = keyed.drop_duplicates(key, keep="last")
-    return pd.concat([keyed, unkeyed]).sort_index().reset_index(drop=True)
+    image_key = ["image", "annotator"]
+
+    physical_complete = pd.Series(False, index=result.index)
+    if set(physical_key).issubset(result.columns):
+        physical_complete = result[physical_key].notna().all(axis=1)
+
+    image_complete = pd.Series(False, index=result.index)
+    if set(image_key).issubset(result.columns):
+        image_complete = result[image_key].notna().all(axis=1)
+
+    def latest(rows: pd.DataFrame, key: list[str]) -> pd.DataFrame:
+        if "updated_at" in rows.columns:
+            rows = rows.sort_values("updated_at", na_position="first", kind="stable")
+        return rows.drop_duplicates(key, keep="last")
+
+    physical = latest(result.loc[physical_complete], physical_key)
+    fallback_mask = ~physical_complete & image_complete
+    fallback = latest(result.loc[fallback_mask], image_key)
+    malformed = result.loc[~physical_complete & ~image_complete]
+    return pd.concat([physical, fallback, malformed]).sort_index().reset_index(drop=True)
 
 
 def collection_day_id(base_video_id: object, city: str) -> object:
