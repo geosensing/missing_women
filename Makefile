@@ -41,9 +41,11 @@ figures:
 	$(PY) scripts/10_analysis.py --cities $(CITIES)
 	$(PY) scripts/11_make_maps.py --cities $(CITIES)
 	$(PY) scripts/14_descriptive_patterns.py --cities $(CITIES)
+	$(PY) scripts/15_gap_accounting.py --cities $(CITIES)
 
 tables:
 	$(PY) scripts/10_analysis.py --cities $(CITIES)
+	$(PY) scripts/15_gap_accounting.py --cities $(CITIES)
 
 irr:
 	$(PY) scripts/13_interrater_reliability.py --cities $(CITIES)

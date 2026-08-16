@@ -226,3 +226,6 @@ data/mumbai/validation_batch_input.jsonl
 /sampling/hyderabad/network
 /sampling/delhi/network
 *.pbf
+
+# Manuscript: drafting outside version control until the production version is ready
+/ms/

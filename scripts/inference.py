@@ -49,6 +49,23 @@ def _cluster_interval(
     return max(0.0, estimate - half_width), min(1.0, estimate + half_width)
 
 
+def effective_clusters(clusters: pd.Series) -> float:
+    """Kish effective number of clusters, (sum n_c)^2 / sum n_c^2.
+
+    Equals the cluster count when every collection day contributes the same
+    number of frames, and falls well below it when a few days dominate. It is
+    the count that governs whether a cluster-robust interval can be trusted:
+    the degrees of freedom behave like this number, not like the raw count.
+
+    Fieldwork here was not evenly spread, so the two differ materially and only
+    this one should be quoted alongside an interval.
+    """
+    sizes = clusters.value_counts().to_numpy(dtype=float)
+    if sizes.size == 0:
+        return float("nan")
+    return float(sizes.sum() ** 2 / np.square(sizes).sum())
+
+
 def summarize(
     data: pd.DataFrame,
     women_col: str = WOMEN_COL,
@@ -100,6 +117,7 @@ def summarize(
         "unweighted_ci_upper": unweighted_ci[1],
         "n_obs": n_obs,
         "n_clusters": n_clusters,
+        "n_clusters_eff": effective_clusters(clusters),
     }
 
 

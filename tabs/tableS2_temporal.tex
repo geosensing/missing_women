@@ -2,34 +2,42 @@
 \centering
 \caption{Temporal patterns and data-collection coverage.}
 \label{tab:temporal}
+\scriptsize
 \begin{threeparttable}
-\begin{tabular}{llcc}
+\begin{tabular}{@{\extracolsep{0pt}}llcc}
 \toprule
 City & Period & Prop.\ female [95\% CI] & Images (clusters) \\
 \midrule
-Mumbai & Weekday & 0.197 [0.178, 0.215] & 2,326 (8) \\
-Mumbai & Weekend & 0.166 [0.135, 0.197] & 483 (4) \\
-Navi Mumbai & Weekday & 0.181 [0.158, 0.204] & 1,952 (7) \\
-Navi Mumbai & Weekend & 0.178 [0.000, 0.785] & 237 (2) \\
-Bangalore & Weekday & 0.274 [0.255, 0.292] & 1,929 (12) \\
-Bangalore & Weekend & 0.278 [nan, nan] & 86 (1) \\
-Delhi & Weekday & 0.203 [0.175, 0.231] & 1,956 (11) \\
-Delhi & Weekend & 0.181 [0.000, 0.653] & 334 (2) \\
+Mumbai & Weekday & 0.197 [0.178,0.215] & 2,326 (8) \\
+Mumbai & Weekend & 0.166 [0.135,0.197] & 483 (4) \\
+Navi Mumbai & Weekday & 0.181 [0.158,0.204] & 1,952 (7) \\
+Navi Mumbai & Weekend & 0.178 [0.000,0.785] & 237 (2) \\
+Bangalore & Weekday & 0.274 [0.255,0.292] & 1,929 (12) \\
+Bangalore & Weekend & 0.278 [nan,nan] & 86 (1) \\
+Delhi & Weekday & 0.203 [0.175,0.231] & 1,956 (11) \\
+Delhi & Weekend & 0.181 [0.000,0.653] & 334 (2) \\
+\midrule
+\multicolumn{4}{l}{\textit{Prop.\ female excluding the most-sampled day of week}} \\
+\midrule
+Mumbai & Drop Thu (48.0\% of sightings) & 0.183 [0.153,0.214] & 1,123 (8) \\
+Navi Mumbai & Drop Tue (65.1\% of sightings) & 0.200 [0.159,0.240] & 548 (6) \\
+Bangalore & Drop Mon (37.9\% of sightings) & 0.268 [0.245,0.290] & 481 (10) \\
+Delhi & Drop Wed (26.9\% of sightings) & 0.197 [0.162,0.231] & 758 (10) \\
 \midrule
 \multicolumn{4}{l}{\textit{Prop.\ female by time window}} \\
 \midrule
-Mumbai & Morning (6-11) & 0.197 [0.139, 0.255] & 612 (5) \\
-Mumbai & Midday (11-15) & 0.207 [0.175, 0.238] & 1,147 (11) \\
-Mumbai & Evening (15-22) & 0.169 [0.136, 0.201] & 1,050 (11) \\
-Navi Mumbai & Morning (6-11) & 0.178 [0.156, 0.200] & 1,025 (6) \\
-Navi Mumbai & Midday (11-15) & 0.177 [0.134, 0.220] & 904 (7) \\
-Navi Mumbai & Evening (15-22) & 0.223 [nan, nan] & 260 (1) \\
-Bangalore & Morning (6-11) & 0.277 [0.240, 0.313] & 776 (11) \\
-Bangalore & Midday (11-15) & 0.253 [0.212, 0.294] & 738 (12) \\
-Bangalore & Evening (15-22) & 0.287 [0.258, 0.315] & 501 (8) \\
-Delhi & Morning (6-11) & 0.174 [0.140, 0.208] & 627 (12) \\
-Delhi & Midday (11-15) & 0.222 [0.191, 0.253] & 952 (13) \\
-Delhi & Evening (15-22) & 0.186 [0.141, 0.232] & 711 (11) \\
+Mumbai & Morning (6-11) & 0.197 [0.139,0.255] & 612 (5) \\
+Mumbai & Midday (11-15) & 0.207 [0.175,0.238] & 1,147 (11) \\
+Mumbai & Evening (15-22) & 0.169 [0.136,0.201] & 1,050 (11) \\
+Navi Mumbai & Morning (6-11) & 0.178 [0.156,0.200] & 1,025 (6) \\
+Navi Mumbai & Midday (11-15) & 0.177 [0.134,0.220] & 904 (7) \\
+Navi Mumbai & Evening (15-22) & 0.223 [nan,nan] & 260 (1) \\
+Bangalore & Morning (6-11) & 0.277 [0.240,0.313] & 776 (11) \\
+Bangalore & Midday (11-15) & 0.253 [0.212,0.294] & 738 (12) \\
+Bangalore & Evening (15-22) & 0.287 [0.258,0.315] & 501 (8) \\
+Delhi & Morning (6-11) & 0.174 [0.140,0.208] & 627 (12) \\
+Delhi & Midday (11-15) & 0.222 [0.191,0.253] & 952 (13) \\
+Delhi & Evening (15-22) & 0.186 [0.141,0.232] & 711 (11) \\
 \midrule
 \multicolumn{4}{l}{\textit{Share of images by time window}} \\
 \midrule
@@ -50,6 +58,7 @@ Delhi & Evening (15-22) & 31.0\% & 711 \\
 \begin{tablenotes}[flushleft]
 \item 95\% CIs use collection-day cluster-robust standard errors.
 \item Collection spans roughly 06:00--22:00 IST; the three windows partition it.
+\item Fieldwork days were not spread evenly over the week, so each city's imagery is dominated by one or two days. Dropping the most-sampled day removes whole collection-day clusters and therefore widens the interval as well as moving the point estimate. Across every single-day exclusion in every city, the largest movement in the person-weighted share is 0.019, and every leave-one-day-out estimate lies inside the corresponding full-sample interval.
 \end{tablenotes}
 \end{threeparttable}
 \end{table}

@@ -2,26 +2,31 @@
 \centering
 \caption{Women's share among classified sightings in collected street imagery by city.}
 \label{tab:city_summary}
+\scriptsize
 \begin{threeparttable}
-\begin{tabular}{lrrrr}
+\begin{tabular}{@{\extracolsep{0pt}}lrrrr}
 \toprule
  & Mumbai & Navi Mumbai & Bangalore & Delhi \\
 \midrule
 Images annotated & 2,809 & 2,189 & 2,015 & 2,417 \\
 Collection days (clusters) & 11 & 9 & 13 & 14 \\
+\quad effective (Kish) & 6.2 & 4.8 & 9.1 & 12.4 \\
 Pedestrians classified & 12,331 & 5,186 & 2,311 & 3,020 \\
 \addlinespace
-Pedestrian female share (person-weighted) & 0.191 [0.174, 0.208] & 0.181 [0.160, 0.202] & 0.274 [0.257, 0.291] & 0.198 [0.173, 0.222] \\
-Pedestrian female share (image-level mean) & 0.183 [0.164, 0.202] & 0.187 [0.166, 0.207] & 0.284 [0.257, 0.312] & 0.194 [0.167, 0.221] \\
+Female share, person-weighted & 0.191 [0.174,0.208] & 0.181 [0.160,0.202] & 0.274 [0.257,0.291] & 0.198 [0.173,0.222] \\
+Female share, image-level mean & 0.183 [0.164,0.202] & 0.187 [0.166,0.207] & 0.284 [0.257,0.312] & 0.194 [0.167,0.221] \\
 \addlinespace
-Pedestrian sex ratio (F/1000 M) & 236 & 221 & 377 & 246 \\
+Sex ratio (F/1000 M) & 236 & 221 & 377 & 246 \\
 \addlinespace
-All-mode female share (secondary) & 0.158 [0.148, 0.169] & 0.136 [0.125, 0.148] & 0.160 [0.146, 0.175] & 0.120 [0.105, 0.135] \\
+All-mode female share & 0.158 [0.148,0.169] & 0.136 [0.125,0.148] & 0.160 [0.146,0.175] & 0.120 [0.105,0.135] \\
+Two-wheeler female share & 0.082 & 0.053 & 0.088 & 0.059 \\
+All-mode, image-level mean & 0.145 [0.132,0.157] & 0.130 [0.118,0.141] & 0.145 [0.121,0.170] & 0.112 [0.094,0.129] \\
 \bottomrule
 \end{tabular}
 \begin{tablenotes}[flushleft]
-\item The primary estimand is the share of classified pedestrian sightings coded as women. The all-mode row additionally includes two-wheeler riders.
+\item The first two share rows and the sex ratio describe pedestrians only, which is the primary estimand: the share of classified pedestrian sightings coded as women. The all-mode rows additionally include two-wheeler riders.
 \item 95\% confidence intervals use collection-day cluster-robust standard errors and quantify variability across observed fieldwork days; the route imagery is not a population sample.
+\item Collection days are the clustering unit, but they contributed very unequal numbers of frames, so the effective count is well below the raw count. The Kish effective number, $(\sum n_c)^2 / \sum n_c^2$, is the one that governs interval coverage. In Mumbai and Navi Mumbai it falls to about six and five, and intervals for those cities should be read as indicative.
 \item Person-weighted estimates weight each classified sighting equally; image-level means weight each frame equally.
 \item Sex ratio is women per 1,000 men. Gender inferred from visible appearance.
 \item ``10+'' is represented by its known minimum, 11; Table~\ref{tab:topcode} reports sensitivity.

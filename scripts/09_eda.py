@@ -32,29 +32,9 @@ OUTPUT = ROOT / "data"
 FIGS = ROOT / "figs"
 FIGS.mkdir(parents=True, exist_ok=True)
 
-COLORS = {
-    "mumbai": "#2166ac",
-    "navi_mumbai": "#b2182b",
-    "bangalore": "#1b7837",
-    "delhi": "#762a83",
-}
+from figstyle import ACCENT, ACCENT_CMAP, GRAYS, MARKERS, apply_style  # noqa: E402
 
-plt.rcParams.update(
-    {
-        "font.family": "sans-serif",
-        "font.sans-serif": ["Helvetica", "Arial", "DejaVu Sans"],
-        "font.size": 8,
-        "axes.linewidth": 0.5,
-        "axes.spines.top": False,
-        "axes.spines.right": False,
-        "figure.dpi": 300,
-        "savefig.dpi": 300,
-        "savefig.bbox": "tight",
-        "savefig.pad_inches": 0.08,
-        "pdf.fonttype": 42,
-        "ps.fonttype": 42,
-    }
-)
+apply_style()
 
 
 def load_all_cities(cities: list[str]) -> pd.DataFrame:
@@ -186,7 +166,7 @@ def plot_gps_coverage(df: pd.DataFrame, city: str, out_dir: Path) -> None:
         sub_valid["gps_lon"],
         sub_valid["gps_lat"],
         c=sub_valid["prop_women"],
-        cmap="RdYlGn",
+        cmap=ACCENT_CMAP,
         vmin=0,
         vmax=0.5,
         s=15,
@@ -228,7 +208,7 @@ def plot_temporal_coverage(df: pd.DataFrame, out_dir: Path) -> None:
     )
 
     masked = np.ma.masked_equal(counts.values, 0)
-    cmap = plt.get_cmap("Blues").copy()
+    cmap = plt.get_cmap("Greys").copy()
     cmap.set_bad("#f5f5f5")
     ax.imshow(masked, cmap=cmap, aspect="auto", vmin=0)
     for i in range(len(cities)):
@@ -271,9 +251,9 @@ def plot_temporal_coverage(df: pd.DataFrame, out_dir: Path) -> None:
             x + (i - (n - 1) / 2) * width,
             counts.values,
             width,
-            alpha=0.85,
+            alpha=0.9,
             label=city.replace("_", " ").title(),
-            color=COLORS.get(city, "#666666"),
+            color=GRAYS.get(city, "0.5"),
         )
     ax.set_xlabel("Day of week")
     ax.set_ylabel("Number of images")
@@ -307,9 +287,9 @@ def plot_crowd_size_distribution(df: pd.DataFrame, out_dir: Path) -> None:
             people.clip(upper=max_people),
             bins=bins,
             histtype="step",
-            linewidth=1.5,
+            linewidth=1.2,
             label=label,
-            color=COLORS.get(city, "#666666"),
+            color=GRAYS.get(city, "0.5"),
         )
 
     ax.set_xlabel("Total people per image")
@@ -337,11 +317,12 @@ def plot_prop_female_vs_crowd(df: pd.DataFrame, out_dir: Path) -> None:
             sub["prop_women"],
             alpha=0.3,
             s=10,
+            marker=MARKERS.get(city, "o"),
             label=city.replace("_", " ").title(),
-            color=COLORS.get(city, "#666666"),
+            color=GRAYS.get(city, "0.5"),
         )
 
-    ax.axhline(0.5, color="#999999", linestyle="--", linewidth=0.7, label="Parity")
+    ax.axhline(0.5, color=ACCENT, linestyle="--", linewidth=0.8, label="Parity")
 
     ax.set_xlabel("Total people per image")
     ax.set_ylabel("Percent women")

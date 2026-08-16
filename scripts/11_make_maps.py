@@ -40,19 +40,13 @@ DATA = ROOT / "data"
 FIGS = ROOT / "figs"
 FIGS.mkdir(parents=True, exist_ok=True)
 
-COLORS = {
-    "mumbai": "#2166ac",
-    "navi_mumbai": "#b2182b",
-    "bangalore": "#1b7837",
-    "delhi": "#762a83",
-}
+# The house style is grayscale with one maroon accent (figstyle.py): on maps the
+# basemap is the gray layer, so the data layer takes the accent in every city,
+# and city identity comes from the geography and its label.
+from figstyle import ACCENT, ACCENT_CMAP, CITY_LABELS, apply_style  # noqa: E402
 
-CITY_LABELS = {
-    "mumbai": "Mumbai",
-    "navi_mumbai": "Navi Mumbai",
-    "bangalore": "Bangalore",
-    "delhi": "Delhi",
-}
+apply_style()
+TRACK_GRAY = "0.45"
 
 
 def load_city_data(cities: list[str]) -> pd.DataFrame:
@@ -169,7 +163,7 @@ def make_locations_map(geo: pd.DataFrame, city: str, tracks: list[pd.DataFrame])
         print(f"  WARNING: no valid GPS for {city} locations map")
         return
 
-    color = COLORS.get(city, "#666666")
+    color = ACCENT
     label = CITY_LABELS.get(city, city)
 
     m = folium.Map(
@@ -224,11 +218,11 @@ def make_locations_map(geo: pd.DataFrame, city: str, tracks: list[pd.DataFrame])
 
 
 def get_color_for_prop(prop: float) -> str:
-    """Sequential single-hue color (light -> dark purple) for proportion women, capped at 0.5."""
+    """Sequential single-hue color (accent ramp) for proportion women, capped at 0.5."""
     if pd.isna(prop):
         return "#808080"
     # Start at 0.15 so 0% is visible against a light basemap.
-    return to_hex(plt.get_cmap("Purples")(0.15 + 0.85 * min(prop, 0.5) / 0.5))
+    return to_hex(ACCENT_CMAP(0.15 + 0.85 * min(prop, 0.5) / 0.5))
 
 
 def make_sex_ratio_map(geo: pd.DataFrame, city: str) -> None:
@@ -300,7 +294,6 @@ def make_locations_pdf(
         print(f"  WARNING: no valid GPS for {city} locations PDF")
         return
 
-    color = COLORS.get(city, "#666666")
     label = CITY_LABELS.get(city, city)
     gdf = gpd.GeoDataFrame(
         geo,
@@ -313,12 +306,12 @@ def make_locations_pdf(
         for seg in _track_segments(track):
             if len(seg) > 1:
                 m = _to_mercator(seg)
-                ax.plot(m["x"], m["y"], color=color, lw=0.7, alpha=0.3, solid_capstyle="round")
+                ax.plot(m["x"], m["y"], color=TRACK_GRAY, lw=0.7, alpha=0.3, solid_capstyle="round")
     ax.scatter(
         gdf.geometry.x,
         gdf.geometry.y,
         s=7,
-        color=color,
+        color=ACCENT,
         alpha=0.55,
         edgecolors="none",
         zorder=5,
@@ -379,8 +372,8 @@ def make_sex_ratio_pdf(
     cells = cells[cells["people"] >= min_people]
     cells["share"] = cells["women"] / cells["people"]
 
-    # Truncate Purples so the lightest data color is still visible on the pale basemap.
-    cmap = ListedColormap(plt.get_cmap("Purples")(np.linspace(0.3, 1.0, 256)))
+    # Truncate the accent ramp so the lightest data color is visible on the pale basemap.
+    cmap = ListedColormap(ACCENT_CMAP(np.linspace(0.3, 1.0, 256)))
 
     fig, ax = plt.subplots(figsize=(10, 10))
     ax.scatter(gdf.geometry.x, gdf.geometry.y, s=4, color="#777777", alpha=0.4, edgecolors="none")
@@ -441,13 +434,12 @@ def make_overview_pdf(geo: pd.DataFrame) -> None:
 
     fig, ax = plt.subplots(figsize=(8, 10))
     for _, r in gdf.iterrows():
-        color = COLORS.get(r["city"], "#666666")
         label = CITY_LABELS.get(r["city"], r["city"])
         ax.scatter(
             r.geometry.x,
             r.geometry.y,
             s=140,
-            color=color,
+            color=ACCENT,
             edgecolors="black",
             linewidths=0.8,
             zorder=3,

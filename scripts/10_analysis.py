@@ -37,6 +37,7 @@ import numpy as np
 import pandas as pd
 from analysis_config import TOPCODE_SENSITIVITY_VALUES
 from matplotlib.gridspec import GridSpec
+from matplotlib.lines import Line2D
 from matplotlib.ticker import PercentFormatter
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,20 +47,15 @@ TABS = ROOT / "tabs"
 FIGS.mkdir(parents=True, exist_ok=True)
 TABS.mkdir(parents=True, exist_ok=True)
 
-COLORS = {
-    "mumbai": "#2166ac",
-    "navi_mumbai": "#b2182b",
-    "bangalore": "#1b7837",
-    "delhi": "#762a83",
-}
-PARITY_C = "#999999"
-
-CITY_LABELS = {
-    "mumbai": "Mumbai",
-    "navi_mumbai": "Navi Mumbai",
-    "bangalore": "Bangalore",
-    "delhi": "Delhi",
-}
+from figstyle import (  # noqa: E402
+    ACCENT,
+    BAND_GRAY,
+    BAR_GRAY,
+    CITY_LABELS,
+    GRAYS,
+    MARKERS,
+    apply_style,
+)
 
 # Map raw OSM highway tags onto the four design road-type buckets so the
 # OSM "ground truth" road type is comparable to the itinerary road type.
@@ -88,22 +84,7 @@ def osm_road_class(highway) -> str | None:
     return OSM_ROAD_CLASS.get(highway)
 
 
-plt.rcParams.update(
-    {
-        "font.family": "sans-serif",
-        "font.sans-serif": ["Helvetica", "Arial", "DejaVu Sans"],
-        "font.size": 8,
-        "axes.linewidth": 0.5,
-        "axes.spines.top": False,
-        "axes.spines.right": False,
-        "figure.dpi": 300,
-        "savefig.dpi": 300,
-        "savefig.bbox": "tight",
-        "savefig.pad_inches": 0.08,
-        "pdf.fonttype": 42,
-        "ps.fonttype": 42,
-    }
-)
+apply_style()
 
 
 def load_all_cities(cities: list[str]) -> pd.DataFrame:
@@ -133,6 +114,19 @@ def pct(x: float) -> str:
     return f"{100 * x:.1f}\\%"
 
 
+def pct_ci(s: dict, key: str = "weighted") -> str:
+    """Percent cell with cluster-robust 95% CI.
+
+    Tables display percent (matching prose and figure axes), never raw
+    proportions. A single collection day leaves the cluster-robust CI
+    undefined; print '--' rather than nan.
+    """
+    lo, hi = s[f"{key}_ci_lower"], s[f"{key}_ci_upper"]
+    if not (np.isfinite(lo) and np.isfinite(hi)):
+        return f"{100 * s[key]:.1f} [--]"
+    return f"{100 * s[key]:.1f} [{100 * lo:.1f},{100 * hi:.1f}]"
+
+
 def write_tex(path: Path, lines: list[str]) -> None:
     """Write LaTeX file."""
     path.write_text("\n".join(lines) + "\n")
@@ -160,6 +154,7 @@ def compute_city_summary(df: pd.DataFrame, cities: list[str]) -> dict:
         row_data[city] = {
             "n_images": len(sub),
             "n_clusters": s["n_clusters"],
+            "n_clusters_eff": s["n_clusters_eff"],
             "n_pedestrians": sub["total_pedestrians"].sum(),
             "n_people": sub["total_people"].sum(),
             "weighted": s["weighted"],
@@ -176,6 +171,14 @@ def compute_city_summary(df: pd.DataFrame, cities: list[str]) -> dict:
             "combined": combined["weighted"],
             "combined_ci_lower": combined["weighted_ci_lower"],
             "combined_ci_upper": combined["weighted_ci_upper"],
+            "twowheeler": (
+                sub["women_twowheeler"].sum() / sub["total_twowheeler"].sum()
+                if sub["total_twowheeler"].sum() > 0
+                else float("nan")
+            ),
+            "combined_img": combined["unweighted"],
+            "combined_img_ci_lower": combined["unweighted_ci_lower"],
+            "combined_img_ci_upper": combined["unweighted_ci_upper"],
         }
     return row_data
 
@@ -206,6 +209,8 @@ TIME_BINS = [
     (15, 23, "Evening (15-22)"),
 ]
 
+DAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
 
 def compute_road_props(df: pd.DataFrame, cities: list[str]) -> dict:
     """Per-city proportion female by road class."""
@@ -231,8 +236,9 @@ def make_table1_city_summary(df: pd.DataFrame, cities: list[str]) -> None:
         r"\centering",
         r"\caption{Women's share among classified sightings in collected street imagery by city.}",
         r"\label{tab:city_summary}",
+        r"\scriptsize",
         r"\begin{threeparttable}",
-        r"\begin{tabular}{l" + "r" * len(cities) + "}",
+        r"\begin{tabular}{@{\extracolsep{0pt}}l" + "r" * len(cities) + "}",
         r"\toprule",
         " & " + " & ".join(CITY_LABELS.get(c, c) for c in cities) + r" \\",
         r"\midrule",
@@ -241,7 +247,7 @@ def make_table1_city_summary(df: pd.DataFrame, cities: list[str]) -> None:
     row_data = compute_city_summary(df, cities)
 
     def fmt_ci(d: dict, key: str) -> str:
-        return f"{d[key]:.3f} [{d[key + '_ci_lower']:.3f}, {d[key + '_ci_upper']:.3f}]"
+        return pct_ci(d, key)
 
     lines.append(
         "Images annotated & " + " & ".join(f"{row_data[c]['n_images']:,}" for c in cities) + r" \\"
@@ -252,31 +258,46 @@ def make_table1_city_summary(df: pd.DataFrame, cities: list[str]) -> None:
         + r" \\"
     )
     lines.append(
+        "\\quad effective (Kish) & "
+        + " & ".join(f"{row_data[c]['n_clusters_eff']:.1f}" for c in cities)
+        + r" \\"
+    )
+    lines.append(
         "Pedestrians classified & "
         + " & ".join(f"{row_data[c]['n_pedestrians']:,}" for c in cities)
         + r" \\"
     )
     lines.append(r"\addlinespace")
     lines.append(
-        "Pedestrian female share (person-weighted) & "
+        "Female share, person-weighted (\\%) & "
         + " & ".join(fmt_ci(row_data[c], "weighted") for c in cities)
         + r" \\"
     )
     lines.append(
-        "Pedestrian female share (image-level mean) & "
+        "Female share, image-level mean (\\%) & "
         + " & ".join(fmt_ci(row_data[c], "unweighted") for c in cities)
         + r" \\"
     )
     lines.append(r"\addlinespace")
     lines.append(
-        "Pedestrian sex ratio (F/1000 M) & "
+        "Sex ratio (F/1000 M) & "
         + " & ".join(f"{row_data[c]['sex_ratio']:.0f}" for c in cities)
         + r" \\"
     )
     lines.append(r"\addlinespace")
     lines.append(
-        "All-mode female share (secondary) & "
+        "All-mode female share (\\%) & "
         + " & ".join(fmt_ci(row_data[c], "combined") for c in cities)
+        + r" \\"
+    )
+    lines.append(
+        "Two-wheeler female share (\\%) & "
+        + " & ".join(f"{100 * row_data[c]['twowheeler']:.1f}" for c in cities)
+        + r" \\"
+    )
+    lines.append(
+        "All-mode, image-level mean & "
+        + " & ".join(fmt_ci(row_data[c], "combined_img") for c in cities)
         + r" \\"
     )
 
@@ -284,10 +305,17 @@ def make_table1_city_summary(df: pd.DataFrame, cities: list[str]) -> None:
         r"\bottomrule",
         r"\end{tabular}",
         r"\begin{tablenotes}[flushleft]",
-        r"\item The primary estimand is the share of classified pedestrian sightings coded as women."
-        r" The all-mode row additionally includes two-wheeler riders.",
+        r"\item The first two share rows and the sex ratio describe pedestrians only, which is"
+        r" the primary estimand: the share of classified pedestrian sightings coded as"
+        r" women. The all-mode rows additionally include two-wheeler riders.",
         r"\item 95\% confidence intervals use collection-day cluster-robust standard errors"
-        r" and quantify variability across observed fieldwork days; the route imagery is not a population sample.",
+        r" and quantify variability across observed fieldwork days; the route imagery is not a"
+        r" population sample.",
+        r"\item Collection days are the clustering unit, but they contributed very unequal"
+        r" numbers of frames, so the effective count is well below the raw count. The Kish"
+        r" effective number, $(\sum n_c)^2 / \sum n_c^2$, is the one that governs interval"
+        r" coverage. In Mumbai and Navi Mumbai it falls to about six and five, and intervals"
+        r" for those cities should be read as indicative.",
         r"\item Person-weighted estimates weight each classified sighting equally; image-level means weight each frame equally.",
         r"\item Sex ratio is women per 1,000 men. Gender inferred from visible appearance.",
         r"\item ``10+'' is represented by its known minimum, 11; Table~\ref{tab:topcode} reports sensitivity.",
@@ -309,10 +337,11 @@ def make_tableS1_road_type(df: pd.DataFrame, cities: list[str]) -> None:
         r"\centering",
         r"\caption{Women's share of visible people by road type.}",
         r"\label{tab:road_type}",
+        r"\scriptsize",
         r"\begin{threeparttable}",
-        r"\begin{tabular}{llccc}",
+        r"\begin{tabular}{@{\extracolsep{0pt}}llccc}",
         r"\toprule",
-        r"City & Road type & Prop.\ female [95\% CI] & Sex ratio & N (clusters) \\",
+        r"City & Road type & Percent female [95\% CI] & Sex ratio & N (clusters) \\",
         r"\midrule",
     ]
 
@@ -332,7 +361,7 @@ def make_tableS1_road_type(df: pd.DataFrame, cities: list[str]) -> None:
             sr = (total_women / total_men * 1000) if total_men > 0 else 0
             city_col = city_label if first else ""
             prop_ci = (
-                f"{s['weighted']:.3f} [{s['weighted_ci_lower']:.3f}, {s['weighted_ci_upper']:.3f}]"
+                pct_ci(s)
             )
             lines.append(
                 f"{city_col} & {rt.title()} & {prop_ci} & {sr:.0f} & {s['n_obs']} ({s['n_clusters']}) \\\\"
@@ -357,6 +386,35 @@ def make_tableS1_road_type(df: pd.DataFrame, cities: list[str]) -> None:
     print("  -> tableS1_road_type.tex")
 
 
+def leave_one_day_out(sub: pd.DataFrame) -> tuple[float, list[tuple[str, float, dict]]]:
+    """City estimate with each single day of the week removed, ordered by sample share.
+
+    Returns the baseline restricted to frames with a known day of week, so the
+    comparison isolates day composition rather than also dropping frames whose
+    timestamp is missing.
+
+    Collection days are the clusters, so removing a day of the week removes whole
+    clusters: the intervals widen as well as shift, and the comparison spends
+    precision rather than only testing composition.
+    """
+    valid = sub[(sub["total_pedestrians"] > 0) & sub["frame_dayofweek"].notna()]
+    total = float(valid["total_pedestrians"].sum())
+    if total <= 0:
+        return float("nan"), []
+
+    baseline = float(inference.summarize(valid)["weighted"])
+
+    results: list[tuple[str, float, dict]] = []
+    for day in sorted(pd.unique(valid["frame_dayofweek"])):
+        dropped = valid[valid["frame_dayofweek"] == day]
+        kept = valid[valid["frame_dayofweek"] != day]
+        if len(kept) == 0:
+            continue
+        share = float(dropped["total_pedestrians"].sum()) / total
+        results.append((DAY_LABELS[int(day)], share, inference.summarize(kept)))
+    return baseline, sorted(results, key=lambda r: -r[1])
+
+
 def make_tableS2_temporal(df: pd.DataFrame, cities: list[str]) -> None:
     """Weekday/weekend, time-of-day coverage with cluster-robust CIs."""
     lines = [
@@ -364,10 +422,11 @@ def make_tableS2_temporal(df: pd.DataFrame, cities: list[str]) -> None:
         r"\centering",
         r"\caption{Temporal patterns and data-collection coverage.}",
         r"\label{tab:temporal}",
+        r"\scriptsize",
         r"\begin{threeparttable}",
-        r"\begin{tabular}{llcc}",
+        r"\begin{tabular}{@{\extracolsep{0pt}}llcc}",
         r"\toprule",
-        r"City & Period & Prop.\ female [95\% CI] & Images (clusters) \\",
+        r"City & Period & Percent female [95\% CI] & Images (clusters) \\",
         r"\midrule",
     ]
 
@@ -382,16 +441,38 @@ def make_tableS2_temporal(df: pd.DataFrame, cities: list[str]) -> None:
                 continue
             s = inference.summarize(valid)
             prop_ci = (
-                f"{s['weighted']:.3f} [{s['weighted_ci_lower']:.3f}, {s['weighted_ci_upper']:.3f}]"
+                pct_ci(s)
             )
             lines.append(
                 f"{city_label} & {label} & {prop_ci} & {len(we_sub):,} ({s['n_clusters']}) \\\\"
             )
 
+    max_shift = 0.0
+    lines.append(r"\midrule")
+    lines.append(
+        r"\multicolumn{4}{l}{\textit{Percent female excluding the most-sampled day of week}} \\"
+    )
+    lines.append(r"\midrule")
+
+    for city in cities:
+        city_label = CITY_LABELS.get(city, city)
+        baseline, results = leave_one_day_out(df[df["city"] == city])
+        if not results:
+            continue
+
+        max_shift = max(max_shift, max(abs(s["weighted"] - baseline) for _, _, s in results))
+
+        day, share, s = results[0]
+        prop_ci = pct_ci(s)
+        label = f"Drop {day} ({pct(share)} of sightings)"
+        lines.append(
+            f"{city_label} & {label} & {prop_ci} & {s['n_obs']:,} ({s['n_clusters']}) \\\\"
+        )
+
     time_bins = TIME_BINS
 
     lines.append(r"\midrule")
-    lines.append(r"\multicolumn{4}{l}{\textit{Prop.\ female by time window}} \\")
+    lines.append(r"\multicolumn{4}{l}{\textit{Percent female by time window}} \\")
     lines.append(r"\midrule")
 
     for city in cities:
@@ -405,7 +486,7 @@ def make_tableS2_temporal(df: pd.DataFrame, cities: list[str]) -> None:
                 continue
             s = inference.summarize(valid)
             prop_ci = (
-                f"{s['weighted']:.3f} [{s['weighted_ci_lower']:.3f}, {s['weighted_ci_upper']:.3f}]"
+                pct_ci(s)
             )
             lines.append(
                 f"{city_label} & {label} & {prop_ci} & {len(bin_sub):,} ({s['n_clusters']}) \\\\"
@@ -431,6 +512,13 @@ def make_tableS2_temporal(df: pd.DataFrame, cities: list[str]) -> None:
         r"\begin{tablenotes}[flushleft]",
         r"\item 95\% CIs use collection-day cluster-robust standard errors.",
         r"\item Collection spans roughly 06:00--22:00 IST; the three windows partition it.",
+        r"\item Fieldwork days were not spread evenly over the week, so each city's imagery is "
+        r"dominated by one or two days. Dropping the most-sampled day removes whole collection-day "
+        r"clusters and therefore widens the interval as well as moving the point estimate. Across "
+        r"every single-day exclusion in every city, the largest movement in the person-weighted "
+        rf"share is {100 * max_shift:.1f} percentage points, and every leave-one-day-out "
+        r"estimate lies inside the "
+        r"corresponding full-sample interval.",
         r"\end{tablenotes}",
         r"\end{threeparttable}",
         r"\end{table}",
@@ -447,10 +535,11 @@ def make_tableS3_poi_infrastructure(df: pd.DataFrame) -> None:
         r"\centering",
         r"\caption{Points of interest and infrastructure summaries.}",
         r"\label{tab:poi_infra}",
+        r"\scriptsize",
         r"\begin{threeparttable}",
-        r"\begin{tabular}{llcc}",
+        r"\begin{tabular}{@{\extracolsep{0pt}}llcc}",
         r"\toprule",
-        r"Characteristic & Present & Prop.\ female [95\% CI] & Images (clusters) \\",
+        r"Characteristic & Present & Percent female [95\% CI] & Images (clusters) \\",
         r"\midrule",
     ]
 
@@ -469,7 +558,7 @@ def make_tableS3_poi_infrastructure(df: pd.DataFrame) -> None:
                 continue
             s = inference.summarize(sub)
             prop_ci = (
-                f"{s['weighted']:.3f} [{s['weighted_ci_lower']:.3f}, {s['weighted_ci_upper']:.3f}]"
+                pct_ci(s)
             )
             lines.append(
                 f"{label} & {val_label} & {prop_ci} & {len(sub):,} ({s['n_clusters']}) \\\\"
@@ -493,7 +582,7 @@ def make_tableS3_poi_infrastructure(df: pd.DataFrame) -> None:
                 continue
             s = inference.summarize(sub)
             prop_ci = (
-                f"{s['weighted']:.3f} [{s['weighted_ci_lower']:.3f}, {s['weighted_ci_upper']:.3f}]"
+                pct_ci(s)
             )
             lines.append(
                 f"{label} & {val_label} & {prop_ci} & {len(sub):,} ({s['n_clusters']}) \\\\"
@@ -515,7 +604,7 @@ def make_tableS3_poi_infrastructure(df: pd.DataFrame) -> None:
                     cells.append("--")
                     continue
                 s = inference.summarize(sub)
-                cells.append(f"{s['weighted']:.3f} (n={len(sub):,})")
+                cells.append(f"{100 * s['weighted']:.1f} (n={len(sub):,})")
             lines.append(f"{row[0]} & Yes/No & {cells[0]} & {cells[1]} \\\\")
         lines.append(r"\addlinespace")
 
@@ -544,8 +633,9 @@ def make_tableS5_topcode_sensitivity(df: pd.DataFrame, cities: list[str]) -> Non
         r"\centering",
         r"\caption{Sensitivity of pedestrian female share to ``10+'' count replacement.}",
         r"\label{tab:topcode}",
+        r"\scriptsize",
         r"\begin{threeparttable}",
-        r"\begin{tabular}{l" + "r" * len(cities) + "}",
+        r"\begin{tabular}{@{\extracolsep{0pt}}l" + "r" * len(cities) + "}",
         r"\toprule",
         "Replacement & " + " & ".join(CITY_LABELS.get(c, c) for c in cities) + r" \\",
         r"\midrule",
@@ -560,7 +650,7 @@ def make_tableS5_topcode_sensitivity(df: pd.DataFrame, cities: list[str]) -> Non
             city_data["total_pedestrians"] = city_data["women_count"] + city_data["men_count"]
             values.append(inference.summarize(city_data)["weighted"])
         label = f"{replacement}" + (" (known minimum; primary)" if replacement == 11 else "")
-        lines.append(label + " & " + " & ".join(f"{value:.3f}" for value in values) + r" \\")
+        lines.append(label + " & " + " & ".join(f"{100 * value:.1f}" for value in values) + r" \\")
     affected = {
         city: int(
             df.loc[df["city"] == city, ["women_count_topcoded", "men_count_topcoded"]]
@@ -590,7 +680,15 @@ def make_tableS5_topcode_sensitivity(df: pd.DataFrame, cities: list[str]) -> Non
 
 
 def make_fig2_distribution(df: pd.DataFrame, cities: list[str]) -> None:
-    """Side-by-side histograms of pedestrian female share with clustered CIs."""
+    """Side-by-side histograms of image-level pedestrian female share.
+
+    A line over a histogram reads as a summary of that distribution, so the
+    two summary lines are drawn in distinct styles and named in the legend:
+    the dotted line is the mean of the plotted distribution (each image counts
+    equally); the solid line is the person-weighted share (each person counts
+    equally), the paper's headline estimate. They differ where women's
+    presence covaries with crowd size.
+    """
     valid = df[df["total_pedestrians"] > 0]
 
     fig, axes = plt.subplots(1, len(cities), figsize=(5.5, 2.2), sharey=True)
@@ -600,33 +698,86 @@ def make_fig2_distribution(df: pd.DataFrame, cities: list[str]) -> None:
     bins = np.arange(-0.025, 1.075, 0.05)
 
     for ax, city in zip(axes, cities):
-        color = COLORS.get(city, "#666666")
         city_data = valid[valid["city"] == city]
         vals = city_data["prop_female"].dropna()
 
         s = inference.summarize(city_data)
 
-        ax.hist(vals, bins=bins, color=color, alpha=0.85, edgecolor="white", linewidth=0.3)
-        ax.axvline(x=0.5, color=PARITY_C, linestyle="--", linewidth=0.7, label="Parity")
-        ax.axvline(
-            x=s["weighted"],
-            color="#222222",
-            linestyle="-",
-            linewidth=1.2,
-            label=f"Share = {s['weighted']:.1%}",
+        ax.hist(vals, bins=bins, color=BAR_GRAY, edgecolor="white", linewidth=0.3)
+        ax.axvline(x=0.5, color=ACCENT, linestyle="--", linewidth=0.8)
+        ax.axvline(x=s["unweighted"], color="black", linestyle=":", linewidth=1)
+        ax.axvline(x=s["weighted"], color="black", linestyle="-", linewidth=1.2)
+        ax.text(
+            s["weighted"] + 0.04,
+            0.95,
+            f"{s['weighted']:.1%}",
+            transform=ax.get_xaxis_transform(),
+            fontsize=6.5,
+            va="top",
         )
-        ax.axvspan(s["weighted_ci_lower"], s["weighted_ci_upper"], alpha=0.15, color=color)
         ax.set_title(CITY_LABELS.get(city, city), fontsize=9, fontweight="bold")
-        ax.legend(fontsize=6.5, frameon=False, loc="upper right")
         ax.set_xlim(-0.05, 1.05)
         ax.xaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
 
     axes[0].set_ylabel("Number of images")
     fig.supxlabel("Percent female (per image)", fontsize=8)
+    fig.legend(
+        handles=[
+            Line2D(
+                [], [], color="black", linestyle="-", linewidth=1.2, label="Person-weighted share"
+            ),
+            Line2D([], [], color="black", linestyle=":", linewidth=1, label="Image-level mean"),
+            Line2D([], [], color=ACCENT, linestyle="--", linewidth=0.8, label="Parity"),
+        ],
+        loc="upper center",
+        ncol=3,
+        frameon=False,
+        fontsize=6.5,
+        bbox_to_anchor=(0.5, 1.1),
+    )
     fig.tight_layout()
     fig.savefig(FIGS / "fig2_distribution.pdf")
     plt.close(fig)
     print("  -> fig2_distribution.pdf")
+
+
+def city_legend_handles(cities: list[str]) -> list[Line2D]:
+    return [
+        Line2D(
+            [],
+            [],
+            linestyle="none",
+            marker=MARKERS[c],
+            color=GRAYS[c],
+            markersize=4.5,
+            label=CITY_LABELS.get(c, c),
+        )
+        for c in cities
+    ]
+
+
+def dot_rows(ax, rows, values, cities, xmax) -> None:
+    """Cleveland dot plot: one labeled row per category, one marker per city.
+
+    `values` maps city -> row label -> share. Cities keep a fixed sub-position
+    within each row so shape and shade, not color, carry identity.
+    """
+    n = len(cities)
+    for r, row_label in enumerate(rows):
+        for i, city in enumerate(cities):
+            v = values[city].get(row_label)
+            if v is None or not np.isfinite(v):
+                continue
+            y = r + (i - (n - 1) / 2) * 0.15
+            ax.plot(v, y, MARKERS[city], color=GRAYS[city], markersize=4, zorder=2)
+    ax.set_yticks(range(len(rows)))
+    ax.set_yticklabels(rows, fontsize=7)
+    ax.invert_yaxis()
+    ax.set_xlim(0, xmax)
+    ax.xaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
+    ax.set_xlabel("Percent female", fontsize=7)
+    ax.tick_params(axis="y", length=0)
+    ax.spines["left"].set_visible(False)
 
 
 def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
@@ -634,85 +785,31 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
     valid = df[df["total_pedestrians"] > 0]
 
     fig = plt.figure(figsize=(6.5, 6))
-    gs = GridSpec(2, 2, figure=fig, hspace=0.45, wspace=0.35)
-    n = len(cities)
-    w = 0.8 / n
+    gs = GridSpec(2, 2, figure=fig, hspace=0.5, wspace=0.35, top=0.9)
+
+    mode_data = compute_mode_props(df, cities)
+    road_data = compute_road_props(df, cities)
+    xmax = 0.05 * np.ceil(
+        max(max(d.values()) for d in list(mode_data.values()) + list(road_data.values())) / 0.05
+        + 0.4
+    )
 
     # --- Panel A: Pedestrian vs Two-wheeler ---
     ax = fig.add_subplot(gs[0, 0])
-    mode_data = compute_mode_props(df, cities)
-
-    x = np.arange(2)
-    for i, city in enumerate(cities):
-        color = COLORS.get(city, "#666666")
-        vals = [mode_data[city]["Pedestrian"], mode_data[city]["Two-wheeler"]]
-        bars = ax.bar(
-            x + (i - (n - 1) / 2) * w,
-            vals,
-            w,
-            color=color,
-            alpha=0.85,
-            label=CITY_LABELS.get(city, city),
-        )
-        for bar, val in zip(bars, vals):
-            ax.text(
-                bar.get_x() + bar.get_width() / 2,
-                bar.get_height() + 0.008,
-                f"{val:.1%}",
-                ha="center",
-                va="bottom",
-                fontsize=5.5,
-            )
-
-    ax.set_xticks(x)
-    ax.set_xticklabels(["Pedestrian", "Two-wheeler"])
-    ax.set_ylabel("Percent female")
-    ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
-    ax.set_ylim(0, 0.50)
-    ax.axhline(y=0.5, color=PARITY_C, linestyle="--", linewidth=0.5)
-    ax.legend(fontsize=6.5, frameon=False)
+    dot_rows(ax, ["Pedestrian", "Two-wheeler"], mode_data, cities, xmax)
     ax.set_title("A  Transport mode", fontsize=8.5, fontweight="bold", loc="left")
 
     # --- Panel B: Road type ---
     ax = fig.add_subplot(gs[0, 1])
     road_labels = ["Primary", "Secondary", "Tertiary", "Residential"]
-
-    road_data = compute_road_props(df, cities)
-
-    x = np.arange(len(ROAD_TYPES))
-    for i, city in enumerate(cities):
-        color = COLORS.get(city, "#666666")
-        vals = [road_data[city][rt] for rt in ROAD_TYPES]
-        bars = ax.bar(
-            x + (i - (n - 1) / 2) * w,
-            vals,
-            w,
-            color=color,
-            alpha=0.85,
-            label=CITY_LABELS.get(city, city),
-        )
-        for bar, val in zip(bars, vals):
-            if val > 0:
-                ax.text(
-                    bar.get_x() + bar.get_width() / 2,
-                    bar.get_height() + 0.005,
-                    f"{val:.0%}",
-                    ha="center",
-                    va="bottom",
-                    fontsize=5.5,
-                    rotation=90,
-                )
-
-    ax.set_xticks(x)
-    ax.set_xticklabels(road_labels, fontsize=7)
-    ax.set_ylabel("Percent female")
-    ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
-    ax.set_ylim(0, 0.35)
-    ax.axhline(y=0.5, color=PARITY_C, linestyle="--", linewidth=0.5)
-    ax.legend(fontsize=6.5, frameon=False)
+    road_by_label = {
+        city: {lab: road_data[city][rt] for lab, rt in zip(road_labels, ROAD_TYPES)}
+        for city in cities
+    }
+    dot_rows(ax, road_labels, road_by_label, cities, xmax)
     ax.set_title("B  Road type", fontsize=8.5, fontweight="bold", loc="left")
 
-    # --- Panel C: POI ---
+    # --- Panel C: POI (pooled across cities, absent -> present dumbbell) ---
     ax = fig.add_subplot(gs[1, 0])
     poi_data = {}
     for poi in ["bus_station", "street_vendor"]:
@@ -724,38 +821,73 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
                     "n": len(sub),
                 }
 
-    pois = [("bus_station", "Bus\nstation"), ("street_vendor", "Street\nvendor")]
-    x = np.arange(len(pois))
-    w_poi = 0.8 / 2
-    for i, (pres, pres_label, color) in enumerate(
-        [(False, "Absent", "#bdbdbd"), (True, "Present", "#e6550d")]
-    ):
-        vals = [poi_data.get((p[0], pres), {}).get("pf", 0) for p in pois]
-        ns = [poi_data.get((p[0], pres), {}).get("n", 0) for p in pois]
-        bars = ax.bar(x + (i - 0.5) * w_poi, vals, w_poi, color=color, alpha=0.85, label=pres_label)
-        for bar, val, n in zip(bars, vals, ns):
+    pois = [("bus_station", "Bus station"), ("street_vendor", "Street vendor")]
+    for r, (poi, _) in enumerate(pois):
+        absent, present = poi_data[(poi, False)], poi_data[(poi, True)]
+        ax.plot([absent["pf"], present["pf"]], [r, r], color="0.75", linewidth=1, zorder=1)
+        ax.plot(
+            absent["pf"],
+            r,
+            "o",
+            markerfacecolor="white",
+            markeredgecolor="black",
+            markersize=4.5,
+            zorder=2,
+        )
+        ax.plot(present["pf"], r, "o", color="black", markersize=4.5, zorder=2)
+        lo, hi = sorted([absent, present], key=lambda d: d["pf"])
+        for d, dx, ha in [(lo, -0.012, "right"), (hi, 0.012, "left")]:
             ax.text(
-                bar.get_x() + bar.get_width() / 2,
-                bar.get_height() + 0.005,
-                f"{val:.1%}\n({n})",
-                ha="center",
-                va="bottom",
-                fontsize=6,
+                d["pf"] + dx,
+                r,
+                f"{d['pf']:.1%} ({d['n']:,})",
+                ha=ha,
+                va="center",
+                fontsize=5.5,
+                color="0.4",
             )
-
-    ax.set_xticks(x)
-    ax.set_xticklabels([p[1] for p in pois], fontsize=7)
-    ax.set_ylabel("Percent female")
-    ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
-    ax.set_ylim(0, 0.35)
-    ax.legend(title="POI", fontsize=6.5, title_fontsize=6.5, frameon=False)
+    ax.set_yticks(range(len(pois)))
+    ax.set_yticklabels([p[1] for p in pois], fontsize=7)
+    ax.set_ylim(-0.8, len(pois) - 0.4)
+    ax.invert_yaxis()
+    ax.set_xlim(0, xmax)
+    ax.xaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
+    ax.set_xlabel("Percent female", fontsize=7)
+    ax.tick_params(axis="y", length=0)
+    ax.spines["left"].set_visible(False)
+    ax.legend(
+        handles=[
+            Line2D(
+                [],
+                [],
+                linestyle="none",
+                marker="o",
+                markerfacecolor="white",
+                markeredgecolor="black",
+                markersize=4.5,
+                label="POI absent",
+            ),
+            Line2D(
+                [],
+                [],
+                linestyle="none",
+                marker="o",
+                color="black",
+                markersize=4.5,
+                label="POI present",
+            ),
+        ],
+        fontsize=6,
+        frameon=False,
+        loc="lower right",
+    )
     ax.set_title("C  Point of interest", fontsize=8.5, fontweight="bold", loc="left")
 
     # --- Panel D: Time of day ---
     ax = fig.add_subplot(gs[1, 1])
     plotted_hours = []
+    plotted_shares = []
     for city in cities:
-        color = COLORS.get(city, "#666666")
         ct = valid[(valid["city"] == city) & valid["frame_hour"].notna()].copy()
         ct["hour_bin"] = ct["frame_hour"].astype(int)
         hourly = (
@@ -777,85 +909,116 @@ def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
         )
         hourly = hourly[hourly["n"] >= 5]
         plotted_hours.extend(hourly["hour_bin"].tolist())
+        plotted_shares.extend(hourly["pf"].dropna().tolist())
         ax.plot(
             hourly["hour_bin"],
             hourly["pf"],
-            "o-",
-            color=color,
-            markersize=3.5,
+            marker=MARKERS[city],
+            color=GRAYS[city],
+            markersize=3,
             linewidth=1,
-            label=CITY_LABELS.get(city, city),
-            alpha=0.85,
         )
 
-    ax.axhline(y=0.5, color=PARITY_C, linestyle="--", linewidth=0.5)
-    ax.set_xlabel("Hour of day (IST)")
-    ax.set_ylabel("Percent female")
+    ax.set_xlabel("Hour of day (IST)", fontsize=7)
+    ax.set_ylabel("Percent female", fontsize=7)
     ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
-    ax.set_ylim(0, 0.50)
+    if plotted_shares:
+        ax.set_ylim(0, max(plotted_shares) + 0.04)
     if plotted_hours:
         ax.set_xlim(min(plotted_hours) - 0.5, max(plotted_hours) + 0.5)
-    ax.legend(fontsize=6.5, frameon=False)
     ax.set_title("D  Time of day", fontsize=8.5, fontweight="bold", loc="left")
 
+    fig.legend(
+        handles=city_legend_handles(cities),
+        loc="upper center",
+        ncol=len(cities),
+        frameon=False,
+        fontsize=7,
+        bbox_to_anchor=(0.5, 0.97),
+    )
     fig.savefig(FIGS / "fig3_multipanel.pdf")
     plt.close(fig)
     print("  -> fig3_multipanel.pdf")
 
 
 def make_fig4_weekday_weekend(df: pd.DataFrame, cities: list[str]) -> None:
-    """Bar chart weekday vs weekend."""
+    """Weekday vs weekend dumbbell, one row per city."""
     valid = df[(df["total_pedestrians"] > 0) & df["is_weekend"].notna()]
 
-    fig, ax = plt.subplots(figsize=(3.5, 2.5))
-    n = len(cities)
-    w = 0.8 / n
+    fig, ax = plt.subplots(figsize=(3.5, 2.2))
 
-    items = []
+    stats = {}
     for city in cities:
         ct = valid[valid["city"] == city]
         for we, label in [(False, "Weekday"), (True, "Weekend")]:
             sub = ct[ct["is_weekend"] == we]
             if len(sub) > 0:
-                items.append(
-                    {
-                        "city": city,
-                        "day": label,
-                        "pf": sub["women_count"].sum() / sub["total_pedestrians"].sum(),
-                        "n": len(sub),
-                    }
-                )
+                stats[(city, label)] = {
+                    "pf": sub["women_count"].sum() / sub["total_pedestrians"].sum(),
+                    "n": len(sub),
+                }
 
-    x = np.arange(2)
-    for i, city in enumerate(cities):
-        color = COLORS.get(city, "#666666")
-        vals = [it["pf"] for it in items if it["city"] == city]
-        ns = [it["n"] for it in items if it["city"] == city]
-        bars = ax.bar(
-            x + (i - (n - 1) / 2) * w,
-            vals,
-            w,
-            color=color,
-            alpha=0.85,
-            label=CITY_LABELS.get(city, city),
+    for r, city in enumerate(cities):
+        wd, we = stats[(city, "Weekday")], stats[(city, "Weekend")]
+        ax.plot([wd["pf"], we["pf"]], [r, r], color="0.75", linewidth=1, zorder=1)
+        ax.plot(wd["pf"], r, "o", color="black", markersize=4.5, zorder=2)
+        ax.plot(
+            we["pf"],
+            r,
+            "o",
+            markerfacecolor="white",
+            markeredgecolor="black",
+            markersize=4.5,
+            zorder=2,
         )
-        for bar, val, n_frames in zip(bars, vals, ns):
+        lo, hi = sorted([wd, we], key=lambda d: d["pf"])
+        for d, dx, ha in [(lo, -0.008, "right"), (hi, 0.008, "left")]:
             ax.text(
-                bar.get_x() + bar.get_width() / 2,
-                bar.get_height() + 0.005,
-                f"{val:.1%}\n(n={n_frames})",
-                ha="center",
-                va="bottom",
-                fontsize=5.5,
+                d["pf"] + dx,
+                r,
+                f"{d['pf']:.1%} (n={d['n']:,})",
+                ha=ha,
+                va="center",
+                fontsize=5,
+                color="0.4",
             )
 
-    ax.set_xticks(x)
-    ax.set_xticklabels(["Weekday", "Weekend"])
-    ax.set_ylabel("Percent female")
-    ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
-    ax.set_ylim(0, 0.35)
-    ax.axhline(y=0.5, color=PARITY_C, linestyle="--", linewidth=0.5)
-    ax.legend(fontsize=6.5, frameon=False)
+    ax.set_yticks(range(len(cities)))
+    ax.set_yticklabels([CITY_LABELS.get(c, c) for c in cities], fontsize=7)
+    ax.set_ylim(-0.9, len(cities) - 0.5)
+    ax.invert_yaxis()
+    vals = [d["pf"] for d in stats.values()]
+    ax.set_xlim(0.05 * np.floor(min(vals) / 0.05 - 0.4), 0.05 * np.ceil(max(vals) / 0.05 + 0.4))
+    ax.xaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
+    ax.set_xlabel("Percent female", fontsize=7)
+    ax.tick_params(axis="y", length=0)
+    ax.spines["left"].set_visible(False)
+    ax.legend(
+        handles=[
+            Line2D(
+                [],
+                [],
+                linestyle="none",
+                marker="o",
+                color="black",
+                markersize=4.5,
+                label="Weekday",
+            ),
+            Line2D(
+                [],
+                [],
+                linestyle="none",
+                marker="o",
+                markerfacecolor="white",
+                markeredgecolor="black",
+                markersize=4.5,
+                label="Weekend",
+            ),
+        ],
+        fontsize=6,
+        frameon=False,
+        loc="upper right",
+    )
     fig.tight_layout()
     fig.savefig(FIGS / "fig4_weekday_weekend.pdf")
     plt.close(fig)
@@ -896,39 +1059,35 @@ def make_fig5_pedestrian_crowdsize(df: pd.DataFrame, cities: list[str]) -> None:
         binned[city] = pd.DataFrame(rows).set_index("crowd_size")
     max_bin = max(b.index.max() for b in binned.values() if len(b) > 0)
 
-    fig, ax = plt.subplots(figsize=(5, 3.5))
+    y_top = min(1.0, max(b["upper"].max() for b in binned.values() if len(b) > 0) + 0.03)
 
-    y_top = 0.0
-    for city in cities:
-        color = COLORS.get(city, "#666666")
-        label = CITY_LABELS.get(city, city)
-
+    fig, axes = plt.subplots(2, 2, figsize=(5.5, 4), sharex=True, sharey=True)
+    for ax, city in zip(axes.flat, cities):
         by_size = binned[city]
-        p = by_size["share"]
-        lo, hi = by_size["lower"], by_size["upper"]
-        y_top = max(y_top, hi.max())
-
-        ax.errorbar(
+        ax.fill_between(
             by_size.index,
-            p,
-            yerr=[p - lo, hi - p],
-            fmt="o-",
-            color=color,
-            markersize=3.5,
-            linewidth=1.5,
-            elinewidth=0.8,
-            capsize=1.5,
-            alpha=0.9,
-            label=label,
+            by_size["lower"],
+            by_size["upper"],
+            color=BAND_GRAY,
+            linewidth=0,
+            zorder=1,
         )
+        ax.plot(
+            by_size.index,
+            by_size["share"],
+            marker=MARKERS[city],
+            color="0.15",
+            markersize=2.8,
+            linewidth=1,
+            zorder=2,
+        )
+        ax.set_title(CITY_LABELS.get(city, city), fontsize=8, fontweight="bold")
+        ax.set_ylim(0, y_top)
+        ax.set_xlim(0.5, max_bin + 0.5)
+        ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
 
-    ax.set_xlabel("Total pedestrians in frame")
-    ax.set_ylabel("Percent female (pedestrians)")
-    ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
-    ax.set_ylim(0, min(1.0, y_top + 0.03))
-    ax.set_xlim(0.5, max_bin + 0.5)
-    ax.legend(fontsize=7, frameon=False)
-
+    fig.supxlabel("Total pedestrians in frame", fontsize=8)
+    fig.supylabel("Percent female (pedestrians)", fontsize=8)
     fig.tight_layout()
     fig.savefig(FIGS / "fig5_pedestrian_crowdsize.pdf")
     plt.close(fig)
