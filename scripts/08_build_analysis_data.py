@@ -218,6 +218,46 @@ def get_primary_annotator(df: pd.DataFrame) -> str:
     return annotator_order(df)[0]
 
 
+def analysis_frame_keys(df: pd.DataFrame) -> list[tuple]:
+    """Return physical-frame keys, with image and row fallbacks for malformed IDs."""
+    keys = []
+    for position, (_, row) in enumerate(df.iterrows()):
+        physical = (
+            row.get("region"),
+            row.get("canonical_video_id"),
+            row.get("frame_number"),
+        )
+        if all(pd.notna(value) for value in physical):
+            keys.append(("physical", *physical))
+            continue
+
+        image = row.get("image")
+        if pd.notna(image):
+            region = row.get("region")
+            keys.append(("image", None if pd.isna(region) else region, image))
+        else:
+            keys.append(("row", position))
+    return keys
+
+
+def select_primary_annotations(df: pd.DataFrame) -> tuple[pd.DataFrame, str]:
+    """Select one annotation per frame using the ranked annotator fallback."""
+    order = annotator_order(df)
+    primary_annotator = order[0]
+    rank = {annotator: position for position, annotator in enumerate(order)}
+    primary = (
+        df.assign(
+            _rank=df["annotator"].map(rank),
+            _frame_key=analysis_frame_keys(df),
+        )
+        .sort_values("_rank", kind="stable")
+        .drop_duplicates(subset="_frame_key")
+        .drop(columns=["_rank", "_frame_key"])
+        .copy()
+    )
+    return primary, primary_annotator
+
+
 def select_output_columns(df: pd.DataFrame) -> pd.DataFrame:
     """Select and order columns for final output.
 
@@ -332,20 +372,10 @@ def build_analysis_data(
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # One row per physical frame: the primary (most prolific) annotator's row when they
-    # covered it, else fall back to the next-most-prolific annotator who did. Image URLs
-    # are not keys because Label Studio can import one frame under filename aliases.
-    order = annotator_order(result)
-    primary_annotator = order[0]
+    # One row per physical frame: use the most prolific annotator who covered it.
+    # Malformed physical IDs fall back to image keys so distinct frames remain distinct.
+    primary, primary_annotator = select_primary_annotations(result)
     print(f"Primary annotator: {primary_annotator}")
-    rank = {a: i for i, a in enumerate(order)}
-    primary = (
-        result.assign(_rank=result["annotator"].map(rank))
-        .sort_values("_rank", kind="stable")
-        .drop_duplicates(subset=["region", "canonical_video_id", "frame_number"])
-        .drop(columns="_rank")
-        .copy()
-    )
     n_fallback = int((primary["annotator"] != primary_annotator).sum())
     if n_fallback:
         print(f"  {n_fallback} images covered only by reviewer annotators (fallback used)")

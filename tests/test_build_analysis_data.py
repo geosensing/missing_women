@@ -123,6 +123,24 @@ def test_primary_selection_uses_physical_frame_key(load_script, tmp_path):
     assert primary.loc[primary["frame_number"] == 5, "image"].item() == "alias-a.jpg"
 
 
+def test_primary_selection_preserves_distinct_image_fallbacks(load_script):
+    build = load_script("08_build_analysis_data.py")
+    source = pd.DataFrame(
+        {
+            "region": ["mumbai", "mumbai"],
+            "canonical_video_id": [pd.NA, pd.NA],
+            "frame_number": [pd.NA, pd.NA],
+            "annotator": ["primary", "primary"],
+            "image": ["unparsed-a.jpg", "unparsed-b.jpg"],
+        }
+    )
+
+    primary, primary_annotator = build.select_primary_annotations(source)
+
+    assert primary_annotator == "primary"
+    assert primary["image"].tolist() == ["unparsed-a.jpg", "unparsed-b.jpg"]
+
+
 def test_reliability_pairs_filename_aliases_as_one_physical_frame(load_script):
     irr = load_script("13_interrater_reliability.py")
     source = pd.DataFrame(

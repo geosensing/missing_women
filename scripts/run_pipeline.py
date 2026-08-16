@@ -104,6 +104,15 @@ def configured_frame_interval(city: str, city_config: dict) -> float:
     return interval
 
 
+def gps_source_directory(output_dir: Path, legacy_dir: Path) -> Path:
+    """Use current processor outputs when both required source files exist."""
+    current_outputs = (
+        output_dir / "exif_metadata.csv",
+        output_dir / "gps_timeseries.csv.gz",
+    )
+    return output_dir if all(path.exists() for path in current_outputs) else legacy_dir
+
+
 def run_process_videos(
     project_root: Path,
     city: str,
@@ -208,7 +217,7 @@ def run_pipeline(
     print("=" * 60)
 
     if rebuild_gps or not video_meta_path.exists() or not gps_path.exists():
-        gps_source_dir = output_dir if process_videos else exif_metadata_dir
+        gps_source_dir = gps_source_directory(output_dir, exif_metadata_dir)
         video_meta, gps_df = build_gps_index(gps_source_dir, gps_index_dir)
     else:
         print(f"Loading cached: {video_meta_path}")
