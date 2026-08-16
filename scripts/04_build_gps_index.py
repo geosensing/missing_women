@@ -29,6 +29,15 @@ from pathlib import Path
 import pandas as pd
 
 
+def gps_source_directory(output_dir: Path, legacy_dir: Path) -> Path:
+    """Use current processor outputs when both required source files exist."""
+    current_outputs = (
+        output_dir / "exif_metadata.csv",
+        output_dir / "gps_timeseries.csv.gz",
+    )
+    return output_dir if all(path.exists() for path in current_outputs) else legacy_dir
+
+
 def dms_to_decimal(dms_str: str) -> float | None:
     """
     Convert DMS string to decimal degrees.
@@ -80,9 +89,7 @@ def load_video_metadata(exif_dir: Path) -> pd.DataFrame:
         combined["recording_datetime"], format="%Y:%m:%d %H:%M:%S", errors="coerce"
     )
 
-    result = combined[
-        ["video_id", "video_name", "recording_datetime", "video_duration_sec"]
-    ].copy()
+    result = combined[["video_id", "video_name", "recording_datetime", "video_duration_sec"]].copy()
 
     # base_video_id strips the trailing hash to match annotation filenames
     # e.g., "1_itinerary_1_1_8e5f0fc4" -> "1_itinerary_1_1"
@@ -136,18 +143,14 @@ def load_gps_timeseries(exif_dir: Path) -> pd.DataFrame:
     return result
 
 
-def detect_clock_offset(
-    video_df: pd.DataFrame, gps_df: pd.DataFrame
-) -> pd.DataFrame:
+def detect_clock_offset(video_df: pd.DataFrame, gps_df: pd.DataFrame) -> pd.DataFrame:
     """
     Detect GoPro clock drift by comparing recording_datetime to first GPS timestamp.
 
     GoPro cameras sometimes have incorrect system clocks. GPS time is accurate.
     If the difference exceeds 1 hour, flag the video to use GPS time instead.
     """
-    gps_first = (
-        gps_df.groupby("video_id")["gps_datetime"].min().reset_index()
-    )
+    gps_first = gps_df.groupby("video_id")["gps_datetime"].min().reset_index()
     gps_first.columns = ["video_id", "gps_first_datetime"]
 
     merged = video_df.merge(gps_first, on="video_id", how="left")
@@ -161,9 +164,7 @@ def detect_clock_offset(
     return merged
 
 
-def build_gps_index(
-    exif_dir: Path, output_dir: Path
-) -> tuple[pd.DataFrame, pd.DataFrame]:
+def build_gps_index(exif_dir: Path, output_dir: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Main entry point: build and persist GPS lookup structures.
 
@@ -205,8 +206,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     project_root = Path(__file__).parent.parent
-    exif_dir = project_root / "data" / args.city / "exif_metadata"
-    output_dir = project_root / "data" / args.city / "gps_index"
+    city_dir = project_root / "data" / args.city
+    exif_dir = gps_source_directory(city_dir, city_dir / "exif_metadata")
+    output_dir = city_dir / "gps_index"
 
     video_df, gps_df = build_gps_index(exif_dir, output_dir)
 

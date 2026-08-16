@@ -1,3 +1,6 @@
+import pandas as pd
+
+
 def test_reliability_outputs_share_one_set_of_estimates(load_script, tmp_path, monkeypatch):
     irr = load_script("13_interrater_reliability.py")
     monkeypatch.setattr(irr, "TABS", tmp_path)
@@ -29,3 +32,21 @@ def test_reliability_outputs_share_one_set_of_estimates(load_script, tmp_path, m
     assert "when either rater's classifications have no variance" in table
     assert r"\newcommand{\IRRWomenCountICC}{0.81}" in macros
     assert r"\newcommand{\IRROverlaps}{4}" in macros
+
+
+def test_reliability_matches_malformed_ids_by_image(load_script):
+    irr = load_script("13_interrater_reliability.py")
+    source = pd.DataFrame(
+        {
+            "region": ["mumbai"] * 4,
+            "canonical_video_id": [pd.NA] * 4,
+            "frame_number": [pd.NA] * 4,
+            "annotator": ["primary", "reviewer", "primary", "reviewer"],
+            "image": ["shared.jpg", "shared.jpg", "primary-only.jpg", "reviewer-only.jpg"],
+        }
+    )
+
+    pairs, primary = irr.build_pairs(source)
+
+    assert primary == "primary"
+    assert len(pairs) == 1

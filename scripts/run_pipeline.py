@@ -66,6 +66,7 @@ build_analysis_data_mod = import_from_path(
 )
 
 build_gps_index = build_gps_index_mod.build_gps_index
+gps_source_directory = build_gps_index_mod.gps_source_directory
 parse_all_annotations = parse_annotations_mod.parse_all_annotations
 assign_frame_gps = assign_frame_gps_mod.assign_frame_gps
 enrich_with_geo = enrich_with_geo_mod.enrich_with_geo
@@ -102,15 +103,6 @@ def configured_frame_interval(city: str, city_config: dict) -> float:
     if interval <= 0:
         raise ValueError(f"frame_interval_sec for {city} must be greater than zero")
     return interval
-
-
-def gps_source_directory(output_dir: Path, legacy_dir: Path) -> Path:
-    """Use current processor outputs when both required source files exist."""
-    current_outputs = (
-        output_dir / "exif_metadata.csv",
-        output_dir / "gps_timeseries.csv.gz",
-    )
-    return output_dir if all(path.exists() for path in current_outputs) else legacy_dir
 
 
 def run_process_videos(

@@ -123,19 +123,17 @@ def build_pairs(df: pd.DataFrame) -> tuple[pd.DataFrame, str]:
     """
     df = keep_latest_annotation(df.dropna(subset=["annotator"]))
     primary = build_mod.get_primary_annotator(df)
-    frame_key = ["region", "canonical_video_id", "frame_number"]
-    prim = df[df["annotator"] == primary].set_index(frame_key)
+    df = df.assign(_frame_key=build_mod.analysis_frame_keys(df))
+    primary_rows = {row["_frame_key"]: row for _, row in df[df["annotator"] == primary].iterrows()}
     reviewers = df[df["annotator"] != primary]
     measures = [c for c, _ in CONTINUOUS] + [c for c, _ in BINARY]
 
     rows = []
     for _, r in reviewers.iterrows():
-        physical_frame = tuple(r[col] for col in frame_key)
-        if physical_frame not in prim.index:
+        frame_key = r["_frame_key"]
+        if frame_key not in primary_rows:
             continue
-        p = prim.loc[physical_frame]
-        if isinstance(p, pd.DataFrame):
-            p = p.iloc[0]
+        p = primary_rows[frame_key]
         rec = {}
         for col in measures:
             rec[f"{col}_p"] = p.get(col)

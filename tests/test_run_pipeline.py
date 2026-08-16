@@ -67,11 +67,11 @@ def test_gps_index_loads_current_processor_outputs(load_script, tmp_path):
 
 
 def test_gps_rebuild_prefers_current_processor_outputs(load_script, tmp_path):
-    pipeline = load_script("run_pipeline.py")
+    gps_index = load_script("04_build_gps_index.py")
     output_dir = tmp_path / "data" / "mumbai"
     legacy_dir = output_dir / "exif_metadata"
     legacy_dir.mkdir(parents=True)
     (output_dir / "exif_metadata.csv").touch()
     (output_dir / "gps_timeseries.csv.gz").touch()
 
-    assert pipeline.gps_source_directory(output_dir, legacy_dir) == output_dir
+    assert gps_index.gps_source_directory(output_dir, legacy_dir) == output_dir
