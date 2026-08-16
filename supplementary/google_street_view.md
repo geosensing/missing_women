@@ -6,11 +6,11 @@ The Google Street View exercise closely reproduces the wearable-camera estimate 
 
 The Street View estimate is 20.0% in Delhi, 20.5% in Mumbai, and 24.8% in Navi Mumbai. The corresponding wearable-camera estimates are 19.8%, 19.1%, and 18.1%. The difference is 0.2 percentage points in Delhi and 1.4 points in Mumbai. The 6.7-point difference in Navi Mumbai is much larger, and the two descriptive 95% confidence intervals do not overlap.
 
-| City | Street View female share | Wearable-camera female share | Difference, percentage points | 95% intervals overlap |
+| City | Street View women (%) | Wearable-camera women (%) | Difference, percentage points | 95% intervals overlap |
 |---|---:|---:|---:|:---:|
-| Delhi | 0.200 [0.171, 0.229] | 0.198 [0.173, 0.222] | +0.2 | Yes |
-| Mumbai | 0.205 [0.185, 0.225] | 0.191 [0.174, 0.208] | +1.4 | Yes |
-| Navi Mumbai | 0.248 [0.211, 0.284] | 0.181 [0.160, 0.202] | +6.7 | No |
+| Delhi | 20.0 [17.1, 22.9] | 19.8 [17.3, 22.2] | +0.2 | Yes |
+| Mumbai | 20.5 [18.5, 22.5] | 19.1 [17.4, 20.8] | +1.4 | Yes |
+| Navi Mumbai | 24.8 [21.1, 28.4] | 18.1 [16.0, 20.2] | +6.7 | No |
 
 Table S1. Women's share among classified pedestrian sightings in two image sources. Street View intervals cluster annotated images by sampled location. Wearable-camera intervals cluster frames by collection day. The intervals describe variability within the observed image collections. Neither image collection is a probability sample of city residents, so interval overlap is not a population-level equivalence test. Source: `notebooks/outputs/v2/streetscope_comparison.csv` in the Street View repository.
 
@@ -62,18 +62,18 @@ This estimand describes classified pedestrian sightings in the annotated Street 
 
 Street View capture dates were not randomized. Across all covered locations, panorama years range from 2013 to 2026 in Delhi, 2013 to 2026 in Mumbai, and 2012 to 2025 in Navi Mumbai. The annotated subset is narrower but still mixes years. Delhi is dominated by 2022 imagery, Mumbai by 2021 and 2024 imagery, and Navi Mumbai by 2021, 2024, and 2025 imagery.
 
-| City and capture year | Annotated views | Pedestrian sightings | Pedestrian female share |
+| City and capture year | Annotated views | Pedestrian sightings | Women among pedestrians (%) |
 |---|---:|---:|---:|
-| Delhi, 2022 | 552 | 966 | 0.205 |
-| Delhi, 2023 | 16 | 44 | 0.182 |
-| Delhi, 2025 | 201 | 443 | 0.190 |
-| Mumbai, 2021 | 368 | 1,334 | 0.193 |
-| Mumbai, 2024 | 211 | 759 | 0.216 |
-| Mumbai, 2025 | 41 | 110 | 0.309 |
-| Navi Mumbai, 2021 | 125 | 219 | 0.183 |
-| Navi Mumbai, 2022 | 63 | 63 | 0.270 |
-| Navi Mumbai, 2024 | 190 | 374 | 0.262 |
-| Navi Mumbai, 2025 | 159 | 358 | 0.268 |
+| Delhi, 2022 | 552 | 966 | 20.5 |
+| Delhi, 2023 | 16 | 44 | 18.2 |
+| Delhi, 2025 | 201 | 443 | 19.0 |
+| Mumbai, 2021 | 368 | 1,334 | 19.3 |
+| Mumbai, 2024 | 211 | 759 | 21.6 |
+| Mumbai, 2025 | 41 | 110 | 30.9 |
+| Navi Mumbai, 2021 | 125 | 219 | 18.3 |
+| Navi Mumbai, 2022 | 63 | 63 | 27.0 |
+| Navi Mumbai, 2024 | 190 | 374 | 26.2 |
+| Navi Mumbai, 2025 | 159 | 358 | 26.8 |
 
 Table S3. Street View pedestrian female share by panorama capture year. Cells with fewer than 20 pedestrian sightings are omitted. These are descriptive strata, not time trends, because the streets and panorama acquisition process differ across years. Source: `notebooks/outputs/v2/capture_year_estimates.csv`.
 

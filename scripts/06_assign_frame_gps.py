@@ -27,7 +27,7 @@ import pandas as pd
 MAX_GPS_GAP_SEC = 30.0
 
 # Default frame-timing convention (seconds of video time per frame_number unit).
-# 1/30 means frame_number is a 30 fps video-frame index. Per-city values come from
+# The standard pipeline supplies each city's fixed extraction interval from
 # cities.yaml (see compute_frame_datetime / assign_frame_gps).
 DEFAULT_INTERVAL_SEC = 1.0 / 30.0
 DEFAULT_ANCHOR = "gps"
@@ -44,9 +44,8 @@ def compute_frame_datetime(
 
     The in-video offset is ``timestamp_sec`` when the filename carries one, else
     ``frame_number * interval_sec``. ``interval_sec`` encodes the per-batch frame
-    convention: 1/30 for a 30 fps video-frame index (mumbai, navi_mumbai) or the
-    extraction interval in seconds for sampled frames (e.g. 120 for bangalore,
-    delhi, sampled every 2 min).
+    convention for index-named files: 10 for Mumbai and Navi Mumbai, and 120 for
+    Bangalore and Delhi. The per-city values come from ``cities.yaml``.
 
     ``anchor`` picks the wall-clock origin: ``"gps"`` uses the first GPS timestamp
     (all current cities), ``"recording"`` uses the camera clock. The extracted frames

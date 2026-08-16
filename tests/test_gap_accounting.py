@@ -52,8 +52,38 @@ def test_an_observation_at_the_trip_scaled_ratio_leaves_no_residual(load_script)
     assert math.isclose(parts["share_home"] + parts["share_trips"], 1.0)
 
 
-def test_every_configured_city_carries_a_source_string(load_script):
+def test_c14_workbook_matches_the_validated_download(load_script):
     acc = load_script("15_gap_accounting.py")
-    for city, (ratio, source) in acc.RESIDENTIAL_SEX_RATIO.items():
-        assert 500 < ratio < 1100, city
-        assert "Census" in source, city
+
+    assert acc.file_md5(acc.C14_PATH) == acc.C14_MD5
+    assert acc.C14_CATALOG_URL.endswith("/1640")
+
+
+def test_exact_age_20_plus_benchmarks_are_derived_from_c14(load_script):
+    acc = load_script("15_gap_accounting.py")
+    benchmarks = acc.adult_residential_benchmarks()
+    expected_counts = {
+        "mumbai": (4_631_682, 3_916_598),
+        "navi_mumbai": (409_867, 337_732),
+        "bangalore": (3_071_612, 2_802_891),
+        "delhi": (3_779_669, 3_384_018),
+    }
+
+    for city, (men, women) in expected_counts.items():
+        benchmark = benchmarks[city]
+        assert benchmark["age_min"] == 20
+        assert benchmark["men"] == men
+        assert benchmark["women"] == women
+        assert math.isclose(benchmark["ratio"], women / men * 1000)
+        assert 800 < benchmark["ratio"] < 950
+
+
+def test_c14_city_codes_resolve_to_the_expected_municipal_units(load_script):
+    acc = load_script("15_gap_accounting.py")
+    benchmarks = acc.adult_residential_benchmarks()
+
+    for city, (state_code, town_code, area_name) in acc.C14_CITY_GEOGRAPHIES.items():
+        benchmark = benchmarks[city]
+        assert benchmark["state_code"] == state_code
+        assert benchmark["town_code"] == town_code
+        assert benchmark["area_name"] == area_name

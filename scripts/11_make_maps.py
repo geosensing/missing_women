@@ -49,6 +49,12 @@ apply_style()
 TRACK_GRAY = "0.45"
 
 
+def save_html(map_object: folium.Map, path: Path) -> None:
+    """Write deterministic HTML without generator-introduced trailing whitespace."""
+    html = map_object.get_root().render()
+    path.write_text("\n".join(line.rstrip() for line in html.splitlines()) + "\n")
+
+
 def load_city_data(cities: list[str]) -> pd.DataFrame:
     """Load analysis_data.parquet for each city."""
     dfs = []
@@ -192,7 +198,7 @@ def make_locations_map(geo: pd.DataFrame, city: str, tracks: list[pd.DataFrame])
         <b>{label}</b><br>
         Video: {row.get("base_video_id", "N/A")}<br>
         Frame: {row.get("frame_number", "N/A")}<br>
-        People: {row.get("total_people", "N/A")}<br>
+        Adult sightings: {row.get("total_people", "N/A")}<br>
         Percent women: {pw_text}
         """
         folium.CircleMarker(
@@ -213,7 +219,7 @@ def make_locations_map(geo: pd.DataFrame, city: str, tracks: list[pd.DataFrame])
     folium.LayerControl().add_to(m)
 
     out_path = FIGS / f"map_locations_{city}.html"
-    m.save(str(out_path))
+    save_html(m, out_path)
     print(f"  -> {out_path.name} ({len(geo):,} points, {len(tracks)} tracks)")
 
 
@@ -245,7 +251,7 @@ def make_sex_ratio_map(geo: pd.DataFrame, city: str) -> None:
         popup_text = f"""
         <b>{label}</b><br>
         Video: {row.get("base_video_id", "N/A")}<br>
-        People: {row.get("total_people", "N/A")}<br>
+        Adult sightings: {row.get("total_people", "N/A")}<br>
         Women: {row.get("total_women", "N/A")}<br>
         <b>Prop women: {prop:.2f}</b>
         """
@@ -274,7 +280,7 @@ def make_sex_ratio_map(geo: pd.DataFrame, city: str) -> None:
     m.get_root().html.add_child(folium.Element(legend_html))
 
     out_path = FIGS / f"map_sexratio_{city}.html"
-    m.save(str(out_path))
+    save_html(m, out_path)
     print(f"  -> {out_path.name} ({len(geo):,} points)")
 
 
@@ -392,14 +398,14 @@ def make_sex_ratio_pdf(
     cx.add_basemap(ax, source=cx.providers.CartoDB.Positron)
 
     cbar = fig.colorbar(sc, ax=ax, shrink=0.6, pad=0.02)
-    cbar.set_label("Percent female (person-weighted)", fontsize=10)
+    cbar.set_label("Women (%)", fontsize=10)
     cbar.set_ticks([0, 0.125, 0.25, 0.375, 0.5])
     cbar.set_ticklabels(["0%", "12%", "25%", "38%", "50%+"])
 
     ax.set_axis_off()
-    ax.set_title(f"{label}: Share Female by Location", fontsize=12, fontweight="bold")
+    ax.set_title(f"{label}: Women's share by location", fontsize=12, fontweight="bold")
     ax.annotate(
-        f"~{cell_m}m cells with >={min_people} people, sized by people observed; "
+        f"~{cell_m}m cells with >={min_people} adult sightings, sized by sightings; "
         "gray dots: all frames",
         xy=(0.01, 0.985),
         xycoords="axes fraction",

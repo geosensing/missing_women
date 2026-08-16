@@ -22,6 +22,7 @@ import re
 from pathlib import Path
 
 import pandas as pd
+from analysis_config import keep_latest_annotation
 
 
 def extract_frame_info(image_path: str) -> dict:
@@ -42,12 +43,13 @@ def extract_frame_info(image_path: str) -> dict:
 
     result = {"base_video_id": None, "frame_number": None, "timestamp_sec": None}
 
-    pattern_with_time = r"^(.+)_frame(\d+)_t(\d+)_(\d+)$"
+    pattern_with_time = r"^(.+)_frame(\d+)_t(\d{2})(\d{2})(\d{2})_(\d{3})$"
     match = re.match(pattern_with_time, filename)
     if match:
         result["base_video_id"] = match.group(1)
         result["frame_number"] = int(match.group(2))
-        result["timestamp_sec"] = int(match.group(3)) + int(match.group(4)) / 1000
+        hours, minutes, seconds, milliseconds = map(int, match.groups()[2:])
+        result["timestamp_sec"] = hours * 3600 + minutes * 60 + seconds + milliseconds / 1000
         return result
 
     pattern_simple = r"^(.+)_frame(\d+)$"
@@ -194,7 +196,7 @@ def parse_all_annotations(labelstudio_dir: Path, city: str) -> pd.DataFrame:
         Combined DataFrame with all annotations
     """
     dfs = []
-    for json_path in labelstudio_dir.glob("*.json"):
+    for json_path in sorted(labelstudio_dir.glob("*.json")):
         print(f"Parsing {json_path.name} ({city})...")
         df = parse_labelstudio_export(json_path, region=city)
         print(f"  Found {len(df)} annotations")
@@ -215,6 +217,13 @@ def parse_all_annotations(labelstudio_dir: Path, city: str) -> pd.DataFrame:
     n_before = len(combined)
     combined = filter_test_videos(combined)
     print(f"  Removed {n_before - len(combined)} test-drive rows")
+
+    n_before = len(combined)
+    combined = keep_latest_annotation(combined)
+    print(
+        f"  Removed {n_before - len(combined)} duplicate physical-frame annotations "
+        "within annotator"
+    )
 
     return combined
 

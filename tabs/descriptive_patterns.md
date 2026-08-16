@@ -5,13 +5,13 @@ Shares are pedestrian-weighted (`sum(women pedestrians) / sum(pedestrians)`) unl
 
 ## Accompaniment and group composition
 
-| City | Ped. female share | Solo pedestrians female | Frames with any woman | Women per such frame: 1 / 2 / 3 / 4+ |
+| City | Pedestrians: women (%) | Solo pedestrians female | Frames with any woman | Women per such frame: 1 / 2 / 3 / 4+ |
 |---|---|---|---|---|
 | Mumbai | 19.1% | 17.2% (n=320) | 49.8% | 47% / 25% / 14% / 13% |
-| Navi Mumbai | 18.1% | 19.6% (n=322) | 41.9% | 57% / 26% / 11% / 6% |
+| Navi Mumbai | 18.0% | 19.4% (n=299) | 41.4% | 57% / 26% / 10% / 7% |
 | Bangalore | 27.4% | 31.3% (n=275) | 48.8% | 62% / 24% / 6% / 8% |
 | Delhi | 19.8% | 17.7% (n=390) | 34.9% | 62% / 24% / 9% / 5% |
-| All cities | 19.8% | 20.9% (n=1,307) | 44.8% | 54% / 25% / 11% / 10% |
+| All cities | 19.8% | 20.9% (n=1,284) | 44.7% | 54% / 25% / 11% / 10% |
 
 ### P(frame contains a woman) by crowd size: observed vs binomial
 
@@ -24,7 +24,7 @@ particular places/times rather than clustering socially within a scene.
 | City | n=1 (obs vs city/day exp) | n=2-3 (obs vs city/day exp) | n=4-6 (obs vs city/day exp) | n=7+ (obs vs city/day exp) |
 |---|---|---|---|---|
 | Mumbai | 17% vs 19% / 20% | 34% vs 40% / 41% | 53% vs 64% / 64% | 75% vs 87% / 87% |
-| Navi Mumbai | 20% vs 18% / 20% | 36% vs 38% / 40% | 54% vs 61% / 62% | 67% vs 84% / 82% |
+| Navi Mumbai | 19% vs 18% / 20% | 35% vs 38% / 39% | 53% vs 61% / 62% | 67% vs 84% / 82% |
 | Bangalore | 31% vs 27% / 28% | 45% vs 52% / 52% | 69% vs 78% / 77% | 85% vs 93% / 93% |
 | Delhi | 18% vs 20% / 20% | 35% vs 40% / 41% | 56% vs 64% / 64% | 64% vs 84% / 83% |
 
@@ -32,67 +32,67 @@ particular places/times rather than clustering socially within a scene.
 
 ### Named corridors (30+ frames, 2+ video sessions): lowest female share
 
-| Road | City | Female share | People | Frames | Videos |
+| Road | City | Women (%) | Adult sightings | Frames | Videos |
 |---|---|---|---|---|---|
 | Dr Dadasaheb Bhadkamkar Marg | Mumbai | 7.1% | 140 | 32 | 4 |
-| Thane Belapur Road | Navi Mumbai | 14.4% | 174 | 39 | 8 |
-| Captain Prakash Pethe Marg | Mumbai | 15.6% | 180 | 48 | 6 |
-| Vashi - Turbhe Link Road | Navi Mumbai | 16.2% | 117 | 31 | 4 |
+| Thane Belapur Road | Navi Mumbai | 13.6% | 169 | 38 | 8 |
+| Marine Drive | Mumbai | 16.9% | 136 | 34 | 5 |
 
 ### Named corridors (30+ frames, 2+ video sessions): highest female share
 
-| Road | City | Female share | People | Frames | Videos |
+| Road | City | Women (%) | Adult sightings | Frames | Videos |
 |---|---|---|---|---|---|
 | Lady Jamshedji Road | Mumbai | 25.7% | 303 | 57 | 3 |
 | Dr Babasaheb Ambedkar Marg (Vincent Road) | Mumbai | 23.0% | 200 | 35 | 5 |
 | N C Kelkar Marg | Mumbai | 22.0% | 286 | 42 | 2 |
-| Marine Drive | Mumbai | 16.9% | 136 | 34 | 5 |
 
 Corridors seen in a single video session are excluded: their shares reflect one
 walk's idiosyncrasy as much as the place.
 
 ### ~100m grid cells (20+ frames): lowest female share
 
-| Cell (lat, lon) | City | Nearest road | Female share | People | Videos |
+| Cell (lat, lon) | City | Nearest road | Women (%) | Adult sightings | Videos |
 |---|---|---|---|---|---|
 | 19.016, 72.851 | Mumbai | Tilak Road | 16.2% | 74 | 1 |
 
 ### ~100m grid cells (20+ frames): highest female share
 
-| Cell (lat, lon) | City | Nearest road | Female share | People | Videos |
+| Cell (lat, lon) | City | Nearest road | Women (%) | Adult sightings | Videos |
 |---|---|---|---|---|---|
-| 19.111, 73.007 | Navi Mumbai | -- | 20.1% | 194 | 2 |
+| 19.111, 73.007 | Navi Mumbai | -- | 17.5% | 114 | 2 |
 
 Cells with Videos = 1 reflect a single walk; treat their shares as suggestive.
 
 ## Joint descriptive regression
 
-WLS of frame-level pedestrian female share, weighted by pedestrians (n=5,113 frames,
+WLS of frame-level pedestrian female share, weighted by pedestrians (n=4,993 frames,
 46 collection-day clusters); cluster-robust SEs.
 Sample: all frames with at least one person and a known hour (the windows
 partition the full 06:00-22:00 collection span). Coefficients in percentage
 points. Descriptive, not causal.
 
-| Correlate | pp diff | 95% CI |
+| Correlate | Difference (percentage points) | 95% CI |
 |---|---|---|
-| Navi Mumbai (vs Mumbai) | -0.4 | [-3.2, +2.3] |
-| Bangalore (vs Mumbai) | +7.7* | [+5.3, +10.1] |
-| Delhi (vs Mumbai) | +0.5 | [-2.4, +3.4] |
-| Primary road (vs residential) | -2.5* | [-4.9, -0.2] |
-| Secondary road (vs residential) | -5.0* | [-7.3, -2.6] |
-| Tertiary road (vs residential) | -3.3* | [-5.8, -0.9] |
-| Road unmatched (vs residential) | -5.6* | [-8.9, -2.4] |
-| Morning 6-11 (vs midday) | -1.2 | [-3.2, +0.8] |
+| Navi Mumbai (vs Mumbai) | -0.1 | [-3.1, +2.9] |
+| Bangalore (vs Mumbai) | +7.8 | [+5.3, +10.2] |
+| Delhi (vs Mumbai) | +0.5 | [-2.4, +3.5] |
+| Primary road (vs residential) | -2.5 | [-4.9, -0.1] |
+| Secondary road (vs residential) | -4.7 | [-7.2, -2.3] |
+| Tertiary road (vs residential) | -3.3 | [-5.8, -0.8] |
+| Road unmatched (vs residential) | -6.1 | [-9.2, -3.1] |
+| Morning 6-11 (vs midday) | -1.2 | [-3.3, +0.9] |
 | Evening 15-22 (vs midday) | -1.8 | [-5.0, +1.4] |
-| Weekend | -2.7* | [-4.9, -0.4] |
-| Street vendor present | +2.6 | [-0.3, +5.4] |
-| Bus station present | +4.7* | [+0.6, +8.7] |
-| Litter present | +0.8 | [-1.2, +2.9] |
-| Potholes present | -2.9 | [-7.8, +2.1] |
-| Footpath present | +0.5 | [-0.8, +1.7] |
-| log(people in frame) | +0.4 | [-0.6, +1.3] |
+| Weekend | -2.6 | [-4.9, -0.4] |
+| Street vendor present | +2.9 | [+0.2, +5.6] |
+| Bus station present | +4.4 | [+0.4, +8.5] |
+| Litter present | +0.6 | [-1.5, +2.7] |
+| Potholes present | -2.9 | [-7.9, +2.1] |
+| Footpath present | +0.4 | [-0.9, +1.6] |
+| log(adult pedestrian sightings in frame) | +0.4 | [-0.6, +1.4] |
 
-`*` p < 0.05. Base: Mumbai, residential road, midday, weekday, no POI/disorder.
+Intervals are pointwise and are not adjusted for multiple comparisons; no
+threshold-based claims are made. Base: Mumbai, residential road, midday,
+weekday, no POI/disorder.
 
 ## Limitations
 
@@ -101,7 +101,7 @@ points. Descriptive, not causal.
 - Collection spans roughly 06:00-22:00 IST only; nothing here speaks to night.
 - Road class is measured with error: itinerary and OSM road types agree on
   ~72% of frames where both exist.
-- The same individuals can appear in multiple face-triggered frames. Collection-day
+- The same individuals can appear in multiple fixed-interval frames. Collection-day
   clustering allows dependent errors but does not remove repeated-sighting bias.
 - Results describe classified sightings on collected routes, not city residents
   or a probability sample of streets.

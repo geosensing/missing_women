@@ -1,9 +1,8 @@
 """House figure style, defined once so it cannot drift across scripts.
 
-Grayscale series with one saturated accent reserved for reference marks
-(parity lines, map data layers). City identity rides on gray shade + marker
-shape in sampling order, so every figure survives grayscale printing and
-colorblindness without a palette.
+City identity belongs in facet titles or axis labels, not arbitrary marker
+shapes. Estimates use circles and light interval marks. One saturated accent
+is reserved for substantive reference marks and map data layers.
 """
 
 import matplotlib.pyplot as plt
@@ -14,12 +13,6 @@ GRAYS = {
     "navi_mumbai": "0.35",
     "bangalore": "0.6",
     "delhi": "0.78",
-}
-MARKERS = {
-    "mumbai": "o",
-    "navi_mumbai": "s",
-    "bangalore": "^",
-    "delhi": "D",
 }
 ACCENT = "#800000"  # reference lines and map data layers only
 BAR_GRAY = "0.45"

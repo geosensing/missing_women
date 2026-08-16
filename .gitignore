@@ -227,5 +227,30 @@ data/mumbai/validation_batch_input.jsonl
 /sampling/delhi/network
 *.pbf
 
-# Manuscript: drafting outside version control until the production version is ready
-/ms/
+# Manuscript source is versioned; LaTeX outputs are not.
+/figs/*.html
+/ms/build/
+/ms/*.aux
+/ms/*.bbl
+/ms/*.blg
+/ms/*.fdb_latexmk
+/ms/*.fls
+/ms/*.log
+/ms/*.maf
+/ms/*.mtc
+/ms/*.mtc0
+/ms/*.out
+/ms/*.pdf
+/ms/*.synctex.gz
+/ms/*.toc
+/ms.aux
+/ms.bbl
+/ms.blg
+/ms.fdb_latexmk
+/ms.fls
+/ms.log
+/ms.maf
+/ms.mtc
+/ms.mtc0
+/ms.out
+/ms.pdf

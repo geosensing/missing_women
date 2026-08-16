@@ -22,6 +22,7 @@ from analysis_config import (
     TOPCODE_MINIMUM,
     canonical_video_id,
     collection_day_id,
+    keep_latest_annotation,
     valid_gps_mask,
 )
 
@@ -284,21 +285,6 @@ def select_output_columns(df: pd.DataFrame) -> pd.DataFrame:
     return df[existing + extra]
 
 
-def keep_latest_annotation(df: pd.DataFrame) -> pd.DataFrame:
-    """Collapse to one row per (image, annotator), keeping the most recent annotation.
-
-    An image can carry more than one annotation by the same person — a genuine
-    re-annotation after review, or simply the same annotation appearing in overlapping
-    Label Studio exports. Keeping the latest by ``updated_at`` makes post-review edits win
-    and de-duplicates re-exported annotations. Falls back to a plain de-dup when the
-    timestamp is absent (older parses).
-    """
-    if "updated_at" not in df.columns:
-        return df.drop_duplicates(["image", "annotator"]).reset_index(drop=True)
-    ordered = df.sort_values("updated_at", na_position="first")
-    return ordered.drop_duplicates(["image", "annotator"], keep="last").reset_index(drop=True)
-
-
 def build_analysis_data(
     annotations: pd.DataFrame, output_dir: Path
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -306,9 +292,9 @@ def build_analysis_data(
     Build final analysis datasets and save to parquet.
 
     Persists ``analysis_data.parquet`` (primary annotator only, deduped to one row per
-    image) for core analysis. The full multi-annotator frame is returned in memory but
-    not saved — it is trivially recreatable from the committed Label Studio JSON, and
-    ``13_interrater_reliability.py`` rebuilds it on demand.
+    physical frame) for core analysis. The full multi-annotator frame is returned in
+    memory but not saved — it is trivially recreatable from the committed Label Studio
+    JSON, and ``13_interrater_reliability.py`` rebuilds it on demand.
 
     Args:
         annotations: DataFrame from pipeline step 07
@@ -317,7 +303,7 @@ def build_analysis_data(
     Returns:
         Tuple of (primary_df, all_annotations_df)
     """
-    print("Keeping latest annotation per (image, annotator)...")
+    print("Keeping latest annotation per physical frame and annotator...")
     before = len(annotations)
     annotations = keep_latest_annotation(annotations)
     print(f"  {before} -> {len(annotations)} annotations after de-dup")
@@ -346,8 +332,9 @@ def build_analysis_data(
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # One row per image: the primary (most prolific) annotator's row when they covered
-    # the image, else fall back to the next-most-prolific annotator who did.
+    # One row per physical frame: the primary (most prolific) annotator's row when they
+    # covered it, else fall back to the next-most-prolific annotator who did. Image URLs
+    # are not keys because Label Studio can import one frame under filename aliases.
     order = annotator_order(result)
     primary_annotator = order[0]
     print(f"Primary annotator: {primary_annotator}")
@@ -355,7 +342,7 @@ def build_analysis_data(
     primary = (
         result.assign(_rank=result["annotator"].map(rank))
         .sort_values("_rank", kind="stable")
-        .drop_duplicates(subset=["image"])
+        .drop_duplicates(subset=["region", "canonical_video_id", "frame_number"])
         .drop(columns="_rank")
         .copy()
     )

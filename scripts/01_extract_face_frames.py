@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
 """
-Extract frames from videos at GoPro face detection timestamps.
+Exploratory extraction of frames at GoPro face-detection timestamps.
 
 Parses EXIF metadata for face detection events and extracts those frames.
 Filters by confidence level to keep only high-quality detections.
+
+This experiment did not produce the frames used in the reported analysis. The
+standard collection-processing path uses fixed intervals through
+``00_process_videos.py`` and ``cities.yaml``. Run this script directly only to
+reproduce the face-triggered extraction experiment.
 
 Inputs:
     - EXIF directory: Text files with GoPro metadata (from 00_process_videos.py)
@@ -229,7 +234,10 @@ def process_exif_file(
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Extract frames at face detection timestamps from GoPro videos"
+        description=(
+            "Run the exploratory, non-analytic extraction of frames at GoPro "
+            "face-detection timestamps"
+        )
     )
     parser.add_argument(
         "-e", "--exif-dir", required=True, help="Directory with EXIF txt files"

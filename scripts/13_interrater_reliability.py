@@ -16,11 +16,12 @@ Metrics
     Continuous (women_count, men_count, total_pedestrians, prop_female):
         ICC(2,1) absolute agreement, Pearson r, mean |difference|.
     Binary infrastructure flags (footpath, potholes, ...):
-        Cohen's kappa + percent agreement. Kappa is undefined when a flag has no
-        variance in the overlap (every image agreed absent) and is shown as "--".
+        Cohen's kappa + percent agreement. Kappa is undefined when either rater's
+        classifications have no variance in the overlap and is shown as "--".
 
 Outputs
     tabs/tableS4_irr.tex     (pooled across cities; per-city overlap counts in the note)
+    tabs/irr_macros.tex      (manuscript values generated from the same estimates)
     console summary          (per city + pooled)
 
 Usage
@@ -36,6 +37,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from analysis_config import keep_latest_annotation
 from scipy.stats import pearsonr
 from sklearn.metrics import cohen_kappa_score
 
@@ -56,7 +58,7 @@ CONTINUOUS = [
     ("women_count", "Women count"),
     ("men_count", "Men count"),
     ("total_pedestrians", "Total pedestrians"),
-    ("prop_female", r"Prop.\ female"),
+    ("prop_female", r"Women (\%)"),
 ]
 BINARY = [
     ("footpath", "Footpath"),
@@ -112,24 +114,26 @@ def icc21(matrix: np.ndarray) -> float:
 
 
 def build_pairs(df: pd.DataFrame) -> tuple[pd.DataFrame, str]:
-    """Pair the primary annotator with each reviewer on images both rated.
+    """Pair the primary annotator with each reviewer on physical frames both rated.
 
-    One row per (image, reviewer) overlap; columns ``<measure>_p`` (primary) and
-    ``<measure>_r`` (reviewer). A repeat annotation by the same person is collapsed to
-    its latest record so only distinct-annotator pairs are compared.
+    One row per (physical frame, reviewer) overlap; columns ``<measure>_p`` (primary)
+    and ``<measure>_r`` (reviewer). A repeat annotation by the same person is collapsed
+    to its latest record so only distinct-annotator pairs are compared. Physical-frame
+    keys, rather than image URLs, reconcile Label Studio filename aliases.
     """
-    df = build_mod.keep_latest_annotation(df.dropna(subset=["annotator"]))
+    df = keep_latest_annotation(df.dropna(subset=["annotator"]))
     primary = build_mod.get_primary_annotator(df)
-    prim = df[df["annotator"] == primary].set_index("image")
+    frame_key = ["region", "canonical_video_id", "frame_number"]
+    prim = df[df["annotator"] == primary].set_index(frame_key)
     reviewers = df[df["annotator"] != primary]
     measures = [c for c, _ in CONTINUOUS] + [c for c, _ in BINARY]
 
     rows = []
     for _, r in reviewers.iterrows():
-        img = r["image"]
-        if img not in prim.index:
+        physical_frame = tuple(r[col] for col in frame_key)
+        if physical_frame not in prim.index:
             continue
-        p = prim.loc[img]
+        p = prim.loc[physical_frame]
         if isinstance(p, pd.DataFrame):
             p = p.iloc[0]
         rec = {}
@@ -176,7 +180,7 @@ def _f(x: float, nd: int = 2) -> str:
     return "--" if x is None or (isinstance(x, float) and np.isnan(x)) else f"{x:.{nd}f}"
 
 
-def write_table(pooled_cont: dict, pooled_bin: dict, overlap_counts: dict, primary: str) -> None:
+def write_outputs(pooled_cont: dict, pooled_bin: dict, overlap_counts: dict) -> None:
     n_overlap = sum(overlap_counts.values())
     per_city = ", ".join(f"{CITY_LABELS.get(c, c)} {n}" for c, n in overlap_counts.items())
     lines = [
@@ -184,6 +188,7 @@ def write_table(pooled_cont: dict, pooled_bin: dict, overlap_counts: dict, prima
         r"\centering",
         r"\caption{Inter-rater reliability: primary annotator vs.\ reviewers.}",
         r"\label{tab:irr}",
+        r"\scriptsize",
         r"\begin{threeparttable}",
         r"\begin{tabular}{lcccc}",
         r"\toprule",
@@ -193,7 +198,8 @@ def write_table(pooled_cont: dict, pooled_bin: dict, overlap_counts: dict, prima
     ]
     for col, label in CONTINUOUS:
         m = pooled_cont[col]
-        lines.append(f"{label} & {m['n']} & {_f(m['icc'])} & {_f(m['r'])} & {_f(m['mad'])} \\\\")
+        mad = f"{100 * m['mad']:.1f} pp" if col == "prop_female" else _f(m["mad"])
+        lines.append(f"{label} & {m['n']} & {_f(m['icc'])} & {_f(m['r'])} & {mad} \\\\")
     lines += [
         r"\midrule",
         r"\multicolumn{5}{l}{\textit{Infrastructure flags (binary)}} \\",
@@ -213,8 +219,8 @@ def write_table(pooled_cont: dict, pooled_bin: dict, overlap_counts: dict, prima
         r"\item Agreement between the primary annotator and any other annotator who rated "
         r"the same image. ICC(2,1) is the two-way random-effects, absolute-agreement "
         r"single-rater coefficient.",
-        r"\item Kappa is undefined (``--'') for a flag with no variance in the overlap "
-        r"(all images agreed absent).",
+        r"\item Kappa is undefined (``--'') when either rater's classifications have "
+        r"no variance in the overlap.",
         r"\end{tablenotes}",
         r"\end{threeparttable}",
         r"\end{table}",
@@ -222,6 +228,30 @@ def write_table(pooled_cont: dict, pooled_bin: dict, overlap_counts: dict, prima
     TABS.mkdir(parents=True, exist_ok=True)
     (TABS / "tableS4_irr.tex").write_text("\n".join(lines) + "\n")
     print(f"  -> {TABS / 'tableS4_irr.tex'}")
+
+    macro_names = {
+        "mumbai": "Mumbai",
+        "navi_mumbai": "NaviMumbai",
+        "bangalore": "Bangalore",
+        "delhi": "Delhi",
+    }
+    macro_lines = [
+        "% Generated by scripts/13_interrater_reliability.py; do not edit by hand.",
+        rf"\newcommand{{\IRROverlaps}}{{{n_overlap:,}}}",
+        rf"\newcommand{{\IRRWomenCountICC}}{{{_f(pooled_cont['women_count']['icc'])}}}",
+        rf"\newcommand{{\IRRMenCountICC}}{{{_f(pooled_cont['men_count']['icc'])}}}",
+        rf"\newcommand{{\IRRTotalCountICC}}{{{_f(pooled_cont['total_pedestrians']['icc'])}}}",
+        rf"\newcommand{{\IRRWomenCountMAD}}{{{_f(pooled_cont['women_count']['mad'])}}}",
+        rf"\newcommand{{\IRRWomenShareICC}}{{{_f(pooled_cont['prop_female']['icc'])}}}",
+        rf"\newcommand{{\IRRFootpathKappa}}{{{_f(pooled_bin['footpath']['kappa'])}}}",
+        rf"\newcommand{{\IRRBusStationKappa}}{{{_f(pooled_bin['bus_station']['kappa'])}}}",
+        rf"\newcommand{{\IRRLitterKappa}}{{{_f(pooled_bin['litter']['kappa'])}}}",
+        rf"\newcommand{{\IRRStreetVendorKappa}}{{{_f(pooled_bin['street_vendor']['kappa'])}}}",
+    ]
+    for city, count in overlap_counts.items():
+        macro_lines.append(rf"\newcommand{{\IRR{macro_names[city]}Overlaps}}{{{count:,}}}")
+    (TABS / "irr_macros.tex").write_text("\n".join(macro_lines) + "\n")
+    print(f"  -> {TABS / 'irr_macros.tex'}")
 
 
 def main() -> None:
@@ -254,9 +284,8 @@ def main() -> None:
             continue
         for col, label in CONTINUOUS:
             m = continuous_metrics(pairs, col)
-            print(
-                f"  {label:<18} n={m['n']:<5} ICC={_f(m['icc'])}  r={_f(m['r'])}  mean|Δ|={_f(m['mad'])}"
-            )
+            mad = f"{100 * m['mad']:.1f} pp" if col == "prop_female" else _f(m["mad"])
+            print(f"  {label:<18} n={m['n']:<5} ICC={_f(m['icc'])}  r={_f(m['r'])}  mean|Δ|={mad}")
         for col, label in BINARY:
             m = binary_metrics(pairs, col)
             ap = "--" if np.isnan(m["agree"]) else f"{100 * m['agree']:.1f}%"
@@ -272,9 +301,8 @@ def main() -> None:
     for col, label in CONTINUOUS:
         m = continuous_metrics(pooled, col)
         pooled_cont[col] = m
-        print(
-            f"  {label:<18} n={m['n']:<5} ICC={_f(m['icc'])}  r={_f(m['r'])}  mean|Δ|={_f(m['mad'])}"
-        )
+        mad = f"{100 * m['mad']:.1f} pp" if col == "prop_female" else _f(m["mad"])
+        print(f"  {label:<18} n={m['n']:<5} ICC={_f(m['icc'])}  r={_f(m['r'])}  mean|Δ|={mad}")
     pooled_bin = {}
     for col, label in BINARY:
         m = binary_metrics(pooled, col)
@@ -283,7 +311,7 @@ def main() -> None:
         print(f"  {label:<18} n={m['n']:<5} agree={ap:<7} kappa={_f(m['kappa'])}")
 
     print("\n" + "=" * 60)
-    write_table(pooled_cont, pooled_bin, overlap_counts, "primary")
+    write_outputs(pooled_cont, pooled_bin, overlap_counts)
     print("=" * 60)
 
 

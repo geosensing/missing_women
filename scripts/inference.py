@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Descriptive clustered inference for annotated Streetscope frames.
 
-The sample consists of face-triggered frames along collected routes, not a
+The sample consists of fixed-interval frames along collected routes, not a
 probability sample of a city's streets or residents. Estimates therefore describe
 classified person-sightings in the collected imagery. Confidence intervals use a
 collection-day cluster sandwich and a t distribution with G-1 degrees of freedom.

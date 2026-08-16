@@ -9,6 +9,7 @@ Why persist this?
     iterating on annotation parsing or derived fields.
 
 Inputs:
+    data/{city}/exif_metadata.csv and gps_timeseries.csv.gz (current processor), or
     data/{city}/exif_metadata/*_exif_video_metadata.csv
     data/{city}/exif_metadata/*_gps_timeseries*.csv
 
@@ -63,10 +64,11 @@ def parse_altitude(alt_str: str) -> float | None:
 
 def load_video_metadata(exif_dir: Path) -> pd.DataFrame:
     """Load and consolidate video metadata from all batch CSVs."""
-    dfs = []
-    for csv_path in exif_dir.glob("*_exif_video_metadata.csv"):
-        df = pd.read_csv(csv_path)
-        dfs.append(df)
+    current_path = exif_dir / "exif_metadata.csv"
+    if current_path.exists():
+        dfs = [pd.read_csv(current_path)]
+    else:
+        dfs = [pd.read_csv(path) for path in exif_dir.glob("*_exif_video_metadata.csv")]
 
     if not dfs:
         raise FileNotFoundError(f"No video metadata CSVs in {exif_dir}")
@@ -93,15 +95,19 @@ def load_video_metadata(exif_dir: Path) -> pd.DataFrame:
 def load_gps_timeseries(exif_dir: Path) -> pd.DataFrame:
     """Load and consolidate GPS timeseries from all batch files.
 
-    Prefers Parquet (`*_gps_timeseries*.parquet`); falls back to the legacy CSV glob
-    only when no Parquet is present. Reading a single format avoids double-counting a
-    lingering raw CSV left beside its Parquet conversion.
+    Prefers the current processor's exact ``gps_timeseries.csv.gz`` output. For
+    legacy batch directories, prefers Parquet and falls back to CSV only when no
+    Parquet is present. Reading one format avoids double-counting equivalent files.
     """
-    parquet_paths = sorted(exif_dir.glob("*_gps_timeseries*.parquet"))
-    if parquet_paths:
-        dfs = [pd.read_parquet(p) for p in parquet_paths]
+    current_path = exif_dir / "gps_timeseries.csv.gz"
+    if current_path.exists():
+        dfs = [pd.read_csv(current_path)]
     else:
-        dfs = [pd.read_csv(p) for p in sorted(exif_dir.glob("*_gps_timeseries*.csv"))]
+        parquet_paths = sorted(exif_dir.glob("*_gps_timeseries*.parquet"))
+        if parquet_paths:
+            dfs = [pd.read_parquet(p) for p in parquet_paths]
+        else:
+            dfs = [pd.read_csv(p) for p in sorted(exif_dir.glob("*_gps_timeseries*.csv"))]
 
     if not dfs:
         raise FileNotFoundError(f"No GPS timeseries (.parquet or .csv) in {exif_dir}")

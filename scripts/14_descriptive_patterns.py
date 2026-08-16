@@ -25,7 +25,7 @@ import numpy as np
 import pandas as pd
 import statsmodels.formula.api as smf
 
-analysis = importlib.import_module("10_analysis")
+analysis = importlib.import_module("10_make_publication_outputs")
 
 ROOT = Path(__file__).resolve().parents[1]
 TABS = ROOT / "tabs"
@@ -74,7 +74,7 @@ def accompaniment_section(df: pd.DataFrame, cities: list[str]) -> list[str]:
     lines += md_table(
         [
             "City",
-            "Ped. female share",
+            "Pedestrians: women (%)",
             "Solo pedestrians female",
             "Frames with any woman",
             "Women per such frame: 1 / 2 / 3 / 4+",
@@ -139,7 +139,7 @@ def place_rankings_section(df: pd.DataFrame) -> list[str]:
             for (city, name), r in chunk.iterrows()
         ]
 
-    road_header = ["Road", "City", "Female share", "People", "Frames", "Videos"]
+    road_header = ["Road", "City", "Women (%)", "Adult sightings", "Frames", "Videos"]
     lines += [
         f"### Named corridors ({MIN_ROAD_FRAMES}+ frames, {MIN_PLACE_VIDEOS}+ video sessions): "
         "lowest female share",
@@ -189,7 +189,14 @@ def place_rankings_section(df: pd.DataFrame) -> list[str]:
             for (city, lat, lon), r in chunk.iterrows()
         ]
 
-    cell_header = ["Cell (lat, lon)", "City", "Nearest road", "Female share", "People", "Videos"]
+    cell_header = [
+        "Cell (lat, lon)",
+        "City",
+        "Nearest road",
+        "Women (%)",
+        "Adult sightings",
+        "Videos",
+    ]
     lines += [
         "",
         f"### ~100m grid cells ({MIN_CELL_FRAMES}+ frames): lowest female share",
@@ -257,7 +264,7 @@ def regression_section(df: pd.DataFrame) -> list[str]:
         "litter": "Litter present",
         "potholes": "Potholes present",
         "footpath": "Footpath present",
-        "log_people": "log(people in frame)",
+        "log_people": "log(adult pedestrian sightings in frame)",
     }
 
     lines = [
@@ -274,10 +281,14 @@ def regression_section(df: pd.DataFrame) -> list[str]:
     for name, label in pretty.items():
         b = fit.params[name] * 100
         lo, hi = fit.conf_int().loc[name] * 100
-        star = "*" if fit.pvalues[name] < 0.05 else ""
-        rows.append([label, f"{b:+.1f}{star}", f"[{lo:+.1f}, {hi:+.1f}]"])
-    lines += md_table(["Correlate", "pp diff", "95% CI"], rows)
-    lines += ["", "`*` p < 0.05. Base: Mumbai, residential road, midday, weekday, no POI/disorder."]
+        rows.append([label, f"{b:+.1f}", f"[{lo:+.1f}, {hi:+.1f}]"])
+    lines += md_table(["Correlate", "Difference (percentage points)", "95% CI"], rows)
+    lines += [
+        "",
+        "Intervals are pointwise and are not adjusted for multiple comparisons; no",
+        "threshold-based claims are made. Base: Mumbai, residential road, midday,",
+        "weekday, no POI/disorder.",
+    ]
     lines += [
         "",
         "## Limitations",
@@ -287,7 +298,7 @@ def regression_section(df: pd.DataFrame) -> list[str]:
         "- Collection spans roughly 06:00-22:00 IST only; nothing here speaks to night.",
         "- Road class is measured with error: itinerary and OSM road types agree on",
         "  ~72% of frames where both exist.",
-        "- The same individuals can appear in multiple face-triggered frames. Collection-day",
+        "- The same individuals can appear in multiple fixed-interval frames. Collection-day",
         "  clustering allows dependent errors but does not remove repeated-sighting bias.",
         "- Results describe classified sightings on collected routes, not city residents",
         "  or a probability sample of streets.",

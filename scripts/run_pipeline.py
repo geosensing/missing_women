@@ -12,7 +12,7 @@ Pipeline steps:
 - 07: Enrich with geo (IN-MEMORY)
 - 08: Build analysis data (PERSISTED - final dataset)
 - 09: EDA (generates plots)
-- 10: Analysis (generates tables and figures)
+- 10: Publication outputs (generates tables and figures)
 - 11: Maps (generates interactive and static maps)
 - 14: Descriptive patterns (generates tabs/descriptive_patterns.md)
 
@@ -28,8 +28,8 @@ Usage:
     # Skip visualization steps:
     python scripts/run_pipeline.py --city all --skip-osm --skip-viz
 
-    # Skip video processing (use cached data):
-    python scripts/run_pipeline.py --city mumbai --skip-process-videos --skip-rebuild-gps
+    # Reprocess videos at the city-specific interval in cities.yaml:
+    python scripts/run_pipeline.py --city mumbai --process-videos
 
 """
 
@@ -86,11 +86,28 @@ def load_city_config(project_root: Path, city: str) -> dict:
     return city_config
 
 
+def configured_frame_interval(city: str, city_config: dict) -> float:
+    """Return the positive fixed-frame interval declared for a city."""
+    raw_interval = city_config.get("frame_interval_sec")
+    if raw_interval is None:
+        raise ValueError(f"No frame_interval_sec configured for {city} in cities.yaml")
+
+    try:
+        interval = float(raw_interval)
+    except (TypeError, ValueError) as exc:
+        raise ValueError(
+            f"Invalid frame_interval_sec for {city} in cities.yaml: {raw_interval!r}"
+        ) from exc
+
+    if interval <= 0:
+        raise ValueError(f"frame_interval_sec for {city} must be greater than zero")
+    return interval
+
+
 def run_process_videos(
     project_root: Path,
     city: str,
     city_config: dict,
-    every_seconds: float = 120,
     quality: int = 95,
     frames_dir: Path | None = None,
 ) -> None:
@@ -107,6 +124,7 @@ def run_process_videos(
     if not video_dir.exists():
         raise FileNotFoundError(f"Video directory not found: {video_dir}")
 
+    frame_interval_sec = configured_frame_interval(city, city_config)
     output_dir = project_root / "data" / city
     if frames_dir is None:
         frames_dir = project_root / "data" / "annotation_task" / f"{city}_frames"
@@ -123,62 +141,9 @@ def run_process_videos(
         "--frames-dir",
         str(frames_dir),
         "--every-seconds",
-        str(every_seconds),
+        str(frame_interval_sec),
         "--quality",
         str(quality),
-    ]
-
-    print(f"Running: {' '.join(cmd)}")
-    subprocess.run(cmd, check=True)
-
-
-def run_extract_face_frames(
-    project_root: Path,
-    city: str,
-    city_config: dict,
-    face_frames_dir: Path | None = None,
-    scale_width: int = 1020,
-    min_confidence: int = 90,
-) -> None:
-    """
-    Run step 01: Extract frames at face detection timestamps.
-
-    Requires video_dir in city config and EXIF files from step 00.
-    """
-    video_dir = city_config.get("video_dir")
-    if not video_dir:
-        raise ValueError(f"No video_dir configured for {city} in cities.yaml")
-
-    video_dir = Path(video_dir)
-    if not video_dir.exists():
-        raise FileNotFoundError(f"Video directory not found: {video_dir}")
-
-    exif_dir = project_root / "data" / city / "exif"
-    if not exif_dir.exists():
-        raise FileNotFoundError(f"EXIF directory not found: {exif_dir}. Run step 00 first.")
-
-    if face_frames_dir is None:
-        face_frames_dir = project_root / "data" / "annotation_task" / f"{city}_face_frames"
-
-    script_path = scripts_dir / "01_extract_face_frames.py"
-
-    log_path = project_root / "data" / city / "face_frame_metadata.csv"
-
-    cmd = [
-        sys.executable,
-        str(script_path),
-        "--exif-dir",
-        str(exif_dir),
-        "--video-dir",
-        str(video_dir),
-        "--output",
-        str(face_frames_dir),
-        "--log",
-        str(log_path),
-        "--scale",
-        str(scale_width),
-        "--min-confidence",
-        str(min_confidence),
     ]
 
     print(f"Running: {' '.join(cmd)}")
@@ -191,7 +156,6 @@ def run_pipeline(
     rebuild_gps: bool = True,
     skip_osm: bool = False,
     process_videos: bool = False,
-    every_seconds: float = 120,
     quality: int = 95,
     frames_dir: Path | None = None,
 ) -> pd.DataFrame:
@@ -204,7 +168,6 @@ def run_pipeline(
         rebuild_gps: If True, rebuild GPS index even if it exists
         skip_osm: If True, skip OSM enrichment
         process_videos: If True, run step 00 (process videos)
-        every_seconds: Frame extraction interval
         quality: JPEG quality for frame extraction
         frames_dir: Output directory for frames (default: data/annotation_task/{city}_frames)
 
@@ -212,6 +175,7 @@ def run_pipeline(
         Final analysis DataFrame
     """
     city_config = load_city_config(project_root, city)
+    interval_sec = configured_frame_interval(city, city_config)
 
     exif_metadata_dir = project_root / "data" / city / "exif_metadata"
     gps_index_dir = project_root / "data" / city / "gps_index"
@@ -230,20 +194,22 @@ def run_pipeline(
         print("\n" + "=" * 60)
         print("STEP 00: Process Videos (EXIF, GPS, Frames)")
         print("=" * 60)
-        run_process_videos(project_root, city, city_config, every_seconds, quality, frames_dir)
+        run_process_videos(
+            project_root,
+            city,
+            city_config,
+            quality=quality,
+            frames_dir=frames_dir,
+        )
         rebuild_gps = True
-
-        print("\n" + "=" * 60)
-        print("STEP 01: Extract Face Frames")
-        print("=" * 60)
-        run_extract_face_frames(project_root, city, city_config)
 
     print("\n" + "=" * 60)
     print("STEP 04: Build GPS Index")
     print("=" * 60)
 
     if rebuild_gps or not video_meta_path.exists() or not gps_path.exists():
-        video_meta, gps_df = build_gps_index(exif_metadata_dir, gps_index_dir)
+        gps_source_dir = output_dir if process_videos else exif_metadata_dir
+        video_meta, gps_df = build_gps_index(gps_source_dir, gps_index_dir)
     else:
         print(f"Loading cached: {video_meta_path}")
         video_meta = pd.read_parquet(video_meta_path)
@@ -261,7 +227,6 @@ def run_pipeline(
     print("STEP 06: Assign Frame GPS")
     print("=" * 60)
 
-    interval_sec = float(city_config.get("frame_interval_sec", 1.0 / 30.0))
     anchor = city_config.get("frame_time_anchor", "gps")
     with_gps = assign_frame_gps(annotations, video_meta, gps_df, interval_sec, anchor)
 
@@ -338,7 +303,7 @@ def get_all_cities(project_root: Path) -> list[str]:
 
 
 def run_visualization_scripts(project_root: Path, cities: list[str]) -> None:
-    """Run EDA, analysis, and maps scripts."""
+    """Run EDA, publication-output, and map scripts."""
     scripts_dir = project_root / "scripts"
     cities_arg = ",".join(cities)
 
@@ -349,9 +314,14 @@ def run_visualization_scripts(project_root: Path, cities: list[str]) -> None:
     subprocess.run(cmd, check=True)
 
     print("\n" + "=" * 60)
-    print("STEP 10: Analysis (Tables & Figures)")
+    print("STEP 10: Publication Outputs (Tables & Figures)")
     print("=" * 60)
-    cmd = [sys.executable, str(scripts_dir / "10_analysis.py"), "--cities", cities_arg]
+    cmd = [
+        sys.executable,
+        str(scripts_dir / "10_make_publication_outputs.py"),
+        "--cities",
+        cities_arg,
+    ]
     subprocess.run(cmd, check=True)
 
     print("\n" + "=" * 60)
@@ -400,12 +370,6 @@ def main():
         help="Run step 00: Process videos - EXIF, GPS, frames (requires video_dir in cities.yaml)",
     )
     parser.add_argument(
-        "--every-seconds",
-        type=float,
-        default=120,
-        help="Frame extraction interval in seconds (default: 120)",
-    )
-    parser.add_argument(
         "--frames-dir",
         type=str,
         default=None,
@@ -444,7 +408,6 @@ def main():
                 rebuild_gps=not args.skip_rebuild_gps,
                 skip_osm=args.skip_osm,
                 process_videos=args.process_videos,
-                every_seconds=args.every_seconds,
                 quality=args.quality,
                 frames_dir=Path(args.frames_dir) if args.frames_dir else None,
             )

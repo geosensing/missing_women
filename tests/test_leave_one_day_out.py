@@ -10,7 +10,7 @@ def _frame(rows):
 
 
 def test_results_are_ordered_by_share_and_exclude_the_named_day(load_script):
-    analysis = load_script("10_analysis.py")
+    analysis = load_script("10_make_publication_outputs.py")
     data = _frame(
         [
             [1, 10, "a", 3],  # Thu, the dominant day
@@ -33,7 +33,7 @@ def test_results_are_ordered_by_share_and_exclude_the_named_day(load_script):
 def test_baseline_ignores_frames_with_an_unknown_day(load_script):
     """The baseline must be the known-day subset, or the comparison also drops
     frames whose timestamp is missing and overstates the movement."""
-    analysis = load_script("10_analysis.py")
+    analysis = load_script("10_make_publication_outputs.py")
     data = _frame(
         [
             [1, 2, "a", 3],
@@ -49,10 +49,38 @@ def test_baseline_ignores_frames_with_an_unknown_day(load_script):
 
 
 def test_no_usable_rows_yields_an_empty_result(load_script):
-    analysis = load_script("10_analysis.py")
+    analysis = load_script("10_make_publication_outputs.py")
     data = _frame([[0, 0, "a", 3]])
 
     baseline, results = analysis.leave_one_day_out(data)
 
     assert math.isnan(baseline)
     assert results == []
+
+
+def test_weekpart_summaries_share_the_table_and_macro_denominators(load_script):
+    analysis = load_script("10_make_publication_outputs.py")
+    data = pd.DataFrame.from_records(
+        [
+            ["alpha", False, 1, 4, "weekday-1"],
+            ["alpha", False, 2, 6, "weekday-2"],
+            ["alpha", True, 1, 2, "weekend-1"],
+            ["alpha", True, 0, 0, "weekend-1"],
+        ],
+        columns=[
+            "city",
+            "is_weekend",
+            "women_count",
+            "total_pedestrians",
+            "collection_day",
+        ],
+    )
+
+    summaries = analysis.compute_weekpart_summaries(data, ["alpha"])["alpha"]
+
+    assert math.isclose(summaries[False]["weighted"], 0.3)
+    assert summaries[False]["n_obs"] == 2
+    assert summaries[False]["n_clusters"] == 2
+    assert math.isclose(summaries[True]["weighted"], 0.5)
+    assert summaries[True]["n_obs"] == 1
+    assert summaries[True]["n_clusters"] == 1

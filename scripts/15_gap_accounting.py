@@ -33,6 +33,7 @@ Usage
 from __future__ import annotations
 
 import argparse
+import hashlib
 from pathlib import Path
 
 import pandas as pd
@@ -40,7 +41,58 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 TABS = ROOT / "tabs"
+SUPPLEMENTARY = ROOT / "supplementary" / "mobility_accounting.md"
 TABS.mkdir(parents=True, exist_ok=True)
+
+GAP_BLOCK_START = "<!-- GENERATED: gap-accounting:start -->"
+GAP_BLOCK_END = "<!-- GENERATED: gap-accounting:end -->"
+SENSITIVITY_BLOCK_START = "<!-- GENERATED: gap-sensitivity:start -->"
+SENSITIVITY_BLOCK_END = "<!-- GENERATED: gap-sensitivity:end -->"
+
+C14_PATH = DATA / "reference" / "DDWCT-0000C-14.xls"
+C14_MD5 = "6900b9d53313f1699b3891b75865ed50"
+C14_CATALOG_URL = "https://censusindia.gov.in/nada/index.php/catalog/1640"
+C14_COLUMNS = [
+    "table",
+    "state_code",
+    "town_code",
+    "area_name",
+    "age_group",
+    "total_persons",
+    "total_males",
+    "total_females",
+    "rural_persons",
+    "rural_males",
+    "rural_females",
+    "urban_persons",
+    "urban_males",
+    "urban_females",
+]
+AGE_GROUPS_20_PLUS = (
+    "20-24",
+    "25-29",
+    "30-34",
+    "35-39",
+    "40-44",
+    "45-49",
+    "50-54",
+    "55-59",
+    "60-64",
+    "65-69",
+    "70-74",
+    "75-79",
+    "80+",
+)
+
+# Exact city-level municipal units in the official all-India C-14 City workbook.
+# State and town codes are checked alongside names so a similarly named census
+# town cannot silently enter the benchmark.
+C14_CITY_GEOGRAPHIES = {
+    "mumbai": (27, 802794, "Greater Mumbai (M Corp.)"),
+    "navi_mumbai": (27, 802788, "Navi Mumbai (M Corp.)"),
+    "bangalore": (29, 803162, "BBMP (M. Corp.+OG)"),
+    "delhi": (7, 800441, "DMC (U) (M Corp.)"),
+}
 
 CITY_LABELS = {
     "mumbai": "Mumbai",
@@ -48,25 +100,11 @@ CITY_LABELS = {
     "bangalore": "Bangalore",
     "delhi": "Delhi",
 }
-
-# Residential sex ratio, women per 1,000 men, Census 2011, all four at the
-# municipal-corporation level. The unit has to be held fixed across cities: the
-# same city differs by 10-20 points between its district, its municipal
-# corporation, and its urban agglomeration, so mixing units silently changes the
-# headline.
-#
-# The municipal corporation is the right unit here because it is the sampling
-# frame -- segments were drawn from the municipal street network.
-#
-# The manuscript draft used 838 for Mumbai and 910 for Navi Mumbai. Neither is a
-# municipal-corporation sex ratio. 910 is not Navi Mumbai's figure under any age
-# band: its overall ratio is 837 and its child (0-6) ratio is 902. See
-# supplementary/mobility_accounting.md.
-RESIDENTIAL_SEX_RATIO = {
-    "mumbai": (853, "Greater Mumbai M Corp, Census 2011 (12,442,373 people)"),
-    "navi_mumbai": (837, "Navi Mumbai M Corp, Census 2011 (1,120,547 people)"),
-    "bangalore": (923, "Bruhat Bengaluru Mahanagara Palike, Census 2011"),
-    "delhi": (876, "Delhi Municipal Corporation, Census 2011"),
+MACRO_PREFIX = {
+    "mumbai": "Mumbai",
+    "navi_mumbai": "NaviMumbai",
+    "bangalore": "Bangalore",
+    "delhi": "Delhi",
 }
 
 # Goel (2023), Travel Behaviour and Society 32:100559, Table 1, urban India,
@@ -76,6 +114,68 @@ RESIDENTIAL_SEX_RATIO = {
 MOBILITY_RATE = {"female": 0.473, "male": 0.86}
 TRIP_RATE = {"female": 1.32, "male": 2.93}
 MOBILITY_CITE = "Goel (2023) Table 1, TUS 2019, urban India"
+
+
+def file_md5(path: Path) -> str:
+    """Return the MD5 used by the Census download record for file identity."""
+    digest = hashlib.md5(usedforsecurity=False)
+    with path.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def adult_residential_benchmarks(path: Path = C14_PATH) -> dict[str, dict]:
+    """Compute exact age-20+ municipal sex ratios from Census 2011 C-14 City."""
+    if not path.exists():
+        raise FileNotFoundError(f"Census C-14 workbook not found: {path}")
+    checksum = file_md5(path)
+    if checksum != C14_MD5:
+        raise ValueError(f"unexpected Census C-14 workbook MD5: {checksum}")
+
+    census = pd.read_excel(
+        path,
+        sheet_name="Sheet1",
+        header=None,
+        skiprows=6,
+        names=C14_COLUMNS,
+        engine="xlrd",
+    )
+    census["state_code"] = pd.to_numeric(census["state_code"], errors="coerce")
+    census["town_code"] = pd.to_numeric(census["town_code"], errors="coerce")
+    census["age_group"] = census["age_group"].astype(str).str.strip()
+
+    benchmarks = {}
+    expected_ages = set(AGE_GROUPS_20_PLUS)
+    for city, (state_code, town_code, area_name) in C14_CITY_GEOGRAPHIES.items():
+        city_rows = census[census["state_code"].eq(state_code) & census["town_code"].eq(town_code)]
+        names = set(city_rows["area_name"].dropna().astype(str))
+        if names != {area_name}:
+            raise ValueError(
+                f"{city}: expected {area_name!r} at {state_code}/{town_code}, got {names}"
+            )
+
+        adult_rows = city_rows[city_rows["age_group"].isin(expected_ages)]
+        observed_ages = set(adult_rows["age_group"])
+        if observed_ages != expected_ages or len(adult_rows) != len(expected_ages):
+            raise ValueError(
+                f"{city}: incomplete or duplicated age-20+ rows; got {sorted(observed_ages)}"
+            )
+
+        men = int(pd.to_numeric(adult_rows["total_males"], errors="raise").sum())
+        women = int(pd.to_numeric(adult_rows["total_females"], errors="raise").sum())
+        if men <= 0 or women <= 0:
+            raise ValueError(f"{city}: invalid age-20+ counts: {women=} {men=}")
+        benchmarks[city] = {
+            "state_code": state_code,
+            "town_code": town_code,
+            "area_name": area_name,
+            "age_min": 20,
+            "men": men,
+            "women": women,
+            "ratio": women / men * 1000,
+        }
+    return benchmarks
 
 
 def out_of_home_factor() -> float:
@@ -140,19 +240,26 @@ def account(observed: float, residential: float) -> dict[str, float]:
 
 
 def build_rows(cities: list[str]) -> list[dict]:
+    benchmarks = adult_residential_benchmarks()
     rows = []
     for city in cities:
-        if city not in RESIDENTIAL_SEX_RATIO:
-            print(f"WARNING: no residential sex ratio configured for {city}, skipping")
+        if city not in benchmarks:
+            print(f"WARNING: no adult residential benchmark configured for {city}, skipping")
             continue
-        residential, source = RESIDENTIAL_SEX_RATIO[city]
+        benchmark = benchmarks[city]
+        residential = benchmark["ratio"]
         observed, women, men = observed_sex_ratio(city)
         rows.append(
             {
                 "city": city,
                 "label": CITY_LABELS.get(city, city),
                 "residential": float(residential),
-                "source": source,
+                "source": (
+                    f"{benchmark['area_name']}, Census 2011 C-14 City, age 20+ "
+                    f"({benchmark['women']:,} women; {benchmark['men']:,} men)"
+                ),
+                "census_women": benchmark["women"],
+                "census_men": benchmark["men"],
                 "observed": observed,
                 "women": women,
                 "men": men,
@@ -163,18 +270,98 @@ def build_rows(cities: list[str]) -> list[dict]:
 
 
 def residual_sensitivity(rows: list[dict], tolerance: float = 0.10) -> float:
-    """Largest movement in the residual share if a census ratio is wrong.
-
-    The residual is the quantity being claimed, so this is the check that matters
-    while RESIDENTIAL_SEX_RATIO is unreconciled. If it is large, the claim is not
-    usable until the manuscript's figures are read off.
-    """
+    """Largest residual-share movement under a proportional benchmark change."""
     worst = 0.0
     for row in rows:
         for scale in (1 - tolerance, 1 + tolerance):
             alt = account(row["observed"], row["residential"] * scale)
             worst = max(worst, abs(alt["share_residual"] - row["share_residual"]))
     return worst
+
+
+def write_macros(rows: list[dict]) -> None:
+    """Write the residential benchmarks and gap results consumed by the manuscript."""
+    lines = [r"% Generated by scripts/15_gap_accounting.py; do not edit by hand."]
+    for row in rows:
+        prefix = MACRO_PREFIX[row["city"]]
+        values = {
+            "ResidentialSexRatio": row["residential"],
+            "StreetShortfall": 100 * row["shortfall"],
+            "GapNotOut": 100 * row["share_home"],
+            "GapFewerTrips": 100 * row["share_trips"],
+            "GapResidual": 100 * row["share_residual"],
+            "ObservedOfResidential": 100 * row["observed"] / row["residential"],
+        }
+        for suffix, value in values.items():
+            lines.append(rf"\newcommand{{\{prefix}{suffix}}}{{{value:.0f}}}")
+
+    shortfalls = [100 * row["shortfall"] for row in rows]
+    observed_fractions = [100 * row["observed"] / row["residential"] for row in rows]
+    lines.extend(
+        [
+            rf"\newcommand{{\MinStreetShortfall}}{{{min(shortfalls):.0f}}}",
+            rf"\newcommand{{\MaxStreetShortfall}}{{{max(shortfalls):.0f}}}",
+            rf"\newcommand{{\MinObservedOfResidential}}{{{min(observed_fractions):.0f}}}",
+            rf"\newcommand{{\MaxObservedOfResidential}}{{{max(observed_fractions):.0f}}}",
+        ]
+    )
+    for macro, key in (
+        ("GapNotOut", "share_home"),
+        ("GapFewerTrips", "share_trips"),
+        ("GapResidual", "share_residual"),
+    ):
+        values = [100 * row[key] for row in rows]
+        lines.append(rf"\newcommand{{\Min{macro}}}{{{min(values):.0f}}}")
+        lines.append(rf"\newcommand{{\Max{macro}}}{{{max(values):.0f}}}")
+    (TABS / "gap_macros.tex").write_text("\n".join(lines) + "\n")
+    print("  -> gap_macros.tex")
+
+
+def replace_generated_block(text: str, start: str, end: str, body: str) -> str:
+    """Replace one delimited generated block without touching surrounding prose."""
+    if text.count(start) != 1 or text.count(end) != 1:
+        raise ValueError(f"expected one {start!r} / {end!r} block")
+    before, remainder = text.split(start, 1)
+    _, after = remainder.split(end, 1)
+    return f"{before}{start}\n{body.rstrip()}\n{end}{after}"
+
+
+def write_supplementary(rows: list[dict]) -> None:
+    """Synchronize mutable accounting values in the prose supplement."""
+    text = SUPPLEMENTARY.read_text()
+    gap_lines = [
+        "| City | Residential (20+) | Observed | Shortfall | Not out of home | "
+        "Out, fewer trips | **Residual** |",
+        "|---|---:|---:|---:|---:|---:|---:|",
+    ]
+    sensitivity_lines = [
+        "| City | Residual | Range under ±10% on the census ratio |",
+        "|---|---:|---:|",
+    ]
+    for row in rows:
+        gap_lines.append(
+            f"| {row['label']} | {row['residential']:.0f} | {row['observed']:.0f} | "
+            f"{100 * row['shortfall']:.0f}% | {100 * row['share_home']:.0f}% | "
+            f"{100 * row['share_trips']:.0f}% | **{100 * row['share_residual']:.0f}%** |"
+        )
+        alternatives = [
+            account(row["observed"], row["residential"] * scale)["share_residual"]
+            for scale in (0.9, 1.1)
+        ]
+        sensitivity_lines.append(
+            f"| {row['label']} | {100 * row['share_residual']:.0f}% | "
+            f"[{100 * min(alternatives):.1f}%, {100 * max(alternatives):.1f}%] |"
+        )
+
+    text = replace_generated_block(text, GAP_BLOCK_START, GAP_BLOCK_END, "\n".join(gap_lines))
+    text = replace_generated_block(
+        text,
+        SENSITIVITY_BLOCK_START,
+        SENSITIVITY_BLOCK_END,
+        "\n".join(sensitivity_lines),
+    )
+    SUPPLEMENTARY.write_text(text)
+    print("  -> supplementary/mobility_accounting.md")
 
 
 def write_table(rows: list[dict], sensitivity: float) -> None:
@@ -187,7 +374,7 @@ def write_table(rows: list[dict], sensitivity: float) -> None:
         r"\begin{threeparttable}",
         r"\begin{tabular}{@{\extracolsep{0pt}}lrrrrrr}",
         r"\toprule",
-        r" & \multicolumn{2}{c}{Sex ratio (F/1000 M)} & & "
+        r" & \multicolumn{2}{c}{Women per 1,000 men} & & "
         r"\multicolumn{3}{c}{Share of the gap} \\",
         r"\cmidrule(lr){2-3}\cmidrule(lr){5-7}",
         r"City & Residential & Observed & Shortfall & Not out & Fewer trips "
@@ -207,7 +394,10 @@ def write_table(rows: list[dict], sensitivity: float) -> None:
         r"\end{tabular}",
         r"\begin{tablenotes}[flushleft]",
         r"\item Shortfall is the headline comparison of the observed pedestrian sex ratio to "
-        r"the residential sex ratio. It is reported unadjusted.",
+        r"the age-20+ residential sex ratio. It is reported unadjusted.",
+        r"\item Residential ratios are computed from the 20--24 through 80+ rows in the "
+        r"official Census 2011 C-14 City table; age not stated is excluded "
+        r"\citep{census2011c14city}.",
         r"\item The three shares decompose that shortfall. Women are less likely to leave home "
         rf"at all ({100 * MOBILITY_RATE['female']:.1f}\% against "
         rf"{100 * MOBILITY_RATE['male']:.0f}\% of men) and, having left, make fewer trips "
@@ -265,12 +455,14 @@ def main() -> None:
     print(
         f"\n+/-10% on a census ratio moves the residual share by at most {100 * sensitivity:.1f} pp"
     )
-    print("\nResidential sex ratios used (all municipal corporation, Census 2011):")
+    print("\nAdult residential sex ratios used (age 20+, Census 2011 C-14 City):")
     for row in rows:
         print(f"  {row['label']:<13} {row['residential']:>4.0f}   {row['source']}")
 
     print()
+    write_macros(rows)
     write_table(rows, sensitivity)
+    write_supplementary(rows)
 
 
 if __name__ == "__main__":

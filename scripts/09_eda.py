@@ -32,7 +32,7 @@ OUTPUT = ROOT / "data"
 FIGS = ROOT / "figs"
 FIGS.mkdir(parents=True, exist_ok=True)
 
-from figstyle import ACCENT, ACCENT_CMAP, GRAYS, MARKERS, apply_style  # noqa: E402
+from figstyle import ACCENT, ACCENT_CMAP, CITY_LABELS, apply_style  # noqa: E402
 
 apply_style()
 
@@ -74,7 +74,7 @@ def print_data_summary(df: pd.DataFrame) -> None:
 
         print(f"\n{city}:")
         print(f"  Rows: {n_rows:,}")
-        print(f"  Total people: {n_people:,}")
+        print(f"  Classified adult sightings: {n_people:,}")
         print(f"  GPS coverage: {gps_coverage:.1f}%")
         print(f"  Date range: {date_range}")
 
@@ -141,7 +141,7 @@ def print_headline_numbers(df: pd.DataFrame) -> None:
         ped_sex_ratio = (pedestrians_women / pedestrians_men * 1000) if pedestrians_men > 0 else 0
 
         print(f"\n{city}:")
-        print(f"  Total people: {total_people:,}")
+        print(f"  Classified adult sightings: {total_people:,}")
         print(f"  Total women: {total_women:,}")
         print(f"  Combined-mode female share: {weighted_prop:.4f} ({weighted_prop * 100:.2f}%)")
         print(f"  Combined-mode image mean: {image_level_mean:.4f} ({image_level_mean * 100:.2f}%)")
@@ -175,12 +175,14 @@ def plot_gps_coverage(df: pd.DataFrame, city: str, out_dir: Path) -> None:
     )
 
     cbar = fig.colorbar(sc, ax=ax, shrink=0.7)
-    cbar.set_label("Proportion women", fontsize=8)
+    cbar.set_label("Women (%)", fontsize=8)
+    cbar.ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
 
     ax.set_xlabel("Longitude")
     ax.set_ylabel("Latitude")
     ax.set_title(
-        f"GPS Coverage: {city.replace('_', ' ').title()}\n(n={len(sub_valid):,} images with GPS & people)"
+        f"GPS Coverage: {city.replace('_', ' ').title()}\n"
+        f"(n={len(sub_valid):,} images with GPS and adult sightings)"
     )
 
     ax.set_aspect("equal", adjustable="box")
@@ -191,28 +193,14 @@ def plot_gps_coverage(df: pd.DataFrame, city: str, out_dir: Path) -> None:
     print(f"  -> {out_path.name}")
 
 
-def plot_temporal_coverage(df: pd.DataFrame, out_dir: Path) -> None:
-    """Histograms of hour/day-of-week distribution. Output: eda_temporal_coverage.pdf"""
-    fig, axes = plt.subplots(1, 2, figsize=(8, 3.5))
-
-    ax = axes[0]
-    with_hour = df[df["frame_hour"].notna()].copy()
-    with_hour["hour_bin"] = with_hour["frame_hour"].astype(int)
-    cities = list(with_hour["city"].unique())
-    hours = list(range(with_hour["hour_bin"].min(), with_hour["hour_bin"].max() + 1))
-    counts = (
-        with_hour.groupby(["city", "hour_bin"])
-        .size()
-        .unstack(fill_value=0)
-        .reindex(index=cities, columns=hours, fill_value=0)
-    )
-
+def draw_count_heatmap(ax, counts: pd.DataFrame, title: str, xlabel: str) -> None:
+    """Draw a directly labelled city-by-period count matrix."""
     masked = np.ma.masked_equal(counts.values, 0)
     cmap = plt.get_cmap("Greys").copy()
     cmap.set_bad("#f5f5f5")
     ax.imshow(masked, cmap=cmap, aspect="auto", vmin=0)
-    for i in range(len(cities)):
-        for j in range(len(hours)):
+    for i in range(len(counts.index)):
+        for j in range(len(counts.columns)):
             n = counts.values[i, j]
             if n == 0:
                 continue
@@ -226,41 +214,43 @@ def plot_temporal_coverage(df: pd.DataFrame, out_dir: Path) -> None:
                 fontsize=5.5,
                 color="white" if dark else "#333333",
             )
-    ax.set_xticks(range(len(hours)))
-    ax.set_xticklabels(hours, fontsize=6)
-    ax.set_yticks(range(len(cities)))
-    ax.set_yticklabels([c.replace("_", " ").title() for c in cities], fontsize=7)
-    ax.set_xlabel("Hour of day (IST)")
-    ax.set_title("Images by hour")
+    ax.set_xticks(range(len(counts.columns)))
+    ax.set_xticklabels(counts.columns, fontsize=6)
+    ax.set_yticks(range(len(counts.index)))
+    ax.set_yticklabels([CITY_LABELS.get(city, city) for city in counts.index], fontsize=7)
+    ax.set_xlabel(xlabel)
+    ax.set_title(title)
     ax.tick_params(length=0)
     for spine in ax.spines.values():
         spine.set_visible(False)
 
-    ax = axes[1]
-    day_names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
+def plot_temporal_coverage(df: pd.DataFrame, out_dir: Path) -> None:
+    """City-by-hour and city-by-weekday matrices. Output: eda_temporal_coverage.pdf"""
+    fig, axes = plt.subplots(1, 2, figsize=(8, 3.5))
     cities = list(df["city"].unique())
-    n = len(cities)
-    width = 0.8 / n
-    x = np.arange(7)
-    for i, city in enumerate(cities):
-        sub = df[(df["city"] == city) & df["frame_dayofweek"].notna()]
-        if len(sub) == 0:
-            continue
-        counts = sub["frame_dayofweek"].value_counts().reindex(range(7), fill_value=0)
-        ax.bar(
-            x + (i - (n - 1) / 2) * width,
-            counts.values,
-            width,
-            alpha=0.9,
-            label=city.replace("_", " ").title(),
-            color=GRAYS.get(city, "0.5"),
-        )
-    ax.set_xlabel("Day of week")
-    ax.set_ylabel("Number of images")
-    ax.set_title("Distribution by day")
-    ax.set_xticks(x)
-    ax.set_xticklabels(day_names)
-    ax.legend(fontsize=7, frameon=False)
+
+    with_hour = df[df["frame_hour"].notna()].copy()
+    with_hour["hour_bin"] = with_hour["frame_hour"].astype(int)
+    hours = list(range(with_hour["hour_bin"].min(), with_hour["hour_bin"].max() + 1))
+    hour_counts = (
+        with_hour.groupby(["city", "hour_bin"])
+        .size()
+        .unstack(fill_value=0)
+        .reindex(index=cities, columns=hours, fill_value=0)
+    )
+    draw_count_heatmap(axes[0], hour_counts, "Images by hour", "Hour of day (IST)")
+
+    day_names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    with_day = df[df["frame_dayofweek"].notna()]
+    day_counts = (
+        with_day.groupby(["city", "frame_dayofweek"])
+        .size()
+        .unstack(fill_value=0)
+        .reindex(index=cities, columns=range(7), fill_value=0)
+    )
+    day_counts.columns = day_names
+    draw_count_heatmap(axes[1], day_counts, "Images by day", "Day of week")
 
     fig.tight_layout()
     out_path = out_dir / "eda_temporal_coverage.pdf"
@@ -271,31 +261,36 @@ def plot_temporal_coverage(df: pd.DataFrame, out_dir: Path) -> None:
 
 def plot_crowd_size_distribution(df: pd.DataFrame, out_dir: Path) -> None:
     """Histogram of total_people per image. Output: eda_crowd_size_distribution.pdf"""
-    fig, ax = plt.subplots(figsize=(6, 4))
+    cities = list(df["city"].unique())
+    fig, axes = plt.subplots(2, 2, figsize=(6, 4.5), sharex=True, sharey=True)
 
     max_people = min(df["total_people"].max(), 50)
     bins = np.arange(-0.5, max_people + 1.5, 1)
 
-    for city in df["city"].unique():
+    for ax, city in zip(axes.flat, cities):
         sub = df[df["city"] == city]
         people = sub["total_people"]
-        label = (
-            f"{city.replace('_', ' ').title()} "
-            f"(mean {people.mean():.1f}, median {people.median():.0f})"
-        )
         ax.hist(
             people.clip(upper=max_people),
             bins=bins,
-            histtype="step",
-            linewidth=1.2,
-            label=label,
-            color=GRAYS.get(city, "0.5"),
+            color="0.45",
+            edgecolor="white",
+            linewidth=0.25,
+        )
+        ax.set_title(CITY_LABELS.get(city, city), fontsize=8, fontweight="bold")
+        ax.text(
+            0.97,
+            0.92,
+            f"Mean {people.mean():.1f}; median {people.median():.0f}",
+            transform=ax.transAxes,
+            ha="right",
+            va="top",
+            fontsize=6,
+            color="0.3",
         )
 
-    ax.set_xlabel("Total people per image")
-    ax.set_ylabel("Number of images")
-    ax.set_title("Crowd size distribution")
-    ax.legend(fontsize=7, frameon=False)
+    fig.supxlabel("Classified sightings per image", fontsize=8)
+    fig.supylabel("Number of images", fontsize=8)
 
     fig.tight_layout()
     out_path = out_dir / "eda_crowd_size_distribution.pdf"
@@ -306,30 +301,28 @@ def plot_crowd_size_distribution(df: pd.DataFrame, out_dir: Path) -> None:
 
 def plot_prop_female_vs_crowd(df: pd.DataFrame, out_dir: Path) -> None:
     """Scatter of prop_women vs total_people. Output: eda_prop_female_vs_crowd.pdf"""
-    fig, ax = plt.subplots(figsize=(6, 4))
-
     valid = df[df["total_people"] > 0].copy()
+    cities = list(valid["city"].unique())
+    fig, axes = plt.subplots(2, 2, figsize=(6, 4.5), sharex=True, sharey=True)
 
-    for city in valid["city"].unique():
+    for ax, city in zip(axes.flat, cities):
         sub = valid[valid["city"] == city]
         ax.scatter(
             sub["total_people"],
             sub["prop_women"],
-            alpha=0.3,
+            alpha=0.25,
             s=10,
-            marker=MARKERS.get(city, "o"),
-            label=city.replace("_", " ").title(),
-            color=GRAYS.get(city, "0.5"),
+            marker="o",
+            color="0.25",
+            edgecolors="none",
         )
+        ax.axhline(0.5, color=ACCENT, linestyle="--", linewidth=0.8)
+        ax.set_title(CITY_LABELS.get(city, city), fontsize=8, fontweight="bold")
+        ax.set_ylim(-0.05, 1.05)
+        ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
 
-    ax.axhline(0.5, color=ACCENT, linestyle="--", linewidth=0.8, label="Parity")
-
-    ax.set_xlabel("Total people per image")
-    ax.set_ylabel("Percent women")
-    ax.set_title("Percent women vs. crowd size")
-    ax.set_ylim(-0.05, 1.05)
-    ax.yaxis.set_major_formatter(PercentFormatter(xmax=1, decimals=0))
-    ax.legend(fontsize=7, frameon=False)
+    fig.supxlabel("Classified sightings per image", fontsize=8)
+    fig.supylabel("Women (%)", fontsize=8)
 
     fig.tight_layout()
     out_path = out_dir / "eda_prop_female_vs_crowd.pdf"

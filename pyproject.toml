@@ -19,6 +19,7 @@ dependencies = [
     "tqdm",
     "pillow",
     "osmnx",
+    "xlrd>=2.0.2",
 ]
 
 [dependency-groups]
