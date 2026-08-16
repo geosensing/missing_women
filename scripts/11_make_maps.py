@@ -12,7 +12,7 @@ Outputs (in figs/), one set per city plus an overview:
   - map_locations_{city}.pdf    Static PDF with basemap tiles
   - map_sexratio_{city}.html    Interactive map colored by proportion women
   - map_sexratio_{city}.pdf     Static PDF colored by proportion women
-  - map_overview_india.pdf      All cities as labelled points on an India basemap
+  - map_overview_india.pdf      All cities as labeled points on an India basemap
 
 Usage:
     python scripts/11_make_maps.py --cities mumbai,navi_mumbai,bangalore,delhi
@@ -422,7 +422,7 @@ def make_sex_ratio_pdf(
 
 
 def make_overview_pdf(geo: pd.DataFrame) -> None:
-    """All-India overview: one labelled point per city, sized by sample count."""
+    """All-India overview: one labeled point per city, sized by sample count."""
     if len(geo) == 0:
         print("  WARNING: no valid GPS for overview map")
         return

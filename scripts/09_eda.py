@@ -194,7 +194,7 @@ def plot_gps_coverage(df: pd.DataFrame, city: str, out_dir: Path) -> None:
 
 
 def draw_count_heatmap(ax, counts: pd.DataFrame, title: str, xlabel: str) -> None:
-    """Draw a directly labelled city-by-period count matrix."""
+    """Draw a directly labeled city-by-period count matrix."""
     masked = np.ma.masked_equal(counts.values, 0)
     cmap = plt.get_cmap("Greys").copy()
     cmap.set_bad("#f5f5f5")

@@ -943,11 +943,11 @@ def mode_summaries(df: pd.DataFrame, city: str) -> dict[str, dict]:
 
 
 def make_fig3_multipanel(df: pd.DataFrame, cities: list[str]) -> None:
-    """Main estimate figure: transport mode and road type, directly labelled."""
+    """Main estimate figure: transport mode and road type, directly labeled."""
     fig = plt.figure(figsize=(6.5, 6.1))
     outer = GridSpec(2, 1, figure=fig, height_ratios=[1, 2.15], hspace=0.58)
 
-    # Panel A: one directly labelled paired comparison per city.
+    # Panel A: one directly labeled paired comparison per city.
     ax = fig.add_subplot(outer[0])
     for row, city in enumerate(cities):
         summaries = mode_summaries(df, city)
@@ -1025,7 +1025,7 @@ def make_figS3_context_patterns(df: pd.DataFrame, cities: list[str]) -> None:
     fig = plt.figure(figsize=(6.5, 6.1))
     outer = GridSpec(2, 1, figure=fig, height_ratios=[1, 2.15], hspace=0.58)
 
-    # Panel A: pooled POI comparisons, directly labelled.
+    # Panel A: pooled POI comparisons, directly labeled.
     ax = fig.add_subplot(outer[0])
     pois = [("bus_station", "Bus station"), ("street_vendor", "Street vendor")]
     for row, (field, label) in enumerate(pois):

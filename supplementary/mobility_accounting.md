@@ -10,7 +10,7 @@ only street imagery can see.
 
 ## What the Time Use Survey says
 
-Goel (2023) analyses the 2019 Time Use Survey for urban residents of India and reports two
+Goel (2023) analyzes the 2019 Time Use Survey for urban residents of India and reports two
 quantities by sex. The mobility rate is the share of individuals who made at least one trip on the
 reporting day. The trip rate is trips per day over all respondents, so it already embeds the
 mobility rate.
