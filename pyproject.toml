@@ -17,7 +17,7 @@ dependencies = [
     "pyarrow",
     "pyyaml",
     "tqdm",
-    "pillow",
+    "pillow>=12.3.0",
     "osmnx",
     "xlrd>=2.0.2",
 ]

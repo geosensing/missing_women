@@ -74,6 +74,14 @@ into the published dataset and outputs and can be re-run freely.
 | Inter-rater reliability | `13_interrater_reliability.py` | fair game |
 | Descriptive pattern mining | `14_descriptive_patterns.py` | fair game |
 
+### Dependency policy
+
+Each release tag fixes the code and `uv.lock`. To reproduce a release, check out its tag
+and run `uv sync --locked`. The `main` branch accepts manually reviewed security patches
+only after `make ci` and `make paper` pass and the generated outputs are compared with the
+preceding release. GitHub vulnerability alerts remain enabled, but automated Dependabot
+update pull requests are disabled. Maintainers review open alerts before each release.
+
 ### Run the analysis half
 
 The analysis half starts from the frozen GPS index and annotations and never re-touches

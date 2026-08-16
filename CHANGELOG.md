@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Require Pillow 12.3.0; the four analysis datasets and manuscript PDF remain byte-identical
+  to version 0.1.0.
+- Document the repository's manual dependency-review policy.
+
 ## 0.1.0 - 2026-08-16
 
 - Release the four-city analysis and manuscript reproduction workflow.
