@@ -1,0 +1,92 @@
+===== ITINERARY 33 DIRECTIONS =====
+
+Total distance: 2.97 km
+Estimated time: 6.5 minutes
+Number of data collection points: 9
+Cluster: 3
+
+
+--- Point 1 to Point 2 ---
+Distance: 1.18 km
+Time: 2.5 minutes
+
+Continue on South Central Road for 132 meters
+Continue on Unnamed Road for 1049 meters
+
+ARRIVE AT DATA COLLECTION POINT 2
+Location: 73.037763, 19.057939
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 2 to Point 3 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 3
+Location: 73.036077, 19.056969
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 3 to Point 4 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 4
+Location: 73.037139, 19.057700
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 4 to Point 5 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 5
+Location: 73.037621, 19.058199
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 5 to Point 6 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 6
+Location: 73.037753, 19.058062
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 6 to Point 7 ---
+Distance: 1.79 km
+Time: 4.0 minutes
+
+Continue on Unnamed Road for 1042 meters
+Continue on South Central Road for 136 meters
+Continue on Juinagar MIDC Road for 614 meters
+
+ARRIVE AT DATA COLLECTION POINT 7
+Location: 73.028583, 19.053873
+Street: Juinagar MIDC Road
+Collect required data at this location before continuing.
+
+--- Point 7 to Point 8 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 8
+Location: 73.025232, 19.053813
+Street: Juinagar MIDC Road
+Collect required data at this location before continuing.
+
+--- Point 8 to Point 9 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 9
+Location: 73.026086, 19.053829
+Street: Juinagar MIDC Road
+Collect required data at this location before continuing.

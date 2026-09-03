@@ -1,0 +1,39 @@
+\begin{table}[t]
+\centering
+\caption{Women's share among classified pedestrian sightings by road type.}
+\label{tab:road_type}
+\scriptsize
+\begin{threeparttable}
+\begin{tabular}{@{\extracolsep{0pt}}llccc}
+\toprule
+City & Road type & Women (\%) [95\% CI] & Women per 1,000 men & Images (clusters) \\
+\midrule
+Mumbai & Primary & 20.3 [18.1, 22.4] & 254 & 504 (11) \\
+ & Secondary & 17.2 [14.5, 19.9] & 208 & 630 (11) \\
+ & Tertiary & 18.6 [15.2, 22.0] & 228 & 372 (11) \\
+ & Residential & 20.3 [16.8, 23.8] & 255 & 699 (11) \\
+\addlinespace
+Navi Mumbai & Primary & 16.2 [9.5, 22.9] & 193 & 94 (6) \\
+ & Secondary & 15.8 [12.3, 19.3] & 188 & 224 (7) \\
+ & Tertiary & 18.5 [13.6, 23.3] & 227 & 233 (7) \\
+ & Residential & 23.7 [17.3, 30.1] & 310 & 374 (7) \\
+\addlinespace
+Bangalore & Primary & 28.8 [23.9, 33.7] & 404 & 191 (13) \\
+ & Secondary & 22.8 [18.7, 26.9] & 296 & 131 (12) \\
+ & Tertiary & 25.1 [20.5, 29.7] & 335 & 215 (13) \\
+ & Residential & 29.4 [25.3, 33.4] & 416 & 191 (12) \\
+\addlinespace
+Delhi & Primary & 16.5 [10.6, 22.4] & 198 & 160 (13) \\
+ & Secondary & 16.8 [11.6, 22.0] & 202 & 188 (13) \\
+ & Tertiary & 19.6 [16.2, 23.1] & 244 & 299 (13) \\
+ & Residential & 23.4 [18.1, 28.6] & 305 & 354 (13) \\
+\addlinespace
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]
+\item Road type is the OSM highway class of the nearest mapped road to each frame's GPS fix, bucketed into the four design classes.
+\item 95\% CIs use collection-day cluster-robust standard errors.
+\item Person-weighted estimates.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

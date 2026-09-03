@@ -1,0 +1,422 @@
+\documentclass[12pt]{article}
+\usepackage[charter, cal=cmcal]{mathdesign}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+%\usepackage[charter]{mathdesign}
+%\setlength{\marginparwidth}{2cm}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{bigdelim}
+\usepackage{placeins}
+\usepackage{natbib}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{multirow}
+\usepackage{framed}
+\usepackage{threeparttable}
+\usepackage{enumitem}
+\usepackage{pdflscape}
+\usepackage{xltabular}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,       % Use colored text instead of boxes
+    linkcolor=blue,        % Color of internal links (sections, etc.)
+    citecolor=black,       % Color of citations
+    filecolor=blue,        % Color of file links
+    urlcolor=blue          % Color of URLs
+}
+\usepackage{varioref}
+\usepackage{tikz}
+\usepackage{comment}
+\usepackage[all]{hypcap}
+\usepackage{epigraph}
+\usepackage{pifont}
+\newcommand{\xmark}{\ding{53}}%
+\newcommand{\cmark}{\ding{51}}%
+\usepackage[title,titletoc,page]{appendix}
+\usepackage{tocloft}     % For customizing TOC, list of tables/figures
+% Make the "Part I" text invisible
+\renewcommand \thepart{}
+\renewcommand \partname{}
+\newcommand{\appendixpagenumbering}{
+  %\break
+  \pagenumbering{arabic}
+  \renewcommand{\thepage}{\thesection-\arabic{page}}
+}
+\setlength{\epigraphwidth}{\textwidth}
+\usetikzlibrary{positioning, calc, arrows, arrows.meta, decorations.markings, decorations.pathmorphing, shapes.misc, matrix, shapes, fit, tikzmark}
+\tikzset{
+    block/.style = {rectangle, draw, text centered, rounded corners, minimum height=1.5em},
+    line/.style = {draw, -latex'},
+    snake/.style = {decorate, decoration={snake}},  % Define snake style using the new decoration
+}
+
+\usepackage{lineno}
+\doublespacing
+\setlength{\emergencystretch}{2em}
+\linenumbers
+\input{tabs/results_macros}
+\input{tabs/gap_macros}
+\input{tabs/irr_macros}
+
+\newif\ifsubmission
+%\submissiontrue % comment out for working draft
+
+\ifsubmission
+  \setcounter{secnumdepth}{0}
+\fi
+
+\title{Missing Women on Indian Streets\thanks{The authors thank the Center for International Studies (CIS) at USC for generous funding support. We also thank Ronit Shah and Swathi Srinivas for their research assistance. Replication materials for the project can be found at \url{https://github.com/geosensing/streetscope}. This study was reviewed and deemed exempt by the University of Southern California Institutional Review Board (UP-25-00545)}} \author{Varun Karekurve-Ramachandra\thanks{Assistant Professor, Department of Political Science and International Relations, University of Southern California, Email: \href{mailto:varun.rama@usc.edu?subject=Re\%3A\%20Missing\%20Women\%20on\%20Indian\%20Streets}{varun.rama@usc.edu}
+} \and Gaurav Sood\thanks{Data Scientist, Email: \href{mailto:gsood07@gmail.com?subject=Re\%3A\%20Missing\%20Women\%20on\%20Indian\%20Streets}{gsood07@gmail.com}}}
+\date{August 16, 2026}
+
+\begin{document}
+\maketitle
+
+% =============================================================================
+% ABSTRACT
+% =============================================================================
+\begin{abstract}
+
+% SCIENCE 125 words
+
+\noindent How absent are women from city streets in the developing world? We sampled road segments at random in four Indian cities and coded \TotalPersonSightings{} adult person-sightings in \TotalImages{} camera frames. Women account for \MinAllModeShare\% to \MaxAllModeShare\% of the adults visible. Pedestrian sex ratios range from \MinPedestrianSexRatio{} to \MaxPedestrianSexRatio{} women per 1,000 men, \MinStreetShortfall\% to \MaxStreetShortfall\% below age-20+ residential ratios. Women's shares are low across road types and lower still among two-wheeler riders (\MinTwoWheelerShare\% to \MaxTwoWheelerShare\%). Time-use data suggest that most of the shortfall arises before women reach the street: women leave home less often and make fewer trips. About one-quarter of the gap remains among women who leave home. Women's absence from the street exceeds their absence from the urban labor force.
+\end{abstract}
+
+\medskip
+\noindent\textbf{One-sentence summary:} The paper introduces direct, scalable measurement of the gender composition of public space and finds that between three-fifths and three-quarters of the women expected on the streets of four Indian cities are missing, a gap larger than their absence from the urban labor force.
+\clearpage
+
+\section{Introduction}
+
+
+This paper asks a simple question: how absent are women from city streets in the developing world? Across four large Indian cities, women account for \MinAllModeShare\% to \MaxAllModeShare\% of the adults visible on the street. Pedestrian sex ratios range from \MinPedestrianSexRatio{} to \MaxPedestrianSexRatio{} women per 1,000 men, \MinObservedOfResidential\% to \MaxObservedOfResidential\% of age-20+ residential census ratios. Amartya Sen used a similar accounting exercise to show that more than 100 million women were ``missing'' from the world's population because of excess female mortality \citep{sen1990}. His measure made gender inequality visible by counting who was absent. We apply that logic to public space: instead of asking who is missing from population registers, we ask who is missing from city streets.
+
+Presence in public space matters in its own right and because it conditions access to work, education, political participation, and health care. In the capabilities framework of \citet{sen1999} and \citet{nussbaum2000}, freedom of movement is central to bodily integrity. Constraints on women's movement therefore reach into labor markets, civic life, and household bargaining. City streets make those constraints visible: a crowded space can still be exclusionary when the crowd is overwhelmingly male. Feminist urban scholarship has developed this argument \citep{phadke2011, kern2020}, but evidence has not kept pace with theory.
+
+Existing sources cannot estimate women's share of a city's street population. Safety audits record perceptions and headcounts at purposively selected locations, but they are too small and selective for city-wide inference \citep{habitat2008women, jagori2010, safetipin2015, unwomen2021safetyaudit}. Commuter surveys and census journey-to-work tables measure transport choices, but they omit non-commute trips and cannot show who is visible at a given moment \citep{census2011}. Time-use diaries measure how women allocate their hours, but not where those hours are spent \citep{nsso2024tus}. This leaves no representative estimate of women's share of the street population in a major developing-world city, despite policy commitments to gender equality and inclusive cities under SDGs 5 and 11 \citep{un2016}.
+
+We estimate that quantity with a randomized street survey in four Indian cities: Mumbai and its planned satellite city, Navi Mumbai; Bangalore in the south; and Delhi in the north. We sampled road segments within road-type strata and traversed them by motorcycle with a body-mounted, GPS-linked camera. Trained annotators classified \TotalPersonSightings{} adult person-sightings in \TotalImages{} images by apparent gender and transport mode. They also recorded features of the street, including vendors, lane markings, and road-surface quality.
+
+The results establish both the size and the reach of the imbalance. Women account for \MumbaiAllModeShare\% of classified adult sightings in Mumbai, \NaviMumbaiAllModeShare\% in Navi Mumbai, \BangaloreAllModeShare\% in Bangalore, and \DelhiAllModeShare\% in Delhi. Women's share remains low across road types and is lower still among two-wheeler riders. Time-use estimates suggest that most of the shortfall arises before women reach the street: women leave home less often than men and make fewer trips when they do. About one-quarter remains among women who do leave home. Together, the survey and estimates provide a replicable city-level measure of gender composition in public space.
+
+\section{Results}
+
+\subsection{Women in the street population}
+
+In all four cities, women constitute a small minority of the visible adult street population (Table~\ref{tab:city_summary}). In person-weighted estimates (each classified adult sighting counts equally), women account for \MumbaiAllModeShare\% of sightings in Mumbai, \NaviMumbaiAllModeShare\% in Navi Mumbai, \BangaloreAllModeShare\% in Bangalore, and \DelhiAllModeShare\% in Delhi. Image-level means, which weight each frame equally regardless of crowd size, are \MumbaiAllModeImageShare\%, \NaviMumbaiAllModeImageShare\%, \BangaloreAllModeImageShare\%, and \DelhiAllModeImageShare\%. Restricting the count to pedestrians, women constitute \MumbaiPedestrianShare\%, \NaviMumbaiPedestrianShare\%, \BangalorePedestrianShare\%, and \DelhiPedestrianShare\%, corresponding to pedestrian sex ratios of \MumbaiPedestrianSexRatio, \NaviMumbaiPedestrianSexRatio, \BangalorePedestrianSexRatio, and \DelhiPedestrianSexRatio{} women per 1,000 men. The comparable age-20+ Census ratios are \MumbaiResidentialSexRatio, \NaviMumbaiResidentialSexRatio, \BangaloreResidentialSexRatio, and \DelhiResidentialSexRatio{} \citep{census2011c14city}. The streets therefore contain \MumbaiStreetShortfall\%, \NaviMumbaiStreetShortfall\%, \BangaloreStreetShortfall\%, and \DelhiStreetShortfall\% fewer women than those residential ratios predict. This gap between the street sex ratio and the adult residential sex ratio is the core empirical finding: it is large in every city and not close to parity by any measure. Bangalore is the partial exception, and we return to it below.
+
+% Pedestrian sex ratio = women_count / men_count * 1000, per 1,000 men.
+% Source: tabs/table1_city_summary.tex, generated by scripts/10_make_publication_outputs.py.
+%   Mumbai 236, Navi Mumbai 220, Bangalore 377, Delhi 246.
+%
+% Adult residential benchmarks and gap shares are generated by
+% scripts/15_gap_accounting.py from Census 2011 C-14 City.
+
+\input{tabs/table1_city_summary}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figs/fig2_distribution.pdf}
+\caption{Distribution of image-level female share in each city.
+Each bar counts annotated images in which women constitute a given share of
+visible pedestrians. The distribution is right-skewed in every city, with a
+pronounced mass at zero: a substantial fraction of frames contain no visible
+women. Frames that approach or exceed gender parity are rare. The dotted line
+is the mean of the plotted distribution, weighting each image equally; the
+solid line is the person-weighted pedestrian share, weighting each person
+equally. The two values are printed in each city panel and differ where
+women's presence covaries with crowd size. The dashed line marks parity (50\%).}
+\label{fig:distribution}
+\end{figure}
+
+Figure~\ref{fig:distribution} shows the imbalance at the frame level. In every city, the modal frame contains no visible women. When women do appear, they are usually a minority; frames approaching or exceeding gender parity are rare. The result is not driven by a few male-dominated outliers. It describes the typical sampled street scene.
+
+\subsection{Temporal patterns}
+
+The data do not support a within-city weekday--weekend comparison. The point estimates differ by at most \MaxWeekdayWeekendDifferencePP{} percentage points across the four cities (Table~\ref{tab:temporal}). Weekend estimates rest on only \MinWeekendCollectionDays{} to \MaxWeekendCollectionDays{} collection days, and Bangalore contributes a single weekend day, so its interval is unavailable.
+
+Collection spans roughly 06:00--22:00 IST and is concentrated during daytime hours, so the estimates do not describe a full diurnal profile. Variation across the three broad time windows (morning 06:00--11:00, midday 11:00--15:00, evening 15:00--22:00) is modest everywhere, with no window approaching gender parity (Table~\ref{tab:temporal}; Fig.~\ref{fig:context_patterns}B). If anything, prior qualitative work would predict nighttime visibility to be even more male-skewed \citep{phadke2011}, so our daytime estimates are likely an upper bound on women's share across the full 24-hour cycle.
+
+Fieldwork days were not spread evenly across the week, so each city's imagery is dominated by one or two weekdays. \MumbaiDominantDay{} accounts for \MumbaiDominantDayShare{}\% of coded sightings in Mumbai and \NaviMumbaiDominantDay{} for \NaviMumbaiDominantDayShare{}\% in Navi Mumbai. Because collection days are the clusters, excluding a day of the week removes whole clusters and widens the interval as well as shifting the estimate. Across every single-day exclusion in every city, the largest movement in the person-weighted female share is \MaxLeaveOneDayShiftPP{} percentage points, and every leave-one-day-out estimate falls inside the corresponding full-sample interval (Table~\ref{tab:temporal}). The headline is not an artifact of which days the surveyor happened to ride.
+
+\begin{figure}[htbp!]
+\centering
+\includegraphics[width=\textwidth]{figs/fig3_multipanel.pdf}
+\caption{Women's share among classified sightings by transport mode and road type. Panel A compares pedestrians with two-wheeler riders within each city. Panel B reports pedestrian estimates by road type; road type is the OpenStreetMap class of the nearest mapped road. Points are person-weighted estimates and horizontal lines are 95\% collection-day-clustered confidence intervals.}
+\label{fig:multi}
+\end{figure}
+
+\subsection{Modal substitution}
+
+A natural objection is that women may be present in public spaces but traveling in enclosed vehicles rather than on foot. We cannot observe car occupants, but cars account for a small share of the Indian urban vehicle fleet, and the two-wheeler (motorbikes, scooters, and bicycles) is by far the dominant private mode. Two-wheelers are fully visible in the imagery. If modal substitution explained the pedestrian gap, women's share among two-wheeler users should be higher than among pedestrians. It is not, in any city. Women constitute \MumbaiTwoWheelerShare\% of two-wheeler users in Mumbai, \NaviMumbaiTwoWheelerShare\% in Navi Mumbai, \BangaloreTwoWheelerShare\% in Bangalore, and \DelhiTwoWheelerShare\% in Delhi -- less than half their pedestrian shares in every case (Fig.~\ref{fig:multi}A). The most visible private transport mode is even more male-dominated than walking. We cannot rule out substitution into enclosed public transport like buses and Mumbai's suburban rail, whose interiors are not visible from the street; we address this in ongoing work. Whatever forces suppress women's street presence, they are not offset by a shift into two-wheeled private mobility.
+
+\subsection{Points of interest}
+
+Women account for \BusStationPresentShare\% of pedestrian sightings in frames tagged with a bus station, compared with \BusStationAbsentShare\% in other frames. The corresponding estimates are \StreetVendorPresentShare\% and \StreetVendorAbsentShare\% for frames with and without street vendors (Fig.~\ref{fig:context_patterns}A). Railway-station estimates rely on only \RailwayStationImages{} frames across \RailwayStationClusters{} collection days and are too sparse to interpret. These comparisons are descriptive. The sampled routes, fieldwork dates, and locations differ, so the comparisons do not estimate the effects of transit access or commercial activity.
+
+\subsection{Road hierarchy}
+
+Women's pedestrian share varies modestly across road types (Fig.~\ref{fig:multi} Panel B, Table~\ref{tab:road_type}). Residential roads have the highest estimate in Navi Mumbai, Bangalore, and Delhi. In Mumbai, residential and primary roads are tied. Secondary roads have the lowest estimate in Mumbai, Navi Mumbai, and Bangalore; primary roads have the lowest estimate in Delhi. Across cities, the difference between the highest and lowest road-class estimates ranges from \MinRoadTypeSpreadPP{} to \MaxRoadTypeSpreadPP{} percentage points. Even the highest estimate, \MaxRoadTypeShare\% on residential roads in Bangalore, remains below 30\%.
+
+\section{Discussion}
+
+These results provide, to our knowledge, the first systematic city-scale estimate of women's share of the visible street population in the developing world. The headline finding is stark: women account for \MinAllModeShare\% to \MaxAllModeShare\% of the adults visible on the streets of four large Indian cities, implying that \MinStreetShortfall\% to \MaxStreetShortfall\% of the women expected from age-20+ residential ratios are missing. The numbers convert a widely reported observation into a precise, replicable quantity, and confirm at the city scale what small-sample safety audits and qualitative fieldwork have long suggested \citep{jagori2010, phadke2011}.
+
+% Headline values are generated in tabs/results_macros.tex and
+% tabs/gap_macros.tex.
+
+Why are the streets so male? The candidate explanations fall into two families: women have fewer reasons to be out, and being out costs them more. Work is the main reason anyone is on a weekday street, and work in urban India is mostly male: 28.0\% of urban women aged 15 and above are in the labor force, against 75.6\% of men \citep{plfs2024}. Given the residential sex ratios, women are roughly a quarter of the urban labor force. The work gap is large, but the street gap is larger: were the street composed only of workers, women would be a quarter of it, and they are \MinAllModeShare\% to \MaxAllModeShare\%.
+
+% The implied female labor-force share combines the cited 15+ LFPRs with the
+% generated age-20+ residential ratios and remains approximately one-quarter.
+
+The second family is cost. Fear of harassment shapes where, when, and how women travel; in Delhi, female college students accept worse colleges and longer commutes to avoid routes perceived as unsafe \citep{borker2021}. Household norms ration even trivial trips: in the 2011--12 IHDS-II, 78\% of urban women reported needing permission to visit a grocery store and 94\% to travel a short distance by bus or train \citep{ihds2012}. \citet{phadke2011} describe the norm beneath the permissions: a woman's presence on a Mumbai street is tolerated when a visible purpose justifies it, while a man's requires no justification. Infrastructure prices presence unevenly too -- scarce public toilets, poor lighting, and missing or obstructed sidewalks cost women more, in hours and in risk, than they cost men.
+
+Both families act before the street as well as on it, and time-use data show where. In the 2019 Time Use Survey, 47.3\% of urban women made at least one trip on the reporting day against 86\% of men, and women averaged 1.32 trips to men's 2.93 \citep{goel2023gendergap}. These gaps are not a competing explanation but the same exclusion recorded one step upstream, at the front door instead of on the road. Scaling each city's residential sex ratio by the two factors in turn partitions the street gap into three additive parts (Table~\ref{tab:gap_accounting}). Women who did not leave home account for \MinGapNotOut\% to \MaxGapNotOut\% of the gap. Fewer trips among those who left account for another \MinGapFewerTrips\% to \MaxGapFewerTrips\%. The residual ranges from \MinGapResidual\% to \MaxGapResidual\%. The partition locates the gap; it does not explain it. We leave the headline unadjusted, because women kept at home are the largest component of the absence, not a confound to remove.
+
+The remaining quarter is the part of the gap only street imagery can see: women who left home, made their trips, and are still missing from pedestrian sightings. A time-use survey cannot reach this quantity, because it records who left the house, not who is standing on a road. The cost explanations predict it. Trip counts measure errands and commutes, and the claim in \citet{phadke2011} is precisely that errands and commutes are what women are permitted; presence beyond the trip -- waiting, lingering, taking the long way -- is what the norms tax. Fear of harassment does the same work through route and mode: trips that are shorter, enclosed in vehicles, or steered away from major roads produce fewer sightings per trip. Our design cannot separate these, and part of the residual may be mundane -- trips concentrated in hours the fieldwork did not cover. Bangalore is the informative contrast: its residual is \BangaloreGapResidual\%, not distinguishable from zero under plausible variation in the census denominator, and it is also the city with the highest female share overall.
+
+The cross-sectional patterns point the same way. Women's share is higher near bus stations and street vendors, where transit and errands anchor presence, and is highest or tied for highest on residential streets, where destinations are close. These are observational contrasts, not causal estimates, but they fit the cost explanations: women appear where purpose is legible.
+
+The constraint is also movable. Exploiting the staggered rollout of free bus travel for women across five Indian states, \citet{rathore2026ticket} find gains in women's paid work participation that are larger in more patriarchal districts, consistent with the schemes relieving a mobility constraint rather than a budget constraint. If most of the street gap is women not leaving home, interventions that lower the cost of leaving home act on its largest component.
+
+The findings have direct implications for urban policy. Gender-responsive planning -- better lighting, continuous sidewalks, accessible sanitation, mixed land use -- is frequently advocated but rarely evaluated against a quantitative baseline of gendered street presence. The methodology demonstrated here provides such a baseline at low cost. Repeated transects after infrastructure upgrades, transit interventions, or safety measures can test whether the visible share of women rises. If it does not, the intervention has failed on its own terms. The framework is also relevant to monitoring progress on SDG~5 (gender equality) and SDG~11 (inclusive cities), both of which lack street-level indicators \citep{un2016}.
+
+Several limitations should be stated plainly. First, data collection is concentrated during daytime hours. Nighttime presence, when qualitative evidence suggests the gender skew is most severe, remains unmeasured. Second, gender is inferred from visible appearance, collapsing a more complex social reality into binary categories; inter-rater agreement bounds inconsistency between coders but not error common to all of them. Third, the study covers four cities in a single cross-section and cannot track change over time. Fourth, we cannot distinguish residents from commuters or determine trip purpose from a single image. Fifth, the associations we report -- between women's presence and road type, POI, or time of day -- are observational. They describe where women are more or less visible, not why. Sixth, the mobility rates used in the partition above are national urban averages applied to four specific cities; if women in these cities are more mobile than the urban average, the front-door and trip-count shares are overstated and the residuals are lower bounds. Finally, ``10+'' counts are interval-censored. Replacing them with 30 rather than their known minimum changes city pedestrian estimates by \MinTopcodeShiftPP{} to \MaxTopcodeShiftPP{} percentage points (Table~\ref{tab:topcode}).
+
+A separate exercise using Google Street View imagery in Mumbai, Navi Mumbai, and Delhi reproduces these estimates closely in two of the three cities. The Street View pedestrian female share is 20.5\% in Mumbai against \MumbaiPedestrianShare\% here, and 20.0\% in Delhi against \DelhiPedestrianShare\%. Navi Mumbai differs by 6.7 percentage points, with intervals that do not overlap. Because Street View observes different streets, dates, and times, and its panoramas are acquired for reasons unrelated to this study, it enters as a complementary measurement rather than as validation; the supplementary materials give the sampling funnel, the capture-year strata, and the unresolved Navi Mumbai discrepancy in full.
+
+The pipeline is designed for replication. The sampling and data-collection tools are open-source \citep{geo_sampling, allocator}, and the marginal cost of extending the survey to additional cities or time periods is low. The same protocol can be deployed in Dhaka, Lagos,  Jakarta or any other city in the developing world with minimal adaptation. Longitudinal repetition would allow cities to track whether women's street presence responds to policy changes or remains structurally fixed. Future work should extend coverage to nighttime hours and enclosed public spaces, incorporate qualitative methods to identify mechanisms, and explore whether experimental interventions --- street redesign, safety measures, collective claims to public space --- shift the baseline.
+
+The larger point is simple. A city in which 84\% to 88\% of classified adult sightings are men is not close to equal access. The imbalance is not confined to one city, one road type, one transport mode, or one time of day. Measuring that absence is the first step toward changing it.
+
+
+% =============================================================================
+% METHODS
+% =============================================================================
+\section{Materials and Methods}
+
+\subsection{Sampling design}
+
+We sampled road segments from the OpenStreetMap road network within each city's study boundary. Roads were classified into four strata: primary, secondary, tertiary, and residential. Each road was divided into approximately 500-meter segments using the open-source \texttt{geo\_sampling} Python package \citep{geo_sampling, streetsense2018}. We then drew a stratified random sample, with stratum sizes proportional to the number of segments in each road class. In Mumbai, the sample comprised 122 primary, 150 secondary, 127 tertiary, and 601 residential segments. Sampled segments were grouped into daily surveyor itineraries using \texttt{allocator} \citep{allocator}, a route-optimization tool that minimizes travel time between segments while respecting daily time constraints. This process yielded 12 itineraries in Mumbai, 41 in Navi Mumbai, 111 in Bangalore, and 16 in Delhi.
+
+\subsection{Data collection}
+
+The surveyor traversed the assigned itineraries on a motorbike equipped with a chest-mounted GoPro HERO13 Black camera. The camera recorded continuous 4K video (3840$\times$2160, 30 fps, HEVC codec) with embedded GPS telemetry at approximately 10 Hz. Collection spanned 47 days across the four cities --- 11 in Mumbai, 9 in Navi Mumbai, 13 in Bangalore, and 14 in Delhi --- primarily during daytime hours (approximately 06:00--22:00 IST), with coverage concentrated in the morning and midday periods.
+
+Fieldwork days were not evenly spread across the week, owing to surveyor scheduling constraints, and each city is dominated by one or two weekdays: Thursday accounts for 48\% of coded sightings in Mumbai, Tuesday for 65\% in Navi Mumbai, Monday for 38\% in Bangalore, and Wednesday for 27\% in Delhi. We report a leave-one-day-out sensitivity in Table~\ref{tab:temporal}.
+
+We sampled still frames at fixed intervals: every 10 seconds in Mumbai and Navi Mumbai and every 120 seconds in Bangalore and Delhi. For geolocation, the pipeline used the timestamp encoded in a filename when available; otherwise, it recovered the timestamp from the frame index and the city's sampling interval. It then interpolated the embedded GPS telemetry at that time. Frames were compressed to 1280$\times$720 for annotation. The pipeline from raw video to geolocated, annotation-ready images is documented in the open-source \texttt{streetscope} repository \citep{streetscope2025}.
+
+\subsection{Pedestrian classification}
+
+Extracted frames were loaded into Label Studio, an open-source annotation platform \citep{label_studio}. Three trained coders annotated the images. For each image, coders recorded: (i)~counts of visible adult men and women who were pedestrians, (ii)~counts of adult men and women riding two-wheelers, and (iii)~categorical indicators for points of interest (bus station, railway station, street vendor) and street infrastructure (footpath condition, lane markings, potholes, litter). Count fields used a categorical taxonomy (1, 2, 3, \ldots, 10, $>$10), with $>$10 coded conservatively as 11 in the analysis. Where no women (or no men) were visible, the coder left the corresponding count field blank; blank entries are treated as zero.
+
+Most images were coded once, by a designated primary annotator, and a subset was coded a second time by a reviewer. Median annotation time per image was approximately 30 seconds. Gender was inferred from visible appearance -- clothing, hair, and build as they present in street-level photographs. This necessarily imposes a binary classification and cannot capture the full complexity of gender identity. The final dataset comprises \MumbaiImages{} images in Mumbai, \NaviMumbaiImages{} in Navi Mumbai, \BangaloreImages{} in Bangalore, and \DelhiImages{} in Delhi -- \TotalImages{} in total, yielding \TotalPersonSightings{} classified adult person-sightings.
+
+Agreement between the primary annotator and reviewers was measured at the image level on the \IRROverlaps{} image--reviewer overlaps, rather than by comparing city-level aggregates, because errors in opposite directions can cancel in city aggregates. The intraclass correlation ICC(2,1) for absolute agreement is \IRRWomenCountICC{} for women's counts, \IRRMenCountICC{} for men's counts, and \IRRTotalCountICC{} for total pedestrians. The mean absolute difference in women's counts is \IRRWomenCountMAD{} people, and agreement on the image-level female share is \IRRWomenShareICC{}. The binary streetscape flags agree less well: Cohen's $\kappa$ is \IRRFootpathKappa{} for footpath presence, \IRRBusStationKappa{} for bus station, \IRRLitterKappa{} for litter, and \IRRStreetVendorKappa{} for street vendor (Table~\ref{tab:irr}).
+
+The reliability estimates have two limitations. First, the overlaps are unevenly distributed across cities: Mumbai contributes \IRRMumbaiOverlaps{}, Delhi \IRRDelhiOverlaps{}, Navi Mumbai \IRRNaviMumbaiOverlaps{}, and Bangalore \IRRBangaloreOverlaps{}. Bangalore's estimate is therefore the least precise. Second, coders may share the same classification errors. Clothing, hair, and build can be ambiguous at a distance or in motion, so intercoder agreement measures disagreement between coders, not error common to both.
+
+
+\subsection{Statistical analysis}
+
+We report two summary measures of women's street presence. The \textit{person-weighted} estimate treats each classified individual equally: proportion female $= \sum w_i / \sum (m_i + w_i)$, where $w_i$ and $m_i$ are the counts of women and men in image $i$. The \textit{image-level mean} treats each frame equally regardless of crowd size: $\bar{p} = N^{-1} \sum_i (w_i / (m_i + w_i))$, computed only over frames with at least one visible person. The person-weighted estimate is more informative about the composition of the street population; the image-level mean is more robust to a small number of high-traffic frames.
+
+Confidence intervals treat the collection day as the clustering unit and use a cluster-robust sandwich with a $t$ reference distribution on $G-1$ degrees of freedom. Because fieldwork days contributed very unequal numbers of frames, the effective number of clusters is well below the raw count: the Kish effective number, $(\sum n_c)^2 / \sum n_c^2$, is 6.2 in Mumbai and 4.8 in Navi Mumbai against raw counts of 11 and 9 (Table~\ref{tab:city_summary}). Intervals for those two cities should be read as indicative rather than exact, since cluster-robust intervals are known to under-cover at this degree of imbalance.
+
+Subgroup comparisons by road type, POI presence, weekday/weekend, and time of day use person-weighted proportions within each subgroup. We report these comparisons as descriptive patterns, not hypothesis tests.
+
+Coders recorded pedestrian and two-wheeler counts in separate fields. The pedestrian sex ratio is expressed as women per 1,000 men, following demographic convention.
+
+Road type for each image is the OpenStreetMap class of the nearest mapped road to the frame's GPS fix, bucketed into the four design strata. It is not assigned by the image coder.
+
+\subsection{Ethics and privacy}
+
+The study observes public behavior in public spaces. No individual consent was obtained, consistent with standard practice for street-level observation research. The analytic data contain no names, identity-linked records, or biometric identifiers. Images were used to count visible adults by apparent gender; no facial recognition was applied, and no images of identifiable individuals were published. The annotation interface displayed compressed, reduced-resolution images. Raw video and original-resolution frames, which may contain identifiable people, are stored securely and are not included in the public repository. The public repository contains frame-level annotation counts, location metadata, and analysis code, but no images. This study was reviewed and deemed exempt by the author's University Institutional Review Board. %University of Southern California Institutional Review Board (UP-25-00545)
+
+% =============================================================================
+% REFERENCES
+% =============================================================================
+\bibliographystyle{apalike}
+\bibliography{ms/missing}
+
+%\section*{Acknowledgments}
+% Funding, field team, computing resources, competing interests, data/code availability
+%\textit{Note on AI Usage: }Claude Opus 4.6 and ChatGPT 5.4 were used for copyediting, data management, and code review. All AI output was verified by the authors.
+
+
+
+\section*{Supplementary Materials}
+
+% SI numbering: figures and tables restart as S1, S2, ... from here on.
+\setcounter{figure}{0}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\setcounter{table}{0}
+\renewcommand{\thetable}{S\arabic{table}}
+
+% =============================================================================
+% SUPPLEMENTARY MATERIALS — S1. Annotation Codebook
+% =============================================================================
+
+\subsection*{S1. Annotation Codebook}
+
+The following rules governed the coding of all images. The codebook was developed iteratively during a pilot phase and finalized before production annotation began. All coders were trained on the same instructions and reviewed edge cases collectively before independent annotation.
+
+\subsubsection*{S1.1 Adult men and women}
+
+Coders counted all adults visible on the street whose gender could be determined from the image.
+
+\begin{itemize}[nosep]
+\item People inside buildings or enclosed vehicles were \textbf{not} counted.
+\item People in public parks set back from the road were \textbf{not} counted.
+\item People on open vehicles such as trucks or auto-rickshaws were counted if clearly visible. Truck occupants identified as laborers were noted in the free-text field.
+\item People near the horizon whose gender was not discernible were excluded.
+\item An image in which the street was visible but no people were present was coded as zero for all person counts (equivalent to leaving count fields blank).
+\end{itemize}
+
+\subsubsection*{S1.2 Men and women on two-wheelers}
+
+Two-wheelers included both motorized bikes and bicycles.
+
+\begin{itemize}[nosep]
+\item Only riders and pillion passengers whose gender was clearly discernible were counted.
+\item When a pillion passenger's gender could not be determined, only the rider was counted as a single person on a two-wheeler.
+\item A person on a bicycle was classified as a two-wheeler user.
+\end{itemize}
+
+\subsubsection*{S1.3 Footpath condition}
+
+The guiding question was: \textit{Is this footpath usable by a pedestrian, including a person with a mobility disability?}
+
+\begin{itemize}[nosep]
+\item \textbf{Paved}: A paved footpath visible in any part of the image, with sufficient clearance for pedestrian use.
+\item \textbf{Paved--Blocked}: A footpath that exists but is obstructed, reducing or eliminating pedestrian access. Sources of obstruction included:
+  \begin{itemize}[nosep]
+  \item Unpaved surfaces with trees and mud that pedestrians would likely avoid (concern: mud, risk of waterlogging);
+  \item Half-constructed or incomplete footpaths;
+  \item Street vendors or hawkers occupying the footpath (also tagged as \texttt{street\_vendor = Yes});
+  \item Parked motorcycles or bicycles on the footpath.
+  \end{itemize}
+\item \textbf{No sidewalk}: No footpath visible in the image.
+\item A tree on an otherwise usable, unobstructed footpath was \textbf{not} treated as a blockage. This was a common occurrence in the field and was noted as a separate convention.
+\end{itemize}
+
+\subsubsection*{S1.4 Potholes}
+
+\begin{itemize}[nosep]
+\item A visible dent, hole, or hole-like depression in the road surface was coded as a pothole.
+\item Minor surface cracks were \textbf{not} coded as potholes.
+\item Drainage grates or grills at the road edge were \textbf{not} coded as potholes.
+\item Coded as NA when no paved (\textit{pucca}) road was visible (e.g., unpaved or dirt roads).
+\end{itemize}
+
+\subsubsection*{S1.5 Street markings}
+
+The guiding question was: \textit{Are there visible markings that help clarify what space on the road vehicles and pedestrians can use?} The underlying concern was traffic safety and pedestrian safety: markings such as zebra crossings, lane dividers, and center lines cue both vehicles and pedestrians to share space. Markings that function primarily at night (e.g., reflective paint visible only under headlights) were acknowledged as likely to be systematically undercounted in daytime imagery.
+
+\begin{itemize}[nosep]
+\item Even barely visible paint or reflectors were coded as street markings present.
+\item A painted or marked speed breaker counted as a street marking. In Mumbai, both the road surface and speed breakers typically had markings; in Navi Mumbai this was less consistent.
+\item Gaps between concrete slabs serving as separators, without paint or other explicit marking tools, were coded as no street markings.
+\item Coded as NA when no paved (\textit{pucca}) road was visible.
+\end{itemize}
+
+\subsubsection*{S1.6 Litter and construction debris}
+
+The guiding question was: \textit{Is material left lying in an open or public place that should be in a bin or container?}
+
+\begin{itemize}[nosep]
+\item Visible garbage on or near the street was coded as litter.
+\item Construction debris, gravel, or loose stone were coded as construction debris.
+\item When both garbage and construction debris were present, the dominant category by visual volume was selected.
+\item Unfinished street corners and unpaved footpath edges with loose material were coded as construction debris.
+\end{itemize}
+
+\subsubsection*{S1.7 Points of interest}
+
+\begin{itemize}[nosep]
+\item \textbf{Bus station}: Coded as Yes when a bus stop, bus shelter, or station was visible. When only partially visible or at a distance, a free-text note was added.
+\item \textbf{Railway station}: Coded as Yes when a railway station or its immediate vicinity was visible. The presence of railway porters (\textit{coolies}) was used as a contextual indicator when the station structure itself was not in the frame.
+\item \textbf{Street vendor}: Coded as Yes when a street vendor or hawker was visible, including cases where the vendor occupied the footpath (which was then also coded as Paved--Blocked under footpath condition).
+\end{itemize}
+
+\subsubsection*{S1.8 Neighborhood type and road width}
+
+These fields were added during the annotation process and are available for a subset of images.
+
+\begin{itemize}[nosep]
+\item \textbf{Neighborhood type}: Coded as residential, commercial, or mixed-use. A residential street with even a single visible commercial establishment (e.g., a shuttered shop) was coded as mixed-use. The field was left blank when no view of the surrounding built environment was available.
+\item \textbf{Road width}: Coded as single-lane or two-lane. A single-direction road with a wide carriageway was coded as two-lane. A nominally two-lane road with vehicles parked on both sides, reducing the usable carriageway, was coded as single-lane.
+\end{itemize}
+
+\subsubsection*{S1.9 Repeated images}
+
+Coders could flag sequential frames that appeared to repeat a recent scene, for example when the surveyor was stopped at a traffic signal.\footnote{Eight of the \TotalImages{} retained frames were flagged by at least one coder. Six were coded twice, and the coders disagreed in each case; we retained all eight.}
+
+\subsection*{Supplementary Tables and Figures}
+
+\makeatletter
+\setlength{\@fptop}{0pt}
+\makeatother
+
+\input{tabs/tableS1_road_type}
+\input{tabs/tableS2_temporal}
+\input{tabs/tableS3_poi_infrastructure}
+\input{tabs/tableS4_irr}
+\input{tabs/tableS5_topcode_sensitivity}
+\input{tabs/tableS6_gap_accounting}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figs/eda_crowd_size_distribution.pdf}
+\caption{Distribution of classified adult sightings per retained image in each city. Bars count images by the total number of visible classified adults, combining pedestrians and two-wheeler users. The x-axis is capped at 50 sightings; values above the cap are included in the terminal bin. The annotations report the city mean and median.}
+\label{fig:eda_crowd_size_distribution}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figs/eda_temporal_coverage.pdf}
+\caption{Temporal coverage of retained annotated images. The left matrix counts images by local hour (IST), and the right matrix counts images by day of week; cell labels give counts and darker shading indicates more images. Blank cells indicate zero images. These matrices describe when imagery was collected, not a population-weighted distribution of street activity.}
+\label{fig:temporal_coverage}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figs/figS3_context_patterns.pdf}
+\caption{Women's share among classified pedestrian sightings near points of interest and across broad time windows. Panel A pools all four cities and compares frames in which a bus station or street vendor was visible with frames in which it was not visible; frames with missing POI annotations are excluded. Panel B reports estimates separately by city. Points are person-weighted estimates and horizontal lines are 95\% collection-day-clustered confidence intervals. An interval is omitted when fewer than two collection days contribute to a cell.}
+\label{fig:context_patterns}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\begin{subfigure}[b]{0.48\textwidth}
+\includegraphics[width=\textwidth]{figs/map_locations_mumbai.pdf}
+\caption{Mumbai}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.48\textwidth}
+\includegraphics[width=\textwidth]{figs/map_locations_navi_mumbai.pdf}
+\caption{Navi Mumbai}
+\end{subfigure}
+
+\medskip
+
+\begin{subfigure}[b]{0.48\textwidth}
+\includegraphics[width=\textwidth]{figs/map_locations_bangalore.pdf}
+\caption{Bangalore}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.48\textwidth}
+\includegraphics[width=\textwidth]{figs/map_locations_delhi.pdf}
+\caption{Delhi}
+\end{subfigure}
+\caption{Geographic coverage of the annotated imagery and driven itineraries. Each panel shows one city; colored points are retained annotated frames with valid GPS coordinates, and gray lines are the driven GPS tracks for the sampled videos. Frames without a valid GPS fix are omitted from the map. These maps describe the spatial coverage of data collection, not a population-weighted sample of streets or residents.}
+\label{fig:map_locations}
+\end{figure}
+
+
+\end{document}

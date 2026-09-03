@@ -1,0 +1,2908 @@
+===== ITINERARY 1 DIRECTIONS =====
+
+Total distance: 19.95 km
+Estimated time: 40.8 minutes
+Number of data collection points: 279
+Cluster: 18
+
+
+--- Point 1 to Point 2 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 2
+Location: 73.026813, 19.070105
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 2 to Point 3 ---
+Distance: 0.12 km
+Time: 0.1 minutes
+
+Continue on South Central Road for 117 meters
+
+ARRIVE AT DATA COLLECTION POINT 3
+Location: 73.027025, 19.070778
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 3 to Point 4 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 4
+Location: 73.025579, 19.070790
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 4 to Point 5 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on South Central Road for 11 meters
+
+ARRIVE AT DATA COLLECTION POINT 5
+Location: 73.025167, 19.070890
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 5 to Point 6 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 6
+Location: 73.025338, 19.070890
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 6 to Point 7 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 7
+Location: 73.024616, 19.070891
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 7 to Point 8 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 8
+Location: 73.026820, 19.070872
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 8 to Point 9 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 9
+Location: 73.025291, 19.070890
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 9 to Point 10 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on South Central Road for 11 meters
+
+ARRIVE AT DATA COLLECTION POINT 10
+Location: 73.025744, 19.070789
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 10 to Point 11 ---
+Distance: 0.12 km
+Time: 0.1 minutes
+
+Continue on South Central Road for 117 meters
+
+ARRIVE AT DATA COLLECTION POINT 11
+Location: 73.026847, 19.069455
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 11 to Point 12 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 12
+Location: 73.026812, 19.069914
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 12 to Point 13 ---
+Distance: 0.45 km
+Time: 0.4 minutes
+
+Continue on South Central Road for 453 meters
+
+ARRIVE AT DATA COLLECTION POINT 13
+Location: 73.026861, 19.067174
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 13 to Point 14 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Unnamed Road for 7 meters
+
+ARRIVE AT DATA COLLECTION POINT 14
+Location: 73.026063, 19.062909
+Street: ['Turbhe MIDC Road', 'MIDC Service Road']
+Collect required data at this location before continuing.
+
+--- Point 14 to Point 15 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 15
+Location: 73.025895, 19.062904
+Street: ['Turbhe MIDC Road', 'MIDC Service Road']
+Collect required data at this location before continuing.
+
+--- Point 15 to Point 16 ---
+Distance: 1.00 km
+Time: 1.0 minutes
+
+Continue on Unnamed Road for 7 meters
+Continue on South Central Road for 992 meters
+
+ARRIVE AT DATA COLLECTION POINT 16
+Location: 73.032349, 19.060191
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 16 to Point 17 ---
+Distance: 1.39 km
+Time: 2.7 minutes
+
+Continue on South Central Road for 351 meters
+Continue on Unnamed Road for 1042 meters
+
+ARRIVE AT DATA COLLECTION POINT 17
+Location: 73.036177, 19.059740
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 17 to Point 18 ---
+Distance: 1.88 km
+Time: 3.2 minutes
+
+Continue on Unnamed Road for 1049 meters
+Continue on South Central Road for 831 meters
+
+ARRIVE AT DATA COLLECTION POINT 18
+Location: 73.030753, 19.061899
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 18 to Point 19 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 19
+Location: 73.030931, 19.061645
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 19 to Point 20 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 20
+Location: 73.031066, 19.061129
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 20 to Point 21 ---
+Distance: 0.13 km
+Time: 0.1 minutes
+
+Continue on South Central Road for 126 meters
+
+ARRIVE AT DATA COLLECTION POINT 21
+Location: 73.028272, 19.064279
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 21 to Point 22 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 22
+Location: 73.028988, 19.063484
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 22 to Point 23 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 23
+Location: 73.029049, 19.062994
+Street: ['Turbhe MIDC Road', 'MIDC Service Road']
+Collect required data at this location before continuing.
+
+--- Point 23 to Point 24 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 24
+Location: 73.026925, 19.062933
+Street: ['MIDC Service Road', 'Turbhe MIDC Road']
+Collect required data at this location before continuing.
+
+--- Point 24 to Point 25 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 25
+Location: 73.027350, 19.062945
+Street: ['Turbhe MIDC Road', 'MIDC Service Road']
+Collect required data at this location before continuing.
+
+--- Point 25 to Point 26 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 26
+Location: 73.028709, 19.063769
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 26 to Point 27 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 27
+Location: 73.027390, 19.062946
+Street: ['Turbhe MIDC Road', 'MIDC Service Road']
+Collect required data at this location before continuing.
+
+--- Point 27 to Point 28 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Turbhe MIDC Road for 9 meters
+Continue on South Central Road for 40 meters
+
+ARRIVE AT DATA COLLECTION POINT 28
+Location: 73.029888, 19.063004
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 28 to Point 29 ---
+Distance: 0.06 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 60 meters
+
+ARRIVE AT DATA COLLECTION POINT 29
+Location: 73.030147, 19.063243
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 29 to Point 30 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 30
+Location: 73.029968, 19.063415
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 30 to Point 31 ---
+Distance: 0.03 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 30 meters
+
+ARRIVE AT DATA COLLECTION POINT 31
+Location: 73.030550, 19.062906
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 31 to Point 32 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 32
+Location: 73.030676, 19.062784
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 32 to Point 33 ---
+Distance: 0.20 km
+Time: 0.5 minutes
+
+Continue on Unnamed Road for 196 meters
+
+ARRIVE AT DATA COLLECTION POINT 33
+Location: 73.031688, 19.062547
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 33 to Point 34 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 34
+Location: 73.032087, 19.061794
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 34 to Point 35 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 35
+Location: 73.032049, 19.062024
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 35 to Point 36 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 36
+Location: 73.031909, 19.062878
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 36 to Point 37 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 37
+Location: 73.032293, 19.060537
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 37 to Point 38 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 70 meters
+
+ARRIVE AT DATA COLLECTION POINT 38
+Location: 73.032266, 19.063051
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 38 to Point 39 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 39
+Location: 73.031871, 19.063111
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 39 to Point 40 ---
+Distance: 0.23 km
+Time: 0.6 minutes
+
+Continue on Unnamed Road for 234 meters
+
+ARRIVE AT DATA COLLECTION POINT 40
+Location: 73.033922, 19.062792
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 40 to Point 41 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 41 meters
+
+ARRIVE AT DATA COLLECTION POINT 41
+Location: 73.032765, 19.062915
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 41 to Point 42 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 42
+Location: 73.033067, 19.063588
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 42 to Point 43 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 43
+Location: 73.033474, 19.063047
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 43 to Point 44 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 44
+Location: 73.033056, 19.062867
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 44 to Point 45 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 45
+Location: 73.033358, 19.063215
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 45 to Point 46 ---
+Distance: 0.19 km
+Time: 0.5 minutes
+
+Continue on Unnamed Road for 193 meters
+
+ARRIVE AT DATA COLLECTION POINT 46
+Location: 73.032381, 19.063024
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 46 to Point 47 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 47
+Location: 73.032490, 19.062998
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 47 to Point 48 ---
+Distance: 0.06 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 61 meters
+
+ARRIVE AT DATA COLLECTION POINT 48
+Location: 73.032581, 19.063845
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 48 to Point 49 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 49
+Location: 73.031790, 19.063606
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 49 to Point 50 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 50
+Location: 73.031718, 19.064045
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 50 to Point 51 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 51
+Location: 73.031779, 19.063673
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 51 to Point 52 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 52
+Location: 73.032259, 19.063810
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 52 to Point 53 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 82 meters
+
+ARRIVE AT DATA COLLECTION POINT 53
+Location: 73.031362, 19.064436
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 53 to Point 54 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 54
+Location: 73.031584, 19.064866
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 54 to Point 55 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 55
+Location: 73.031659, 19.064405
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 55 to Point 56 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 79 meters
+
+ARRIVE AT DATA COLLECTION POINT 56
+Location: 73.030973, 19.064371
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 56 to Point 57 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 85 meters
+
+ARRIVE AT DATA COLLECTION POINT 57
+Location: 73.029705, 19.064181
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 57 to Point 58 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 58
+Location: 73.030078, 19.064432
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 58 to Point 59 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 59
+Location: 73.029421, 19.063879
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 59 to Point 60 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 60
+Location: 73.029246, 19.064068
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 60 to Point 61 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 61
+Location: 73.029552, 19.064169
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 61 to Point 62 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 69 meters
+
+ARRIVE AT DATA COLLECTION POINT 62
+Location: 73.030004, 19.064822
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 62 to Point 63 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 63
+Location: 73.030636, 19.065009
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 63 to Point 64 ---
+Distance: 0.06 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 61 meters
+
+ARRIVE AT DATA COLLECTION POINT 64
+Location: 73.028820, 19.065328
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 64 to Point 65 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 65
+Location: 73.029285, 19.065314
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 65 to Point 66 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 66
+Location: 73.030561, 19.065484
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 66 to Point 67 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 70 meters
+
+ARRIVE AT DATA COLLECTION POINT 67
+Location: 73.029801, 19.065992
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 67 to Point 68 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 68
+Location: 73.028744, 19.065682
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 68 to Point 69 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 69
+Location: 73.028688, 19.066023
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 69 to Point 70 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 70
+Location: 73.028736, 19.065728
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 70 to Point 71 ---
+Distance: 0.07 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 68 meters
+
+ARRIVE AT DATA COLLECTION POINT 71
+Location: 73.031382, 19.066098
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 71 to Point 72 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 72
+Location: 73.030489, 19.065882
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 72 to Point 73 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 73
+Location: 73.030476, 19.065942
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 73 to Point 74 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 74
+Location: 73.031410, 19.065929
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 74 to Point 75 ---
+Distance: 0.09 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 90 meters
+
+ARRIVE AT DATA COLLECTION POINT 75
+Location: 73.030699, 19.066995
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 75 to Point 76 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 76
+Location: 73.030333, 19.066808
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 76 to Point 77 ---
+Distance: 0.15 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 151 meters
+
+ARRIVE AT DATA COLLECTION POINT 77
+Location: 73.028510, 19.067078
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 77 to Point 78 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 78
+Location: 73.029404, 19.067585
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 78 to Point 79 ---
+Distance: 0.25 km
+Time: 0.6 minutes
+
+Continue on Unnamed Road for 248 meters
+
+ARRIVE AT DATA COLLECTION POINT 79
+Location: 73.031211, 19.067161
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 79 to Point 80 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 80
+Location: 73.031353, 19.066279
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 80 to Point 81 ---
+Distance: 0.11 km
+Time: 0.3 minutes
+
+Continue on MIDC Main Road for 108 meters
+
+ARRIVE AT DATA COLLECTION POINT 81
+Location: 73.030901, 19.069080
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 81 to Point 82 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 82
+Location: 73.031440, 19.068059
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 82 to Point 83 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 83
+Location: 73.031627, 19.068077
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 83 to Point 84 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 84
+Location: 73.030875, 19.069241
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 84 to Point 85 ---
+Distance: 0.14 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 138 meters
+
+ARRIVE AT DATA COLLECTION POINT 85
+Location: 73.032314, 19.068144
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 85 to Point 86 ---
+Distance: 0.14 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 138 meters
+
+ARRIVE AT DATA COLLECTION POINT 86
+Location: 73.031059, 19.068101
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 86 to Point 87 ---
+Distance: 0.67 km
+Time: 1.6 minutes
+
+Continue on MIDC Main Road for 449 meters
+Continue on Unnamed Road for 223 meters
+
+ARRIVE AT DATA COLLECTION POINT 87
+Location: 73.032162, 19.072308
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 87 to Point 88 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 88
+Location: 73.031926, 19.072269
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 88 to Point 89 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 89
+Location: 73.032485, 19.072362
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 89 to Point 90 ---
+Distance: 0.43 km
+Time: 1.0 minutes
+
+Continue on Unnamed Road for 223 meters
+Continue on MIDC Main Road for 210 meters
+
+ARRIVE AT DATA COLLECTION POINT 90
+Location: 73.030580, 19.073955
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 90 to Point 91 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 91
+Location: 73.030638, 19.073964
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 91 to Point 92 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 92
+Location: 73.030625, 19.073962
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 92 to Point 93 ---
+Distance: 0.16 km
+Time: 0.4 minutes
+
+Continue on MIDC Main Road for 164 meters
+
+ARRIVE AT DATA COLLECTION POINT 93
+Location: 73.029970, 19.074803
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 93 to Point 94 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 94
+Location: 73.029924, 19.075070
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 94 to Point 95 ---
+Distance: 0.14 km
+Time: 0.3 minutes
+
+Continue on MIDC Main Road for 138 meters
+
+ARRIVE AT DATA COLLECTION POINT 95
+Location: 73.029693, 19.076377
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 95 to Point 96 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 96
+Location: 73.029803, 19.076579
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 96 to Point 97 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 97
+Location: 73.029661, 19.076554
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 97 to Point 98 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on MIDC Main Road for 77 meters
+
+ARRIVE AT DATA COLLECTION POINT 98
+Location: 73.029521, 19.077378
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 98 to Point 99 ---
+Distance: 0.14 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 138 meters
+
+ARRIVE AT DATA COLLECTION POINT 99
+Location: 73.028186, 19.077122
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 99 to Point 100 ---
+Distance: 0.14 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 138 meters
+
+ARRIVE AT DATA COLLECTION POINT 100
+Location: 73.029580, 19.077009
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 100 to Point 101 ---
+Distance: 0.13 km
+Time: 0.2 minutes
+
+Continue on MIDC Main Road for 38 meters
+Continue on Unnamed Road for 96 meters
+
+ARRIVE AT DATA COLLECTION POINT 101
+Location: 73.028823, 19.077858
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 101 to Point 102 ---
+Distance: 0.13 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 96 meters
+Continue on MIDC Main Road for 31 meters
+
+ARRIVE AT DATA COLLECTION POINT 102
+Location: 73.029478, 19.077752
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 102 to Point 103 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 103
+Location: 73.029381, 19.078661
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 103 to Point 104 ---
+Distance: 0.03 km
+Time: 0.1 minutes
+
+Continue on MIDC Main Road for 31 meters
+
+ARRIVE AT DATA COLLECTION POINT 104
+Location: 73.029326, 19.077638
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 104 to Point 105 ---
+Distance: 0.29 km
+Time: 0.7 minutes
+
+Continue on MIDC Main Road for 115 meters
+Continue on Unnamed Road for 178 meters
+
+ARRIVE AT DATA COLLECTION POINT 105
+Location: 73.032561, 19.078390
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 105 to Point 106 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 106
+Location: 73.032414, 19.078018
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 106 to Point 107 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 107
+Location: 73.031288, 19.076786
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 107 to Point 108 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 108
+Location: 73.031347, 19.076728
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 108 to Point 109 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 109
+Location: 73.032663, 19.078552
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 109 to Point 110 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 110
+Location: 73.032233, 19.077613
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 110 to Point 111 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 111
+Location: 73.032419, 19.078027
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 111 to Point 112 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 112
+Location: 73.030768, 19.076714
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 112 to Point 113 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 113
+Location: 73.030743, 19.076710
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 113 to Point 114 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 114
+Location: 73.031404, 19.076324
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 114 to Point 115 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 115
+Location: 73.031933, 19.076914
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 115 to Point 116 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 116
+Location: 73.031956, 19.076920
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 116 to Point 117 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 117
+Location: 73.032659, 19.078546
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 117 to Point 118 ---
+Distance: 0.13 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 134 meters
+
+ARRIVE AT DATA COLLECTION POINT 118
+Location: 73.031538, 19.075366
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 118 to Point 119 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 119
+Location: 73.031449, 19.076006
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 119 to Point 120 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 120
+Location: 73.030796, 19.075483
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 120 to Point 121 ---
+Distance: 0.10 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 99 meters
+
+ARRIVE AT DATA COLLECTION POINT 121
+Location: 73.031707, 19.074721
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 121 to Point 122 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 122
+Location: 73.031662, 19.074739
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 122 to Point 123 ---
+Distance: 0.14 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 141 meters
+
+ARRIVE AT DATA COLLECTION POINT 123
+Location: 73.032851, 19.074909
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 123 to Point 124 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 124
+Location: 73.032526, 19.074856
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 124 to Point 125 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 125
+Location: 73.033714, 19.075041
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 125 to Point 126 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 126
+Location: 73.033638, 19.075030
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 126 to Point 127 ---
+Distance: 0.48 km
+Time: 1.2 minutes
+
+Continue on Unnamed Road for 483 meters
+
+ARRIVE AT DATA COLLECTION POINT 127
+Location: 73.035262, 19.074915
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 127 to Point 128 ---
+Distance: 0.25 km
+Time: 0.6 minutes
+
+Continue on Unnamed Road for 249 meters
+
+ARRIVE AT DATA COLLECTION POINT 128
+Location: 73.034713, 19.073954
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 128 to Point 129 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 129
+Location: 73.034640, 19.073946
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 129 to Point 130 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 130
+Location: 73.034670, 19.073948
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 130 to Point 131 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 131
+Location: 73.034890, 19.073998
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 131 to Point 132 ---
+Distance: 0.11 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 112 meters
+
+ARRIVE AT DATA COLLECTION POINT 132
+Location: 73.033682, 19.073948
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 132 to Point 133 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 84 meters
+
+ARRIVE AT DATA COLLECTION POINT 133
+Location: 73.032189, 19.073705
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 133 to Point 134 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 134
+Location: 73.032346, 19.073730
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 134 to Point 135 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 135
+Location: 73.032718, 19.073794
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 135 to Point 136 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 136
+Location: 73.032190, 19.073705
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 136 to Point 137 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 137
+Location: 73.032764, 19.073804
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 137 to Point 138 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 138
+Location: 73.032682, 19.073420
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 138 to Point 139 ---
+Distance: 0.14 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 140 meters
+
+ARRIVE AT DATA COLLECTION POINT 139
+Location: 73.031711, 19.074113
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 139 to Point 140 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 140
+Location: 73.031061, 19.074031
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 140 to Point 141 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 141
+Location: 73.031879, 19.073657
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 141 to Point 142 ---
+Distance: 0.17 km
+Time: 0.4 minutes
+
+Continue on Unnamed Road for 167 meters
+
+ARRIVE AT DATA COLLECTION POINT 142
+Location: 73.030097, 19.074071
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 142 to Point 143 ---
+Distance: 0.21 km
+Time: 0.5 minutes
+
+Continue on MIDC Main Road for 210 meters
+
+ARRIVE AT DATA COLLECTION POINT 143
+Location: 73.031410, 19.072183
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 143 to Point 144 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 144
+Location: 73.031046, 19.072122
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 144 to Point 145 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 145
+Location: 73.030431, 19.071999
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 145 to Point 146 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 146
+Location: 73.030695, 19.072063
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 146 to Point 147 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 147
+Location: 73.030659, 19.072057
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 147 to Point 148 ---
+Distance: 0.10 km
+Time: 0.2 minutes
+
+Continue on MIDC Main Road for 95 meters
+
+ARRIVE AT DATA COLLECTION POINT 148
+Location: 73.030515, 19.071479
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 148 to Point 149 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 149
+Location: 73.030539, 19.071329
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 149 to Point 150 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 150
+Location: 73.030541, 19.071312
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 150 to Point 151 ---
+Distance: 0.37 km
+Time: 0.8 minutes
+
+Continue on MIDC Main Road for 359 meters
+Continue on South Central Road for 12 meters
+
+ARRIVE AT DATA COLLECTION POINT 151
+Location: 73.027571, 19.070882
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 151 to Point 152 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on South Central Road for 39 meters
+Continue on Unnamed Road for 11 meters
+
+ARRIVE AT DATA COLLECTION POINT 152
+Location: 73.027823, 19.071515
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 152 to Point 153 ---
+Distance: 0.11 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 11 meters
+Continue on South Central Road for 102 meters
+
+ARRIVE AT DATA COLLECTION POINT 153
+Location: 73.027566, 19.073275
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 153 to Point 154 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 154
+Location: 73.027624, 19.072729
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 154 to Point 155 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 155
+Location: 73.027642, 19.072560
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 155 to Point 156 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Unnamed Road for 10 meters
+
+ARRIVE AT DATA COLLECTION POINT 156
+Location: 73.027786, 19.072136
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 156 to Point 157 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Unnamed Road for 11 meters
+
+ARRIVE AT DATA COLLECTION POINT 157
+Location: 73.028224, 19.072531
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 157 to Point 158 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 158
+Location: 73.027864, 19.072973
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 158 to Point 159 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 159
+Location: 73.028071, 19.072167
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 159 to Point 160 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 160
+Location: 73.027921, 19.072435
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 160 to Point 161 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 161
+Location: 73.028788, 19.072865
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 161 to Point 162 ---
+Distance: 0.31 km
+Time: 0.7 minutes
+
+Continue on Unnamed Road for 307 meters
+
+ARRIVE AT DATA COLLECTION POINT 162
+Location: 73.028825, 19.074240
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 162 to Point 163 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 53 meters
+
+ARRIVE AT DATA COLLECTION POINT 163
+Location: 73.027506, 19.073841
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 163 to Point 164 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 164
+Location: 73.027418, 19.074671
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 164 to Point 165 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 165
+Location: 73.027525, 19.073662
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 165 to Point 166 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 166
+Location: 73.027726, 19.074269
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 166 to Point 167 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 167
+Location: 73.027627, 19.075173
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 167 to Point 168 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 53 meters
+
+ARRIVE AT DATA COLLECTION POINT 168
+Location: 73.028800, 19.074166
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 168 to Point 169 ---
+Distance: 0.31 km
+Time: 0.7 minutes
+
+Continue on Unnamed Road for 307 meters
+
+ARRIVE AT DATA COLLECTION POINT 169
+Location: 73.028046, 19.072164
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 169 to Point 170 ---
+Distance: 0.02 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 21 meters
+
+ARRIVE AT DATA COLLECTION POINT 170
+Location: 73.027589, 19.073054
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 170 to Point 171 ---
+Distance: 0.55 km
+Time: 0.5 minutes
+
+Continue on South Central Road for 547 meters
+
+ARRIVE AT DATA COLLECTION POINT 171
+Location: 73.027247, 19.076224
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 171 to Point 172 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Unnamed Road for 11 meters
+
+ARRIVE AT DATA COLLECTION POINT 172
+Location: 73.027437, 19.076868
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 172 to Point 173 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 173
+Location: 73.027255, 19.077103
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 173 to Point 174 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 174
+Location: 73.027294, 19.076745
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 174 to Point 175 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 175
+Location: 73.027468, 19.076594
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 175 to Point 176 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Unnamed Road for 11 meters
+
+ARRIVE AT DATA COLLECTION POINT 176
+Location: 73.026758, 19.077014
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 176 to Point 177 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 177
+Location: 73.026515, 19.076997
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 177 to Point 178 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 178
+Location: 73.027160, 19.077042
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 178 to Point 179 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 179
+Location: 73.026550, 19.076999
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 179 to Point 180 ---
+Distance: 0.17 km
+Time: 0.4 minutes
+
+Continue on Unnamed Road for 167 meters
+
+ARRIVE AT DATA COLLECTION POINT 180
+Location: 73.025847, 19.076972
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 180 to Point 181 ---
+Distance: 0.32 km
+Time: 0.8 minutes
+
+Continue on Unnamed Road for 316 meters
+
+ARRIVE AT DATA COLLECTION POINT 181
+Location: 73.024873, 19.075319
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 181 to Point 182 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 182
+Location: 73.024866, 19.075197
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 182 to Point 183 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 183
+Location: 73.024902, 19.075907
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 183 to Point 184 ---
+Distance: 0.30 km
+Time: 0.7 minutes
+
+Continue on Unnamed Road for 304 meters
+
+ARRIVE AT DATA COLLECTION POINT 184
+Location: 73.025024, 19.077231
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 184 to Point 185 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 185
+Location: 73.024268, 19.076991
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 185 to Point 186 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 186
+Location: 73.024918, 19.077456
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 186 to Point 187 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 187
+Location: 73.024054, 19.076958
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 187 to Point 188 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 188
+Location: 73.024144, 19.076970
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 188 to Point 189 ---
+Distance: 0.10 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 100 meters
+
+ARRIVE AT DATA COLLECTION POINT 189
+Location: 73.024424, 19.078220
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 189 to Point 190 ---
+Distance: 0.10 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 100 meters
+
+ARRIVE AT DATA COLLECTION POINT 190
+Location: 73.023900, 19.076943
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 190 to Point 191 ---
+Distance: 0.19 km
+Time: 0.4 minutes
+
+Continue on Unnamed Road for 188 meters
+
+ARRIVE AT DATA COLLECTION POINT 191
+Location: 73.025370, 19.078102
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 191 to Point 192 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 192
+Location: 73.025163, 19.078687
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 192 to Point 193 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 193
+Location: 73.025139, 19.078753
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 193 to Point 194 ---
+Distance: 0.25 km
+Time: 0.6 minutes
+
+Continue on Unnamed Road for 249 meters
+
+ARRIVE AT DATA COLLECTION POINT 194
+Location: 73.024777, 19.079774
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 194 to Point 195 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 195
+Location: 73.024528, 19.081595
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 195 to Point 196 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 196
+Location: 73.024733, 19.079912
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 196 to Point 197 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 197
+Location: 73.024820, 19.079654
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 197 to Point 198 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 198
+Location: 73.024697, 19.081095
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 198 to Point 199 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 199
+Location: 73.024780, 19.079767
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 199 to Point 200 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 200
+Location: 73.024782, 19.080487
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 200 to Point 201 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 201
+Location: 73.025211, 19.080643
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 201 to Point 202 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 202
+Location: 73.024693, 19.080287
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 202 to Point 203 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 203
+Location: 73.024535, 19.081574
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 203 to Point 204 ---
+Distance: 0.20 km
+Time: 0.5 minutes
+
+Continue on Unnamed Road for 202 meters
+
+ARRIVE AT DATA COLLECTION POINT 204
+Location: 73.026630, 19.080763
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 204 to Point 205 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 205
+Location: 73.026778, 19.080708
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 205 to Point 206 ---
+Distance: 0.01 km
+Time: 0.0 minutes
+
+Continue on Unnamed Road for 12 meters
+
+ARRIVE AT DATA COLLECTION POINT 206
+Location: 73.026897, 19.080671
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 206 to Point 207 ---
+Distance: 0.30 km
+Time: 0.7 minutes
+
+Continue on Unnamed Road for 298 meters
+
+ARRIVE AT DATA COLLECTION POINT 207
+Location: 73.029292, 19.079485
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 207 to Point 208 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 208
+Location: 73.026997, 19.078576
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 208 to Point 209 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 209
+Location: 73.027945, 19.079275
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 209 to Point 210 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 210
+Location: 73.027936, 19.079964
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 210 to Point 211 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 211
+Location: 73.027931, 19.080001
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 211 to Point 212 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 212
+Location: 73.027941, 19.079934
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 212 to Point 213 ---
+Distance: 0.20 km
+Time: 0.5 minutes
+
+Continue on Unnamed Road for 201 meters
+
+ARRIVE AT DATA COLLECTION POINT 213
+Location: 73.027877, 19.080363
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 213 to Point 214 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 214
+Location: 73.027477, 19.080834
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 214 to Point 215 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 215
+Location: 73.027837, 19.080631
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 215 to Point 216 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 216
+Location: 73.027860, 19.080476
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 216 to Point 217 ---
+Distance: 0.11 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 114 meters
+
+ARRIVE AT DATA COLLECTION POINT 217
+Location: 73.028995, 19.080206
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 217 to Point 218 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 218
+Location: 73.028718, 19.080939
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 218 to Point 219 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 219
+Location: 73.029230, 19.079864
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 219 to Point 220 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 220
+Location: 73.028948, 19.081008
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 220 to Point 221 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 221
+Location: 73.028929, 19.080639
+Street: MIDC Main Road
+Collect required data at this location before continuing.
+
+--- Point 221 to Point 222 ---
+Distance: 0.09 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 93 meters
+
+ARRIVE AT DATA COLLECTION POINT 222
+Location: 73.029041, 19.081532
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 222 to Point 223 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 82 meters
+
+ARRIVE AT DATA COLLECTION POINT 223
+Location: 73.028254, 19.082270
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 223 to Point 224 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 224
+Location: 73.028544, 19.081695
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 224 to Point 225 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 225
+Location: 73.028243, 19.081975
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 225 to Point 226 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 82 meters
+
+ARRIVE AT DATA COLLECTION POINT 226
+Location: 73.029022, 19.081663
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 226 to Point 227 ---
+Distance: 0.15 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 146 meters
+
+ARRIVE AT DATA COLLECTION POINT 227
+Location: 73.033274, 19.080601
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 227 to Point 228 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 228
+Location: 73.033208, 19.080513
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 228 to Point 229 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 229
+Location: 73.033387, 19.080929
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 229 to Point 230 ---
+Distance: 0.10 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 98 meters
+
+ARRIVE AT DATA COLLECTION POINT 230
+Location: 73.029594, 19.082404
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 230 to Point 231 ---
+Distance: 0.17 km
+Time: 0.4 minutes
+
+Continue on Unnamed Road for 174 meters
+
+ARRIVE AT DATA COLLECTION POINT 231
+Location: 73.033838, 19.082895
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 231 to Point 232 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 232
+Location: 73.029635, 19.082833
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 232 to Point 233 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 233
+Location: 73.033632, 19.082665
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 233 to Point 234 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 234
+Location: 73.029623, 19.082686
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 234 to Point 235 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 235
+Location: 73.029617, 19.082624
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 235 to Point 236 ---
+Distance: 0.14 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 144 meters
+
+ARRIVE AT DATA COLLECTION POINT 236
+Location: 73.028275, 19.083006
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 236 to Point 237 ---
+Distance: 0.20 km
+Time: 0.5 minutes
+
+Continue on Unnamed Road for 199 meters
+
+ARRIVE AT DATA COLLECTION POINT 237
+Location: 73.026735, 19.082153
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 237 to Point 238 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 238
+Location: 73.027087, 19.082669
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 238 to Point 239 ---
+Distance: 0.12 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 122 meters
+
+ARRIVE AT DATA COLLECTION POINT 239
+Location: 73.026973, 19.081585
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 239 to Point 240 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 240
+Location: 73.026723, 19.081378
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 240 to Point 241 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 241
+Location: 73.026710, 19.081548
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 241 to Point 242 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 242
+Location: 73.027542, 19.081587
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 242 to Point 243 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 243
+Location: 73.027314, 19.081558
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 243 to Point 244 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 244
+Location: 73.027368, 19.081565
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 244 to Point 245 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 80 meters
+
+ARRIVE AT DATA COLLECTION POINT 245
+Location: 73.027018, 19.080907
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 245 to Point 246 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 246
+Location: 73.027085, 19.079979
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 246 to Point 247 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 247
+Location: 73.027027, 19.080796
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 247 to Point 248 ---
+Distance: 0.02 km
+Time: 0.0 minutes
+
+Continue on Unnamed Road for 15 meters
+
+ARRIVE AT DATA COLLECTION POINT 248
+Location: 73.026927, 19.080368
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 248 to Point 249 ---
+Distance: 0.37 km
+Time: 0.4 minutes
+
+Continue on South Central Road for 369 meters
+
+ARRIVE AT DATA COLLECTION POINT 249
+Location: 73.027282, 19.077483
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 249 to Point 250 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 250
+Location: 73.027118, 19.078465
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 250 to Point 251 ---
+Distance: 0.02 km
+Time: 0.0 minutes
+
+Continue on Unnamed Road for 16 meters
+
+ARRIVE AT DATA COLLECTION POINT 251
+Location: 73.027325, 19.077892
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 251 to Point 252 ---
+Distance: 0.03 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 25 meters
+
+ARRIVE AT DATA COLLECTION POINT 252
+Location: 73.027930, 19.077331
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 252 to Point 253 ---
+Distance: 0.22 km
+Time: 0.5 minutes
+
+Continue on Unnamed Road for 218 meters
+
+ARRIVE AT DATA COLLECTION POINT 253
+Location: 73.028278, 19.076228
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 253 to Point 254 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 254
+Location: 73.027516, 19.076165
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 254 to Point 255 ---
+Distance: 0.32 km
+Time: 0.7 minutes
+
+Continue on Unnamed Road for 259 meters
+Continue on South Central Road for 48 meters
+Continue on Unnamed Road for 11 meters
+
+ARRIVE AT DATA COLLECTION POINT 255
+Location: 73.026564, 19.077000
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 255 to Point 256 ---
+Distance: 0.17 km
+Time: 0.4 minutes
+
+Continue on Unnamed Road for 167 meters
+
+ARRIVE AT DATA COLLECTION POINT 256
+Location: 73.026333, 19.076984
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 256 to Point 257 ---
+Distance: 0.33 km
+Time: 0.8 minutes
+
+Continue on Unnamed Road for 330 meters
+
+ARRIVE AT DATA COLLECTION POINT 257
+Location: 73.023726, 19.077043
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 257 to Point 258 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 258
+Location: 73.023697, 19.077081
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 258 to Point 259 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 259
+Location: 73.023603, 19.077397
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 259 to Point 260 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 260
+Location: 73.023422, 19.078232
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 260 to Point 261 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 261
+Location: 73.023552, 19.077719
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 261 to Point 262 ---
+Distance: 0.31 km
+Time: 0.7 minutes
+
+Continue on Unnamed Road for 306 meters
+
+ARRIVE AT DATA COLLECTION POINT 262
+Location: 73.021384, 19.078479
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 262 to Point 263 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 263
+Location: 73.021385, 19.078099
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 263 to Point 264 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 264
+Location: 73.021385, 19.078342
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 264 to Point 265 ---
+Distance: 0.04 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 36 meters
+
+ARRIVE AT DATA COLLECTION POINT 265
+Location: 73.021385, 19.078798
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 265 to Point 266 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 266
+Location: 73.022184, 19.078773
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 266 to Point 267 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 267
+Location: 73.022516, 19.078768
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 267 to Point 268 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 268
+Location: 73.021391, 19.079097
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 268 to Point 269 ---
+Distance: 0.20 km
+Time: 0.5 minutes
+
+Continue on Unnamed Road for 198 meters
+
+ARRIVE AT DATA COLLECTION POINT 269
+Location: 73.021315, 19.080442
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 269 to Point 270 ---
+Distance: 0.26 km
+Time: 0.6 minutes
+
+Continue on Unnamed Road for 256 meters
+
+ARRIVE AT DATA COLLECTION POINT 270
+Location: 73.020324, 19.080128
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 270 to Point 271 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 83 meters
+
+ARRIVE AT DATA COLLECTION POINT 271
+Location: 73.020379, 19.079844
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 271 to Point 272 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 272
+Location: 73.020391, 19.079773
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 272 to Point 273 ---
+Distance: 0.08 km
+Time: 0.2 minutes
+
+Continue on Unnamed Road for 80 meters
+
+ARRIVE AT DATA COLLECTION POINT 273
+Location: 73.019654, 19.079557
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 273 to Point 274 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 51 meters
+
+ARRIVE AT DATA COLLECTION POINT 274
+Location: 73.019308, 19.079976
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 274 to Point 275 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 275
+Location: 73.018679, 19.079818
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 275 to Point 276 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 276
+Location: 73.019286, 19.079972
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 276 to Point 277 ---
+Distance: 0.05 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 51 meters
+
+ARRIVE AT DATA COLLECTION POINT 277
+Location: 73.019655, 19.079528
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 277 to Point 278 ---
+Distance: 0.06 km
+Time: 0.1 minutes
+
+Continue on Unnamed Road for 61 meters
+
+ARRIVE AT DATA COLLECTION POINT 278
+Location: 73.019620, 19.079186
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 278 to Point 279 ---
+Distance: 0.34 km
+Time: 0.8 minutes
+
+Continue on Unnamed Road for 343 meters
+
+ARRIVE AT DATA COLLECTION POINT 279
+Location: 73.020578, 19.079120
+Street: nan
+Collect required data at this location before continuing.

@@ -1,0 +1,263 @@
+===== ITINERARY 27 DIRECTIONS =====
+
+Total distance: 9.14 km
+Estimated time: 14.2 minutes
+Number of data collection points: 25
+Cluster: 5
+
+
+--- Point 1 to Point 2 ---
+Distance: 5.04 km
+Time: 7.3 minutes
+
+Continue on Thane Belapur Road for 1322 meters
+Continue on MIDC Main Road for 1671 meters
+Continue on Unnamed Road for 2046 meters
+
+ARRIVE AT DATA COLLECTION POINT 2
+Location: 73.035764, 19.087862
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 2 to Point 3 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 3
+Location: 73.035965, 19.088218
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 3 to Point 4 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 4
+Location: 73.035767, 19.087868
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 4 to Point 5 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 5
+Location: 73.036124, 19.089027
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 5 to Point 6 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 6
+Location: 73.036246, 19.089783
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 6 to Point 7 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 7
+Location: 73.035283, 19.087095
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 7 to Point 8 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 8
+Location: 73.036018, 19.088331
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 8 to Point 9 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 9
+Location: 73.035508, 19.087512
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 9 to Point 10 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 10
+Location: 73.035787, 19.087902
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 10 to Point 11 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 11
+Location: 73.035388, 19.085911
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 11 to Point 12 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 12
+Location: 73.035296, 19.087148
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 12 to Point 13 ---
+Distance: 2.78 km
+Time: 4.7 minutes
+
+Continue on Unnamed Road for 1918 meters
+Continue on MIDC Main Road for 501 meters
+Continue on Unnamed Road for 364 meters
+
+ARRIVE AT DATA COLLECTION POINT 13
+Location: 73.027823, 19.083389
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 13 to Point 14 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 14
+Location: 73.028387, 19.083369
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 14 to Point 15 ---
+Distance: 0.10 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 104 meters
+
+ARRIVE AT DATA COLLECTION POINT 15
+Location: 73.027184, 19.083526
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 15 to Point 16 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 16
+Location: 73.027273, 19.083356
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 16 to Point 17 ---
+Distance: 0.11 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 110 meters
+
+ARRIVE AT DATA COLLECTION POINT 17
+Location: 73.028454, 19.084299
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 17 to Point 18 ---
+Distance: 0.13 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 127 meters
+
+ARRIVE AT DATA COLLECTION POINT 18
+Location: 73.028634, 19.085396
+Street: nan
+Collect required data at this location before continuing.
+
+--- Point 18 to Point 19 ---
+Distance: 0.13 km
+Time: 0.3 minutes
+
+Continue on Unnamed Road for 110 meters
+Continue on Savitha Chemical Road for 12 meters
+Continue on South Central Road for 12 meters
+
+ARRIVE AT DATA COLLECTION POINT 19
+Location: 73.026494, 19.086126
+Street: Savitha Chemical Road
+Collect required data at this location before continuing.
+
+--- Point 19 to Point 20 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 20
+Location: 73.027914, 19.086301
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 20 to Point 21 ---
+Distance: 0.33 km
+Time: 0.3 minutes
+
+Continue on South Central Road for 335 meters
+
+ARRIVE AT DATA COLLECTION POINT 21
+Location: 73.027413, 19.089463
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 21 to Point 22 ---
+Distance: 0.00 km
+Time: 0.0 minutes
+
+
+ARRIVE AT DATA COLLECTION POINT 22
+Location: 73.027446, 19.089300
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 22 to Point 23 ---
+Distance: 0.09 km
+Time: 0.1 minutes
+
+Continue on South Central Road for 94 meters
+
+ARRIVE AT DATA COLLECTION POINT 23
+Location: 73.027105, 19.090081
+Street: MIDC Internal
+Collect required data at this location before continuing.
+
+--- Point 23 to Point 24 ---
+Distance: 0.25 km
+Time: 0.2 minutes
+
+Continue on South Central Road for 247 meters
+
+ARRIVE AT DATA COLLECTION POINT 24
+Location: 73.026654, 19.093768
+Street: South Central Road
+Collect required data at this location before continuing.
+
+--- Point 24 to Point 25 ---
+Distance: 0.17 km
+Time: 0.4 minutes
+
+Continue on MIDC Internal for 170 meters
+
+ARRIVE AT DATA COLLECTION POINT 25
+Location: 73.025625, 19.092106
+Street: MIDC Internal
+Collect required data at this location before continuing.

@@ -1,0 +1,52 @@
+[project]
+name = "streetscope"
+version = "0.1.0"
+description = "Measuring gender representation in public spaces from GoPro footage"
+requires-python = ">=3.13"
+dependencies = [
+    "pandas",
+    "numpy",
+    "geopandas",
+    "shapely",
+    "folium",
+    "contextily",
+    "matplotlib",
+    "statsmodels",
+    "scikit-learn",
+    "scipy",
+    "pyarrow",
+    "pyyaml",
+    "tqdm",
+    "pillow>=12.3.0",
+    "osmnx",
+    "xlrd>=2.0.2",
+]
+
+[dependency-groups]
+dev = ["pytest", "ruff"]
+
+[project.optional-dependencies]
+validation = ["openai>=2.45.0"]
+
+[tool.uv]
+package = false                                       # scripts repo, not an installable package
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+# Frozen collection half (already run): excluded from lint to avoid churn on stable code.
+extend-exclude = [
+    ".venv",
+    "scripts/00_process_videos.py",
+    "scripts/01_extract_face_frames.py",
+    "scripts/02_plot_video_coverage.py",
+    "scripts/03_compress_frames.py",
+    "scripts/04_build_gps_index.py",
+    "scripts/rebuild_csvs_from_exif.py",
+    "scripts/gen_data",
+]
+
+[tool.ruff.lint]
+extend-select = ["I"]                                 # isort-style import sorting
+# E402: matplotlib scripts must call matplotlib.use(...) before importing pyplot.
+ignore = ["E402"]

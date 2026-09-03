@@ -1,0 +1,35 @@
+\begin{table}[t]
+\centering
+\caption{Women's share among classified sightings in collected street imagery by city.}
+\label{tab:city_summary}
+\scriptsize
+\begin{threeparttable}
+\begin{tabular}{@{\extracolsep{0pt}}lrrrr}
+\toprule
+ & Mumbai & Navi Mumbai & Bangalore & Delhi \\
+\midrule
+Images annotated & 2,809 & 1,999 & 2,015 & 2,417 \\
+Collection days (clusters) & 11 & 9 & 13 & 14 \\
+\quad effective (Kish) & 6.2 & 5.6 & 9.1 & 12.4 \\
+Adult pedestrian sightings & 12,331 & 4,645 & 2,311 & 3,020 \\
+\addlinespace
+Pedestrians: women, person-weighted (\%) & 19.1 [17.4, 20.8] & 18.0 [15.7, 20.4] & 27.4 [25.7, 29.1] & 19.8 [17.3, 22.2] \\
+Pedestrians: women, image-level mean (\%) & 18.3 [16.4, 20.2] & 18.7 [16.4, 21.0] & 28.4 [25.7, 31.2] & 19.4 [16.7, 22.1] \\
+\addlinespace
+Women per 1,000 men & 236 & 220 & 377 & 246 \\
+\addlinespace
+All modes: women, person-weighted (\%) & 15.8 [14.8, 16.9] & 13.6 [12.4, 14.9] & 16.0 [14.6, 17.5] & 12.0 [10.5, 13.5] \\
+Two-wheelers: women (\%) & 8.2 & 5.3 & 8.8 & 5.9 \\
+All modes: women, image-level mean (\%) & 14.5 [13.2, 15.7] & 12.9 [11.6, 14.3] & 14.5 [12.1, 17.0] & 11.2 [9.4, 12.9] \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]
+\item The first two share rows and the sex ratio describe pedestrians only, which is the primary estimand: the share of classified pedestrian sightings coded as women. The all-mode rows additionally include two-wheeler riders.
+\item 95\% confidence intervals use collection-day cluster-robust standard errors and quantify variability across observed fieldwork days; the route imagery is not a population sample.
+\item Collection days are the clustering unit, but they contributed very unequal numbers of frames, so the effective count is well below the raw count. The Kish effective number, $(\sum n_c)^2 / \sum n_c^2$, is the one that governs interval coverage. In Mumbai and Navi Mumbai it falls to about six and five, and intervals for those cities should be read as indicative.
+\item Person-weighted estimates weight each classified sighting equally; image-level means weight each frame equally.
+\item Sex ratio is women per 1,000 men. Gender inferred from visible appearance.
+\item ``10+'' is represented by its known minimum, 11; Table~\ref{tab:topcode} reports sensitivity.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
